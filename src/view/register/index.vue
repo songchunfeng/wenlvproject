@@ -1,62 +1,15 @@
 <template>
 
- <div class="login">
+ <div class="register">
      <van-nav-bar  title="新用户注册"  left-arrow ></van-nav-bar>
-     <van-tabs v-model="active">
-        <van-tab title="密码登录">
-            <div class="passlogin">
+      <div class="passlogin">
                 <van-form @submit="onSubmit">
                     <van-field
                         v-model="username"
                         placeholder="手机号码"
                         :rules="[{ required: true, message: '请填写用户名' }]"
                     />
-                    <van-field
-                        v-model="password"
-                        type="password"
-                        placeholder="密码"
-                        :rules="[{ required: true, message: '请填写密码' }]"
-                    />
-                    <div class="yzm">
-                        <van-field
-                            v-model="code"
-                            placeholder="验证码"
-                            :rules="[{ required: true, message: '请填写用户名' }]"
-                        />
-                        <div class="codeImg"></div>
-                    </div>
-                    <div class="btn">
-                        <van-button round block type="info" native-type="submit">
-                        登录
-                        </van-button>
-                    </div>
-                     <div class="bottomGn clearFix">
-                        <ul class="bottom clearFix">
-                            <li>忘记密码</li>
-                            <li> | </li>
-                            <li>注册</li>
-                        </ul>
-                </div>    
-                </van-form>  
-            </div>
-        </van-tab>
-        <van-tab title="短信登录">
-            <div class="msgLogin">
-                 <van-form @submit="onMsgSubmit">
-                    <van-field
-                        v-model="username"
-                        placeholder="手机号码"
-                        :rules="[{ required: true, message: '请填写用户名' }]"
-                    />
-                    <div class="yzm">
-                        <van-field
-                            v-model="code"
-                            placeholder="验证码"
-                            :rules="[{ required: true, message: '请填写用户名' }]"
-                        />
-                        <div class="codeImg" @click="codeimg"></div>
-                    </div>
-                    <div class="yzm">
+                     <div class="yzm">
                         <van-field
                             v-model="msgcode"
                             placeholder="短信验证码"
@@ -64,27 +17,35 @@
                         />
                         <div class="codeMsg" @click="sendMsg">发送验证码</div>
                     </div>
+                    <van-field
+                        v-model="password"
+                        type="password"
+                        placeholder="密码"
+                        :rules="[{ required: true, message: '请填写密码' }]"
+                    />
+                    <van-field
+                         v-model="password"
+                         type="password"
+                         placeholder="确认密码"
+                        :rules="[{ required: true, message: '请填写确认密码' }]"
+                    />
+                    <div class="btn">
+                        <van-checkbox v-model="checked" icon-size="11px">复选框</van-checkbox>
+                    </div>
                     <div class="btn">
                         <van-button round block type="info" native-type="submit">
-                        登录
+                        注册
                         </van-button>
+                        
                     </div>
-                     <div class="bottomGn clearFix">
-                        <ul class="bottom clearFix">
-                            <li>忘记密码</li>
-                            <li> | </li>
-                            <li>注册</li>
-                        </ul>
-                </div>    
+                    <div class="regist-btn">已有账户，立即登录</div>
                 </van-form>  
             </div>
-        </van-tab>
-    </van-tabs>
 </div>
 </template>
 
 <script>
-    import { NavBar, Tab, Tabs ,  Form , Field , Button  } from 'vant'; 
+    import { NavBar, Tab, Tabs ,  Form , Field , Button , Checkbox } from 'vant'; 
     export default {
         components:{
             "van-nav-bar" : NavBar,
@@ -92,7 +53,8 @@
             "van-tab" : Tab,
             "van-form" : Form,
             "van-field" : Field,
-            "van-button" : Button
+            "van-button" : Button,
+            "van-checkbox" : Checkbox
         },
         data(){
             return{
@@ -101,6 +63,7 @@
                 password:'',
                 code:'',
                 msgcode:'',
+                checked:''
             };
         },
         methods:{
@@ -121,29 +84,29 @@
 </script>
 
 <style scoped>
-.login{
+.register{
     min-height: 100vh;
     background-color: #ffffff;
 }
-.login >>> .van-tab{
+.register >>> .van-tab{
     color: #999999;
     font-size: 16px;
 }
-.login >>>.van-nav-bar__title{
+.register >>>.van-nav-bar__title{
     font-size: 17px;
     font-weight: 600;
     color: #333333;
 }
-.login >>> .van-nav-bar .van-icon{
+.register >>> .van-nav-bar .van-icon{
     color: #999999;
 }
-.login >>> .van-tabs__line{
+.register >>> .van-tabs__line{
     background-color: #3983E5;
 }
-.login >>> .van-tab--active{
+.register >>> .van-tab--active{
     color: #3983E5;
 }
-.login >>> .van-cell{
+.register >>> .van-cell{
     width: 355px;
     height: 44px;
     border-radius: 22px;
@@ -210,5 +173,14 @@
     margin-left: 13px;
     font-size: 15px;
     line-height: 36px;
+}
+.regist-btn{
+    width: 335px;
+    height: 44px;
+    text-align: center;
+    color: #3983E5;
+    font-size: 13px;
+    line-height: 44px;
+    margin-top: 18px;
 }
 </style>
