@@ -14,18 +14,10 @@ const routes = [
         }
     },
     {
-        path:'/index',
-        name: 'index',
-        component: resolve => require(['../view/index'], resolve),
-        meta: {
-            title: '默认页面'
-        }
-    },
-    {
         path:'/login',
         name:'login',
         component: resolve => require(['../view/login/login'], resolve),
-        meta:{
+        meta: {
             title: '登录'
         }
     },
@@ -33,9 +25,70 @@ const routes = [
         path:'/register',
         name:'register',
         component: resolve => require(['../view/register/index'], resolve),
-        meta:{
-            title: '登录'
+        meta: {
+            title: '注册'
         }
+    },
+    {
+        path:'/home',
+        name: 'home',
+        component: resolve => require(['../view/index'], resolve),
+        meta: {
+            title: '首页'
+        }
+    },
+    {
+        path:'/perLogin',
+        name: 'perLogin',
+        component: resolve => require(['../view/person'], resolve),
+        meta: {
+            title: '个人'
+        },
+        children:[
+        {
+            path:'/preList',
+            name: 'preList',
+            component: resolve => require(['../view/person/home/list.vue'], resolve),
+            meta: {
+                title: '景区列表'
+            },
+        },
+        {
+            path:'/perUser',
+            name: 'perUser',
+            component: resolve => require(['../view/person/user'], resolve),
+            meta: {
+                title: '用户中心'
+            },
+        }
+        ]
+    },
+    {
+        path:'/teamLogin',
+        name: 'teamLogin',
+        component: resolve => require(['../view/team'], resolve),
+        meta: {
+            title: '团队'
+        },
+        children:[
+            {
+                path:'/teamList',
+                name: 'teamList',
+                component: resolve => require(['../view/team/home'], resolve),
+                meta: {
+                    title: '景区列表'
+                },
+            },
+            {
+                path:'/teamUser',
+                name: 'teamUser',
+                component: resolve => require(['../view/team/user'], resolve),
+                meta: {
+                    title: '用户中心'
+                },
+            }
+            
+        ]
     },
 ];
 
