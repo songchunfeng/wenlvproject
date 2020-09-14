@@ -1,7 +1,7 @@
 <template>
 
  <div class="register">
-     <van-nav-bar  title="新用户注册"  left-arrow ></van-nav-bar>
+     <van-nav-bar  title="新用户注册"  left-arrow  @click-left="onClickLeft"></van-nav-bar>
       <div class="passlogin">
                 <van-form @submit="onSubmit">
                     <van-field
@@ -29,8 +29,8 @@
                          placeholder="确认密码"
                         :rules="[{ required: true, message: '请填写确认密码' }]"
                     />
-                    <div class="btn">
-                        <van-checkbox v-model="checked" icon-size="11px">复选框</van-checkbox>
+                    <div class="sign">
+                        <van-checkbox v-model="checked" icon-size="11px">我已阅读并同意 <span style="color:#3983E5">《大美青海景区门票预约平台注册协议》</span></van-checkbox>
                     </div>
                     <div class="btn">
                         <van-button round block type="info" native-type="submit">
@@ -63,7 +63,7 @@
                 password:'',
                 code:'',
                 msgcode:'',
-                checked:''
+                checked:false,
             };
         },
         methods:{
@@ -71,14 +71,9 @@
             onSubmit(){
 
             },
-            //短信登录
-            onMsgSubmit(){
-
+            onClickLeft(){
+                this.$router.push('/perUser')
             },
-            //获取验证码
-            codeimg(){},
-            //获取短信验证码
-            sendMsg(){},
         }
     };
 </script>
@@ -142,7 +137,7 @@
     justify-content:center;
 }
 .btn{
-    margin-top: 50px;
+    margin-top: 18px;
 }
 .bottomGn{
     width: 335px;
@@ -182,5 +177,11 @@
     font-size: 13px;
     line-height: 44px;
     margin-top: 18px;
+}
+.sign{
+    margin-top: 31px;
+}
+.sign >>> .van-checkbox__label{
+    font-size: 13px;
 }
 </style>

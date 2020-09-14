@@ -1,7 +1,7 @@
 <template>
 
  <div class="login">
-     <van-nav-bar  title="登录账号"  left-arrow ></van-nav-bar>
+     <van-nav-bar  title="登录账号"  left-arrow @click-left="onClickLeft"></van-nav-bar>
      <van-tabs v-model="active">
         <van-tab title="密码登录">
             <div class="passlogin">
@@ -116,6 +116,9 @@
             codeimg(){},
             //获取短信验证码
             sendMsg(){},
+             onClickLeft(){
+                this.$router.push('/perUser')
+            },
         }
     };
 </script>

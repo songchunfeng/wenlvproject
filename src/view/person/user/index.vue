@@ -10,10 +10,10 @@
       </div>
       <div class="btnBox">
         <div class="btn">
-          <div class="btnText">登录</div>
+          <div class="btnText" @click="login">登录</div>
         </div>
         <div class="btn">
-          <div class="btnText">注册</div>
+          <div class="btnText" @click="register">注册</div>
         </div>
       </div>
     </div>
@@ -24,6 +24,12 @@
 export default {
   name: "perUserCenter",
   methods: {
+    login(){
+      this.$router.push('/login')
+    },
+    register(){
+      this.$router.push('/register')
+    },
   },
 };
 </script>
