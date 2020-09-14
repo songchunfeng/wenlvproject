@@ -4,8 +4,8 @@
       <router-view/>
     </keep-alive>
       <van-tabbar route>
-      <van-tabbar-item icon="wap-home-o" to="/preList">首页</van-tabbar-item>
-      <van-tabbar-item icon="comment-o" to="/perUser">用户中心 </van-tabbar-item>
+      <van-tabbar-item icon="wap-home-o" to="/">首页</van-tabbar-item>
+      <van-tabbar-item icon="comment-o" to="/qa">用户中心</van-tabbar-item>
       </van-tabbar>
   </div>
 </template>
