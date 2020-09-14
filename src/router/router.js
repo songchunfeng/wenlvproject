@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import { resolve } from '../../node_modules/url';
 
 Vue.use(Router);
 
@@ -18,6 +19,22 @@ const routes = [
         component: resolve => require(['../view/index'], resolve),
         meta: {
             title: '默认页面'
+        }
+    },
+    {
+        path:'/login',
+        name:'login',
+        component: resolve => require(['../view/login/login'], resolve),
+        meta:{
+            title: '登录'
+        }
+    },
+    {
+        path:'/register',
+        name:'register',
+        component: resolve => require(['../view/register/index'], resolve),
+        meta:{
+            title: '登录'
         }
     },
 ];

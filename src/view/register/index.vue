@@ -1,0 +1,214 @@
+<template>
+
+ <div class="login">
+     <van-nav-bar  title="新用户注册"  left-arrow ></van-nav-bar>
+     <van-tabs v-model="active">
+        <van-tab title="密码登录">
+            <div class="passlogin">
+                <van-form @submit="onSubmit">
+                    <van-field
+                        v-model="username"
+                        placeholder="手机号码"
+                        :rules="[{ required: true, message: '请填写用户名' }]"
+                    />
+                    <van-field
+                        v-model="password"
+                        type="password"
+                        placeholder="密码"
+                        :rules="[{ required: true, message: '请填写密码' }]"
+                    />
+                    <div class="yzm">
+                        <van-field
+                            v-model="code"
+                            placeholder="验证码"
+                            :rules="[{ required: true, message: '请填写用户名' }]"
+                        />
+                        <div class="codeImg"></div>
+                    </div>
+                    <div class="btn">
+                        <van-button round block type="info" native-type="submit">
+                        登录
+                        </van-button>
+                    </div>
+                     <div class="bottomGn clearFix">
+                        <ul class="bottom clearFix">
+                            <li>忘记密码</li>
+                            <li> | </li>
+                            <li>注册</li>
+                        </ul>
+                </div>    
+                </van-form>  
+            </div>
+        </van-tab>
+        <van-tab title="短信登录">
+            <div class="msgLogin">
+                 <van-form @submit="onMsgSubmit">
+                    <van-field
+                        v-model="username"
+                        placeholder="手机号码"
+                        :rules="[{ required: true, message: '请填写用户名' }]"
+                    />
+                    <div class="yzm">
+                        <van-field
+                            v-model="code"
+                            placeholder="验证码"
+                            :rules="[{ required: true, message: '请填写用户名' }]"
+                        />
+                        <div class="codeImg" @click="codeimg"></div>
+                    </div>
+                    <div class="yzm">
+                        <van-field
+                            v-model="msgcode"
+                            placeholder="短信验证码"
+                            :rules="[{ required: true, message: '请填写短信验证码' }]"
+                        />
+                        <div class="codeMsg" @click="sendMsg">发送验证码</div>
+                    </div>
+                    <div class="btn">
+                        <van-button round block type="info" native-type="submit">
+                        登录
+                        </van-button>
+                    </div>
+                     <div class="bottomGn clearFix">
+                        <ul class="bottom clearFix">
+                            <li>忘记密码</li>
+                            <li> | </li>
+                            <li>注册</li>
+                        </ul>
+                </div>    
+                </van-form>  
+            </div>
+        </van-tab>
+    </van-tabs>
+</div>
+</template>
+
+<script>
+    import { NavBar, Tab, Tabs ,  Form , Field , Button  } from 'vant'; 
+    export default {
+        components:{
+            "van-nav-bar" : NavBar,
+            "van-tabs" : Tabs,
+            "van-tab" : Tab,
+            "van-form" : Form,
+            "van-field" : Field,
+            "van-button" : Button
+        },
+        data(){
+            return{
+                active: 0,//tab
+                username:'',
+                password:'',
+                code:'',
+                msgcode:'',
+            };
+        },
+        methods:{
+            //提交表单
+            onSubmit(){
+
+            },
+            //短信登录
+            onMsgSubmit(){
+
+            },
+            //获取验证码
+            codeimg(){},
+            //获取短信验证码
+            sendMsg(){},
+        }
+    };
+</script>
+
+<style scoped>
+.login{
+    min-height: 100vh;
+    background-color: #ffffff;
+}
+.login >>> .van-tab{
+    color: #999999;
+    font-size: 16px;
+}
+.login >>>.van-nav-bar__title{
+    font-size: 17px;
+    font-weight: 600;
+    color: #333333;
+}
+.login >>> .van-nav-bar .van-icon{
+    color: #999999;
+}
+.login >>> .van-tabs__line{
+    background-color: #3983E5;
+}
+.login >>> .van-tab--active{
+    color: #3983E5;
+}
+.login >>> .van-cell{
+    width: 355px;
+    height: 44px;
+    border-radius: 22px;
+    border: 1px solid #DDDDDD;
+    margin-top: 19px;
+}
+.yzm{
+    display: flex;
+    flex-direction: row;
+    align-items:center;
+}
+.yzm >>> .van-cell{
+    width: 256px;
+    height: 44px;
+}
+.codeImg{
+    width: 77px;
+    height: 36px;
+    background-color: #999999;
+    display: inline-block;
+    margin-top: 19px;
+    margin-left: 13px;
+}
+.passlogin{
+    display: flex;
+    flex-direction: row;
+    justify-content:center;
+    
+}
+.msgLogin{
+    display: flex;
+    flex-direction: row;
+    justify-content:center;
+}
+.btn{
+    margin-top: 50px;
+}
+.bottomGn{
+    width: 335px;
+    margin-top: 23px;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.bottom{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+.bottom li{
+    display: inline-block;
+    font-size: 13px;
+    color: #666666;
+    padding-right: 13px;
+}
+.codeMsg{
+    color: #3983E5;
+    width: 77px;
+    height: 36px;
+    display: inline-block;
+    margin-top: 19px;
+    margin-left: 13px;
+    font-size: 15px;
+    line-height: 36px;
+}
+</style>
