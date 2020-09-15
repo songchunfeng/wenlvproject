@@ -93,7 +93,15 @@ const routes = [
                 meta: {
                     title: '用户中心'
                 },
-            }
+            },
+            {
+                path:'/teamUserCenter',
+                name:'teamUserCenter',
+                component: resolve => require(['../view/team/teamCenter/index'],resolve),
+                meta:{
+                    title:'用户中心'
+                }
+            },
             
         ]
     },
