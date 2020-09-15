@@ -1,142 +1,50 @@
-// import Vue from 'vue'
-import axios from 'axios';
-import {urlUtils} from './apiUtils';
+// axios拦截器-统一处理请求token
+import axios from 'axios'
+import { Toast } from 'vant'
 
-/**
- * 拦截请求数据，在请求开始的时候展示loading
- **/
 axios.interceptors.request.use(function (config) {
-    return config
+//   // 在发起请求请做一些业务处理
+//   // config是要发送请求的配置信息
+  return config
 }, function (error) {
-    return Promise.reject(error)
+// 对请求失败做处理
+  return Promise.reject(error)
 })
-
-/**
- * 拦截响应，在响应结束的时候关闭loading
- */
+// `transformResponse` 在传递给 then/catch 前，允许修改响应数据
+// axios.defaults.transformResponse = [function (data) {
+//   // data 是响应回来的字符串
+//   return data ? JsonBig.parse(data) : {}
+// }]
+// 响应拦截
 axios.interceptors.response.use(function (response) {
-    return response
-}, function (err) {
-    if (err && err.response) {
-        switch (err.response.status) {
-            case 400: err.message = '请求错误(400)'; break
-            case 401: err.message = '未授权，请重新登录(401)'; break
-            case 403: err.message = '拒绝访问(403)'; break
-            case 404: err.message = '请求出错(404)'; break
-            case 408: err.message = '请求超时(408)'; break
-            case 500: err.message = '服务器错误(500)'; break
-            case 501: err.message = '服务未实现(501)'; break
-            case 502: err.message = '网络错误(502)'; break
-            case 503: err.message = '服务不可用(503)'; break
-            case 504: err.message = '网络超时(504)'; break
-            case 505: err.message = 'HTTP版本不受支持(505)'; break
-            default: err.message = `连接出错(${err.response.status})!`
-        }
-    } else {
-        if (err && err.message.includes('timeout')) {   // 判断请求异常信息中是否含有超时timeout字符串
-            err.message = '网络连接超时'          // reject这个错误信息
-        } else {
-            err.message = '连接服务器失败!'
-        }
-    }
-    return Promise.reject(err)
+// 成功时执行
+  return response.data ? response.data : {}// 预处理返回数据,解决data不存在时,then()执行时报错的问题
+}, function (error) {
+// 失败时执行
+  let status = error.response.status // 通过debugger查看
+  let message = '未知错误'
+  switch (status) {
+    case 400:
+      message = '请求参数错误'
+      break
+    case 401:
+      message = 'token过期或未出'
+      
+      break
+    case 403:
+      message = '403 refresh_token未携带或已过期'
+     
+      break
+      case 404:
+      message = '请求参数错误'
+      break
+    case 507:
+      message = '服务器数据库异常'
+      break
+    default:
+      break
+  }
+  Toast({ type: 'warning', message })
+  return Promise.reject(error)// 避免错误进入到then中
 })
-
-/**
- * 暴露请求方法
- * url 请求的链接
- * data 请求的数据
- * loading 是否展示loading
- * header 请求头
- */
-export default {
-    install (Vue) {
-        Vue.prototype.$http = (url, data, header = {}) => {
-            if (url.indexOf('http') === -1 && !url.includes('/api')) {
-                url = urlUtils[url]
-            }
-            return new Promise((resolve, reject) => {
-                axios({
-                    method: 'post',
-                    url: url || '',
-                    headers: Object.assign({
-                        timeout: 60 * 1000,
-                        'Content-Type': 'application/json;charset=UTF-8',
-                    }, header),
-                    data: data,
-                }).then((data) => {
-                    if (data.status && data.status === 200) {
-                        resolve(data.data)
-                    } else {
-                        reject ('网络请求错误')
-                    }
-                }, (e) => {
-                    reject (e.message)
-                }).catch((err) => {
-                    console.log('请求错误',err);
-                    reject ('网络请求错误')
-                })
-            })
-        }
-
-
-        Vue.prototype.$get = (url, data,  header = {}) => {
-            if (url.indexOf('http') === -1 && !url.includes('/api')) {
-                url = urlUtils[url]
-            }
-            return new Promise((resolve, reject) => {
-                axios({
-                    method: 'get',
-                    url: url || '',
-                    headers: Object.assign({
-                        timeout: 60 * 1000,
-                        'Content-Type': 'application/json',
-                    }, header),
-                    params: data,
-                }).then((data) => {
-                    if (data.status && data.status === 200) {
-                        resolve(data.data)
-                    } else {
-                        reject ('网络请求错误')
-                    }
-                }, (e) => {
-                    reject (e.message)
-                }).catch((err) => {
-                    console.log('请求错误',err);
-                    reject ('网络请求错误')
-                })
-            })
-        }
-
-        Vue.prototype.$formData = (url, data, loading = true, header = {}) => {
-            if (url.indexOf('http') === -1 && !url.includes('/api')) {
-                url = urlUtils[url]
-            }
-            return new Promise((resolve, reject) => {
-                axios({
-                    method: 'post',
-                    url: url || '',
-                    headers: Object.assign({
-                        timeout: 60 * 1000,
-                        'Content-Type': 'multipart/form-data',
-                        loading: loading
-                    }, header),
-                    data: data,
-                    'loading': loading
-                }).then((data) => {
-                    if (data.status && data.status === 200) {
-                        resolve(data.data)
-                    } else {
-                        reject ('网络请求错误')
-                    }
-                }, (e) => {
-                    reject (e.message)
-                }).catch((err) => {
-                    console.log('请求错误',err);
-                    reject ('网络请求错误')
-                })
-            })
-        }
-    }
-}
-
+export default axios

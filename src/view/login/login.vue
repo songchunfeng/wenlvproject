@@ -84,6 +84,7 @@
 </template>
 
 <script>
+    import { firstApi } from "../../util/httpConfig/apiUtils";//先引入Api
     import { NavBar, Tab, Tabs ,  Form , Field , Button  } from 'vant'; 
     export default {
         components:{
@@ -119,6 +120,9 @@
              onClickLeft(){
                 this.$router.push('/perUser')
             },
+        },
+        mounted() {
+            
         }
     };
 </script>

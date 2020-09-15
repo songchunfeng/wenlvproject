@@ -83,8 +83,12 @@ export default {
     closeRead() {
       this.readShow = false;
     },
-    getList() {
-      
+    async getList() {
+      let res = await this.$axios({
+        url:'api/spot/listishot',
+        method:'get',
+      })
+      console.log(res);
     },
   },
 };

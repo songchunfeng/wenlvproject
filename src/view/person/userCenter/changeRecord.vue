@@ -1,32 +1,46 @@
 <!--退改记录-->
 <template>
     <div class="changeRecord">
-        <div class="chooseStatus">全部状态 <i class="i_img"></i></div>
-        <van-cell-group>
-           <div class="listHead"><span>1</span><span>操作</span></div>
-            <van-cell title="订单编号" value="内容" />
-            <van-cell title="预约凭证" value="内容" />
-            <van-cell title="预定景区" value="内容" />
-            <van-cell title="创建时间" value="内容" />
-            <van-cell title="修改时间" value="内容" />
-        </van-cell-group>
+        <div class="chooseStatus">
+            全部状态 <i class="i_img"></i>
+            <div class="statusList" v-show="show">
+                 <div class="status" v-for="(item,index) in status" :key="index">
+                     <div>{{item}}</div></div>
+            </div>
+        </div>
+        <div class="group">
+            <van-cell-group>
+               <div class="listHead"><span>1</span><span>操作</span></div>
+                <van-cell title="订单编号" value="内容" />
+                <van-cell title="预约凭证" value="内容" />
+                <van-cell title="预定景区" value="内容" />
+                <van-cell title="创建时间" value="内容" />
+                <van-cell title="修改时间" value="内容" />
+            </van-cell-group>
+        </div>
     </div>
 </template>
 
 <script>
+    import {urlConfig} from '../../../util/httpConfig/ipConfig'
     import { Cell, CellGroup } from 'vant'
     export default {
         name: "changeRecord.vue",
         components:{
             "van-cell-group" : CellGroup,
-            "van-cell" :Cell
+            "van-cell" :Cell,
         },
         data(){
             return{
                 list:[
                     {}
-                ]
+                ],
+                status:['全部状态','未验票','已验票','已改签','逾期作废','退订预约'],
+                show:false,
             }
+        },
+        mounted() {
+            console.log(urlConfig)
         }
     }
 </script>
@@ -34,10 +48,10 @@
 <style scoped>
     .changeRecord{
         min-height: 100%;
-        height: auto;
         background: #F9F9F9;
     }
     .chooseStatus{
+        position: relative;
         height: 36px;
         font-size: 13px;
         font-family: MicrosoftYaHei;
@@ -72,13 +86,43 @@
        border: 0px;
    }
    .changeRecord >>>.van-cell:last-child::after{
-       border-bottom: 10px solid #F9F9F9;
+       border: 0;
    }
     .i_img{
         width: 10px;
-        height: 10px;
+        height: 7px;
         display: inline-block;
         background-image: url("../../../assets/images/showUp.png");
         background-size: 100% 100%;
+        background-position: 0px ;
+    }
+    .group{
+        margin-bottom: 10px;
+    }
+    .statusList{
+        z-index: 100;
+        background-color: #000000;
+        position: absolute;
+        right: 0;
+    }
+    .statusList .status{
+        width: 101px;
+        height: 39px;
+        background: rgba(153,153,153,0.9);
+        text-align: center;
+        color: #fff;
+        padding-left: 9px;
+        padding-right: 9px;
+    }
+    .statusList .status div{
+        color: #fff;
+        text-align: center;
+        font-size: 15px;
+        font-family: PingFangSC-Regular, PingFang SC;
+        font-weight: 400;
+        border-bottom: 1px solid #fff;
+    }
+    .statusList .status:last-child  div{
+        border: none;
     }
 </style>
