@@ -45,12 +45,10 @@
 </template>
 
 <script>
-    import { NavBar, Tab, Tabs ,  Form , Field , Button , Checkbox } from 'vant'; 
+    import { NavBar,  Form , Field , Button , Checkbox } from 'vant';
     export default {
         components:{
             "van-nav-bar" : NavBar,
-            "van-tabs" : Tabs,
-            "van-tab" : Tab,
             "van-form" : Form,
             "van-field" : Field,
             "van-button" : Button,
