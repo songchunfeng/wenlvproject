@@ -55,19 +55,6 @@ export default {
             if (url.indexOf('http') === -1 && !url.includes('/api')) {
                 url = urlUtils[url]
             }
-            // var Time = new Date();
-            // let paramData = {
-            //     TransData: {
-            //         BaseInfo: {
-            //             TradeType : "WX",           /**固定值：微信*/
-            //             TradeCode : "url",          /*接口编码，方便排查是哪个接口*/
-            //             TradeSeq  : Time.getTime(), /*请求时间*/
-            //             TradeDate : `${Time.getFullYear()}${ ( "0" + (Time.getMonth()+1) ).substr( -2 ) }${ ( "0" + Time.getDate() ).substr( -2 ) }`, /*请求日期*/
-            //             TradeTime : `${Time.getHours()}:${Time.getMinutes()}:${Time.getSeconds()}`, /*请求时间*/
-            //         },
-            //         InputData: data || {},
-            //     }
-            // };
             return new Promise((resolve, reject) => {
                 axios({
                     method: 'post',
@@ -97,19 +84,6 @@ export default {
             if (url.indexOf('http') === -1 && !url.includes('/api')) {
                 url = urlUtils[url]
             }
-            // var Time = new Date();
-            // let paramData = {
-            //     TransData: {
-            //         BaseInfo: {
-            //             TradeType : "WX",           /**固定值：微信*/
-            //             TradeCode : "url",          /*接口编码，方便排查是哪个接口*/
-            //             TradeSeq  : Time.getTime(), /*请求时间*/
-            //             TradeDate : `${Time.getFullYear()}${ ( "0" + (Time.getMonth()+1) ).substr( -2 ) }${ ( "0" + Time.getDate() ).substr( -2 ) }`, /*请求日期*/
-            //             TradeTime : `${Time.getHours()}:${Time.getMinutes()}:${Time.getSeconds()}`, /*请求时间*/
-            //         },
-            //         InputData: data || {},
-            //     }
-            // };
             return new Promise((resolve, reject) => {
                 axios({
                     method: 'get',

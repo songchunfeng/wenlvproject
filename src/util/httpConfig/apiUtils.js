@@ -8,7 +8,8 @@ const baseIP = urlConfig.baseIP;
 
 let urlUtils = {}
 
-urlUtils.selectOccupation  = `${baseIP}/selectOccupation`;         // 获取下拉框数据
+
+urlUtils.getScenicList  = `${baseIP}/api/selectOccupation`;         // 获取景区列表
 
 
 
