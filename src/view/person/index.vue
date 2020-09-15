@@ -3,14 +3,19 @@
     <keep-alive>
       <router-view />
     </keep-alive>
-    <van-tabbar route>
-      <van-tabbar-item to="preList">
+    <van-tabbar v-model="active" route>
+      <van-tabbar-item to="/preList">
+        <span>首页</span>
         <template #icon="props">
-          <img :src="props.active ? '../../assets/images/个人 -未选中.png' : '../../assets/images/首页已选择.png'" />
+          <img :src="props.active ? icon.active : icon.inactive" />
         </template>
-        首页
       </van-tabbar-item>
-      <van-tabbar-item icon="comment-o" to="/perUser">用户中心</van-tabbar-item>
+      <van-tabbar-item icon="search" to="/perUser">
+        <span>用户中心</span>
+        <template #icon="props">
+          <img :src="props.active ? icon.user : icon.inuser" />
+        </template>
+      </van-tabbar-item>
     </van-tabbar>
   </div>
 </template>
@@ -23,15 +28,17 @@ export default {
     "van-tabbar": Tabbar,
     "van-tabbar-item": TabbarItem,
   },
-  data () {
+  data() {
     return {
       active: 0,
       icon: {
-        active: '../../assets/images/个人 -未选中.png',
-        inactive: '../../assets/images/首页已选择.png',
+        active: require("../../assets/images/首页已选择.png"),
+        inactive: require("../../assets/images/个人 -未选中.png"),
+        user: require("../../assets/images/首页已选择 (2).png"),
+        inuser: require("../../assets/images/个人 -未选中(1).png"),
       },
-    }
-  }
+    };
+  },
 };
 </script>
 
