@@ -20,7 +20,7 @@ service.interceptors.response.use(
             if(response.data.code!=401){
                 return response.data;//这个是我们项目要加的判断 可自行选择
             }else{
-                //Router.push('/')
+                console.log(response)
             }
 
         } else {

@@ -122,6 +122,9 @@
             },
         },
         mounted() {
+            let params = {};
+            params.id=1;
+            params.name=2
             firstApi.findUser().then((res)=>{
                console.log(res)
             }).catch(res=>{

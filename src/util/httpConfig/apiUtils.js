@@ -5,7 +5,7 @@ export class firstApi {
     // 获取个人资料接口信息
     static findUser() {
         //将接口下载这里
-        return axios.get('/api/spot/spotlist/1/5')
+        return axios.post('/api/spot/spotlist/1/5')
     }
 }
 
