@@ -105,6 +105,8 @@
     border-radius: 22px;
     border: 1px solid #DDDDDD;
     margin-top: 19px;
+    font-size: 15px;
+    padding-left: 27px;
 }
 .yzm{
     display: flex;

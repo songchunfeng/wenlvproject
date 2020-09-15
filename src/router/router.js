@@ -58,8 +58,16 @@ const routes = [
             component: resolve => require(['../view/person/user'], resolve),
             meta: {
                 title: '用户中心'
-            },
-        }
+            }
+        },
+        {
+            path:'/perUserCenter',
+            name:'perUserCenter',
+            component: resolve => require(['../view/person/userCenter/index'],resolve),
+            meta:{
+                title:'用户中心'
+            }
+         },
         ]
     },
     {
