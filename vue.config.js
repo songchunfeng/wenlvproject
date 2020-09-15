@@ -25,14 +25,16 @@ module.exports = {
         hotOnly: true, // 热更新
         disableHostCheck: true,
         port: 8090,
-        proxy:{
-          '/api': {
-            target: 'http://192.168.3.45:8110/',
-            changeOrigin: true,
-            pathRewrite: {
+        proxy: {
+            '/api': {
+              target: 'http://192.168.3.45:8110',
+              ws: true,
+              changeOrigin: true,
+              pathRewrite: {
+                '^/api': ''
+              }
             }
           }
-          },
     },
     configureWebpack: {//引入jquery
         plugins: [

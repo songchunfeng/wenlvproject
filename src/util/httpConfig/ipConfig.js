@@ -11,8 +11,7 @@ console.log("当前环境变量："  , env);
 let GlobalConfig = {
     DEV: {
         env: 'DEV',
-        baseIP: 'http://10.10.30.170:8080/bgc-server',
-        // baseIP: 'http://10.7.93.201:51577/bgc-server',
+        baseIP: 'http://192.168.3.45:8110',
     },
     UAT: {
         env: 'UAT',

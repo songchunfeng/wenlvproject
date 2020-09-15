@@ -1,42 +1,50 @@
-import axios from "axios";//一定要引入axios
-//import Router from '../router/index'//这个是因为我想在下面401的情况的时候跳转一下路由才引进了router
-// 创建axios实例
-const service = axios.create({});
-//request拦截器
-service.interceptors.request.use(
-    config => {
-       // config.headers["tokenid"] = "12121212"; // 请求头中添加tokenid,每次访问后台接口的时候都带上token
-        return config;
-    },
-    error => {
-        Promise.reject(error);
-    }
-);
-//response拦截器
-service.interceptors.response.use(
-    response => {
-        if (response) {
-            console.log(response,'js')
-            if(response.data.code!=401){
-                return response.data;//这个是我们项目要加的判断 可自行选择
-            }else{
-                console.log(response)
-            }
+// axios拦截器-统一处理请求token
+import axios from 'axios'
+import { Toast } from 'vant'
 
-        } else {
-            Promise.reject(new Error("error"));
-        }
-    },
-    //这是没有tokenId,也就是没有登录信息
-    error => {
-        if (JSON.stringify(error).includes("401")) {
-            //Router.push('/')
-        } else {
-            console.log(error);
-        }
-        return Promise.reject(error);
-    }
-);
+axios.interceptors.request.use(function (config) {
+//   // 在发起请求请做一些业务处理
+//   // config是要发送请求的配置信息
+  return config
+}, function (error) {
+// 对请求失败做处理
+  return Promise.reject(error)
+})
+// `transformResponse` 在传递给 then/catch 前，允许修改响应数据
+// axios.defaults.transformResponse = [function (data) {
+//   // data 是响应回来的字符串
+//   return data ? JsonBig.parse(data) : {}
+// }]
+// 响应拦截
+axios.interceptors.response.use(function (response) {
+// 成功时执行
+  return response.data ? response.data : {}// 预处理返回数据,解决data不存在时,then()执行时报错的问题
+}, function (error) {
+// 失败时执行
+  let status = error.response.status // 通过debugger查看
+  let message = '未知错误'
+  switch (status) {
+    case 400:
+      message = '请求参数错误'
+      break
+    case 401:
+      message = 'token过期或未出'
 
-//抛出service
-export default service;
+      break
+    case 403:
+      message = '403 refresh_token未携带或已过期'
+
+      break
+      case 404:
+      message = '请求参数错误'
+      break
+    case 507:
+      message = '服务器数据库异常'
+      break
+    default:
+      break
+  }
+  Toast({ type: 'warning', message })
+  return Promise.reject(error)// 避免错误进入到then中
+})
+export default axios

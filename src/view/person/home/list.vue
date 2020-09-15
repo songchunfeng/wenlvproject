@@ -59,6 +59,7 @@
 
 <script>
 import { Popup, Loading, List } from "vant";
+import { urlConfig } from '../../../util/httpConfig/ipConfig'
 import read from "./readText";
 export default {
   name: "perList",
@@ -74,15 +75,21 @@ export default {
       list: [],
       loading: false,
       finished: false,
+      page: 1,
+      limit:10
     };
   },
   methods: {
     closeRead() {
       this.readShow = false;
     },
-    getList () {
-      
-    }
+    async getList() {
+      let res = await this.$axios({
+        url:'api/spot/listishot',
+        method:'get',
+      })
+      console.log(res);
+    },
   },
 };
 </script>
@@ -165,7 +172,6 @@ export default {
     justify-content: space-between;
     margin-bottom: 10px;
     .listItem {
-      border: 1px solid red;
       width: 173px;
       min-height: 213px;
       margin-top: 15px;

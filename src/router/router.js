@@ -61,6 +61,14 @@ const routes = [
             },
         },
         {
+            path:'/appointment',
+            name: 'appointment',
+            component: resolve => require(['../view/person/appointment'], resolve),
+            meta: {
+                title: '门票预订'
+            },
+        },
+        {
             path:'/perUser',
             name: 'perUser',
             component: resolve => require(['../view/person/user'], resolve),
