@@ -29,6 +29,14 @@ const routes = [
         }
     },
     {
+        path:'/findPassword',
+        name:'findPassword',
+        component: resolve => require(['../view/findPass/index'], resolve),
+        meta:{
+            title:'找回密码'
+        }
+    },
+    {
         path:'/home',
         name: 'home',
         component: resolve => require(['../view/index'], resolve),

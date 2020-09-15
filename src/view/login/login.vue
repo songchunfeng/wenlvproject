@@ -134,7 +134,7 @@
 }
 .login >>>.van-nav-bar__title{
     font-size: 17px;
-    font-weight: 600;
+    font-weight: bold;
     color: #333333;
 }
 .login >>> .van-nav-bar .van-icon{
