@@ -144,6 +144,26 @@ export function GetBirthdayByID (idCard) {
     return birthday;
 }
 
+//把中国标准时间转换为‘2020-9-10 19:38:22’
+export function changeFullTime(date){
+    var d = new Date(date);
+  
+    var datetime =
+      d.getFullYear() +
+      "-" +
+      (d.getMonth() + 1) +
+      "-" +
+      d.getDate() +
+      " " +
+      d.getHours() +
+      ":" +
+      d.getMinutes() +
+      ":" +
+      d.getSeconds();
+    // console.log(datetime);
+    return datetime;
+  }
+
 // 根据出生日期计算年龄
 export function GetAgeByBirthday(birthday) {
     let Age = 0,
@@ -222,6 +242,8 @@ function GetVerifyBit(id) {
     }
     return result;
 }
+
+ 
 
 // 校验身份证
 export function checkIDNo(idCard) {
@@ -384,6 +406,9 @@ let  commonUtils = {
     },
     getAgeByBirthday:function(birthday){
         return GetAgeByBirthday(birthday)
+    },
+    changeFullTime:function(date){
+        return changeFullTime(date)
     },
     getAgeByIdNo:function (idNo) {
         return GetAgeByBirthday(GetBirthdayByID(idNo))
