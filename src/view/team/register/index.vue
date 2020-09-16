@@ -4,7 +4,7 @@
         <div class="form">
             <van-form @submit="onSubmit" :show-error-message="false">
                 <van-field
-                        v-model="username"
+                        v-model=" reallyName"
                         name="真实姓名"
                         label="真实姓名"
                         placeholder="请填写真实姓名"
@@ -15,7 +15,7 @@
                     </template>
                 </van-field>
                 <van-field
-                    v-model="phone"
+                    v-model="telephone"
                     name="联系电话"
                     label="联系电话"
                     placeholder="联系电话"
@@ -26,7 +26,7 @@
                     </template>
                 </van-field>
                 <van-field
-                        v-model="password"
+                        v-model="passWord"
                         type="password"
                         name="登录密码"
                         label="登录密码"
@@ -50,7 +50,7 @@
                     </template>
                 </van-field>
                 <van-field
-                        v-model="idCard"
+                        v-model="identityCardCode"
                         name="身份证号"
                         label="身份证号"
                         placeholder="身份证号"
@@ -61,7 +61,7 @@
                     </template>
                 </van-field>
                 <van-field
-                        v-model="tourCard"
+                        v-model="tourGuideCode"
                         name="导游证号"
                         label="导游证号"
                         placeholder="导游证号"
@@ -72,20 +72,65 @@
                     </template>
                 </van-field>
                 <div class="tour">
-                <van-field >
+                    <van-field >
+                        <template #label>
+                            <span class="custom-title">导游证</span>
+                            <span class="picSpecifi">（图片规格：3M以下，图片清晰）</span>
+                        </template>
+                        <template #left-icon>
+                            <img src="../../../assets/images/必选.png" alt="" class="checkSure">
+                        </template>
+                    </van-field>
+                    <div class="uploadMain">
+                        <div class="upload">
+                            <van-uploader :after-read="afterRead" :max-count="1" @delete="fileDelete" :preview-image="true" v-model="list" :max-size="3* 1024 * 1024"   @oversize="onOversize"  :before-read="beforeRead" accept="image/*">
+                                <template #default>
+                                    <img src="../../../assets/images/plus.png" alt="" class="uploadImg"
+                                        >
+                                    <div class="uploadfs">上传图片</div>
+                                </template>
+                            </van-uploader>
+                        </div>
+                    </div>
+                </div>
+                <van-field  value="旅行社" readonly >
                     <template #label>
-                        <span class="custom-title">导游证</span>
-                        <span class="picSpecifi">（图片规格：3M以下，图片清晰）</span>
+                        <span class="custom-title">团队类型</span>
                     </template>
                     <template #left-icon>
                         <img src="../../../assets/images/必选.png" alt="" class="checkSure">
                     </template>
+                    <template #right-icon>
+                        <van-icon name="arrow" />
+                    </template>
                 </van-field>
-                    <div>sfhskfhksfhh</div>
+                <div class="cell">
+                    <van-field v-model="usci"
+                               name="公司社会统一信用代码"
+                               label="公司社会统一信用代码"
+                               placeholder="请输入信用代码"
+                               @blur="getUsciMsg"
+                               :rules="[{ required: true, message: '请填写公司社会统一信用代码' }]"
+                    >
+                        <template #left-icon>
+                            <img src="../../../assets/images/必选.png" alt="" class="checkSure">
+                        </template>
+                    </van-field>
+                  <div class="toVertify" v-show="show">
+                      <img src="../../../assets/images/提醒.png" alt="" >
+                      <span>未查询到该公司信息，点击此处跳转认证 <span style="color: #3983E5;" @click="toTourGuide">跳转认证</span></span>
+                  </div>
+                    <div class="toVertify" v-show="!show">
+                        <img src="../../../assets/images/完成.png" alt="" >
+                        <span>已认证</span>
+                    </div>
                 </div>
-                <div style="margin: 16px;">
+                <div class="sign">
+                    <van-checkbox v-model="checked" icon-size="11px">我已阅读并同意 <span style="color:#3983E5">《大美青海景区门票预约平台注册协议》</span></van-checkbox>
+                </div>
+                <div class="btn">
                     <van-button round block type="info" native-type="submit">
-                        提交
+                        注册
                     </van-button>
                 </div>
             </van-form>
@@ -94,35 +139,114 @@
 </template>
 
 <script>
-    import { NavBar, Form , Field , Button ,Toast , Picker , Cell  } from 'vant';
+    import { NavBar, Form , Field , Button ,Toast , Checkbox ,Uploader ,Popup ,Icon} from 'vant';
     export default {
         name: "index.vue",
         components:{
             "van-nav-bar" : NavBar,
-            "van-picker" : Picker,
+            "van-icon" : Icon,
+            "van-checkbox" : Checkbox,
             "van-form" : Form,
             "van-field" : Field,
             "van-button" : Button,
             "Toast": Toast,
-            "van-cell" : Cell
+            "van-uploader" : Uploader,
+            "van-popup" : Popup
 
         },
         data(){
             return{
-                phone:'',
-                username:'',
-                password:'',
+                identityCardCode:'',
+                passWord:'',
+                reallyName:'',
                 surepassword:'',
-                idCard:'',
-                tourCard:'',
-                value: '',
-                columns: ['杭州', '宁波', '温州', '嘉兴', '湖州'],
-                showPicker: false,
+                telephone:'',
+                tourGuideCode:'',
+                usci:'',//信用代码
+                tourGuideUrl:'',//图片
+                checked:true,
+                show:true,
+                list:[],
             }
         },
         methods:{
             onSubmit(){
-
+                if(this.tourGuideUrl!='' && this.passWord===this.surepassword ){
+                    let params = {
+                        "identityCardCode": this.identityCardCode,
+                        "passWord": this.passWord,
+                        "reallyName": this.reallyName,
+                        "teamType": 0,
+                        "telephone": this.telephone,
+                        "tourGuideCode": this.tourGuideCode,
+                        "tourGuideUrl":this.tourGuideUrl,
+                        "usci": this.usci
+                    }
+                    this.$axios({
+                        url:'/api/teamInfo/teamUserRegister',
+                        method:'post',
+                        data:params
+                    }).then(res=>{
+                        console.log(res)
+                    }).catch(err=>{
+                        Toast.fail(err)
+                    })
+                }else if(this.passWord!==this.surepassword){
+                    Toast.fail('两次密码输入不一致')
+                }else{
+                    Toast.fail('请上传旅游证照片')
+                }
+            },
+            //获取信用代码信息
+            getUsciMsg(){
+                let params = {"usci" :this.usci}
+                this.$axios({
+                    url:'/api/teamInfo/findCompanyName',
+                    method:'get',
+                    params:params
+                }).then(res=>{
+                    console.log(res)
+                    if(res.code==20000){
+                        this.show=false
+                    }else{
+                        this.show=true
+                    }
+                }).catch(err=>{
+                   Toast.fail(err)
+                })
+            },
+            afterRead(file) {
+                // 此时可以自行将文件上传至服务器
+                console.log(file);
+                var formData = new FormData(); //构造一个 FormData，把后台需要发送的参数添加
+                formData.append('file', file.file); //接口需要传的参数
+                this.$axios.post('/api/picture/getpictureid?msg=""',formData).then(res=>{
+                    // console.log(res)
+                    this.tourGuideUrl=res.data.rows[0]
+                }).catch(err=>{
+                    Toast.fail(err)
+                })
+            },
+            onOversize(file) {
+                // console.log(file);
+                Toast.fail('文件大小不能超过 3M');
+            },
+            fileDelete(file){
+                this.tourGuideUrl=''
+            },
+            beforeRead(file) {
+                if (file.type !== 'image/jpeg') {
+                    Toast('请上传 jpg 格式图片');
+                    return false;
+                }
+                return true;
+            },
+            onClickLeft(){
+                this.$router.push('')
+            },
+            //跳转旅行社
+            toTourGuide(){
+                this.$router.push('/tourRegister')
             }
         }
 
@@ -130,6 +254,11 @@
 </script>
 
 <style scoped>
+    .register{
+        min-height: 100vh;
+        background-color: #fff;
+        padding: 0px 10px;
+    }
     .register >>> .van-tab{
         color: #999999;
         font-size: 16px;
@@ -170,5 +299,78 @@
     }
     .tour >>> .van-cell:not(:last-child)::after{
         border: none;
+    }
+    .uploadMain{
+        /*width: 100%;*/
+        padding-left: 10px ;
+        padding-right: 10px;
+        border-bottom: 0.02667rem solid #ebedf0;
+        padding-bottom: 19px;
+        box-sizing: border-box;
+    }
+    .upload{
+        padding-left: 26px;
+        width:78px;
+        height: 78px;
+
+    }
+    .uploadfs{
+        font-size: 11px;
+        color: #999999;
+    }
+    .uploadImg{
+        width: 18px;
+        height: 18px;
+    }
+    .upload >>> .van-uploader__wrapper{
+        border: 1px dashed rgba(0, 0, 0, 0.15);
+        border-radius: 3px;
+        background: rgba(0, 0, 0, 0.04);
+        width:78px;
+        height: 78px;
+        display: flex;
+         flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .upload >>> .van-uploader__input-wrapper{
+        text-align: center;
+    }
+    .cell {
+        height: 78px;
+        background-color: #fff;
+    }
+    
+    .cell >>>.van-field__label{
+        width: auto;
+    }
+    .toVertify img{
+        width: 12px;
+        height: 12px;
+        vertical-align: center;
+        margin-left: 26px;
+        margin-right: 5px;
+    }
+    .toVertify{
+        font-size: 12px;
+        color: #999999;
+    }
+    .btn{
+        margin-top: 16px;
+        margin-bottom: 50px;
+        font-size: 16px;
+    }
+    .btn >>> .van-button--normal{
+        font-size: 16px;
+    }
+    .sign{
+        margin-top: 31px;
+        /*padding-left: 10px;*/
+    }
+    .sign >>> .van-checkbox__label{
+        font-size: 13px;
+    }
+    .register >>> .van-nav-bar .van-icon{
+        color: #999999;
     }
 </style>
