@@ -2,7 +2,10 @@
 <template>
     <div class="changeRecord">
         <div class="chooseStatus">
-            全部状态 <i class="i_img"></i>
+            <div @click="changeIcon" :class="show ? 'fsActive' : ''">{{nowStatus}}
+                <i class="i_img"  v-show="!show"></i>
+                <i class="i_imgActive"  v-show="show"></i>
+            </div>
             <div class="statusList" v-show="show">
                  <div class="status" v-for="(item,index) in status" :key="index">
                      <div>{{item}}</div></div>
@@ -22,7 +25,6 @@
 </template>
 
 <script>
-    import {urlConfig} from '../../../util/httpConfig/ipConfig'
     import { Cell, CellGroup } from 'vant'
     export default {
         name: "changeRecord.vue",
@@ -36,11 +38,17 @@
                     {}
                 ],
                 status:['全部状态','未验票','已验票','已改签','逾期作废','退订预约'],
+                nowStatus:'全部状态',
                 show:false,
             }
         },
+        methods:{
+            changeIcon(){
+               this.show=!this.show;
+            }
+        },
         mounted() {
-            console.log(urlConfig)
+
         }
     }
 </script>
@@ -95,6 +103,17 @@
         background-image: url("../../../assets/images/showUp.png");
         background-size: 100% 100%;
         background-position: 0px ;
+    }
+    .i_imgActive{
+        width: 10px;
+        height: 7px;
+        display: inline-block;
+        background-image: url("../../../assets/images/展开-灰.png");
+        background-size: 100% 100%;
+        background-position: 0px ;
+    }
+    .fsActive{
+        color: #3983E5;
     }
     .group{
         margin-bottom: 10px;

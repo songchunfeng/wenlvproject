@@ -13,13 +13,15 @@
         <div class="form">
             <van-form @submit="onSubmit" v-if="active==0">
                 <van-field
-                        v-model="username"
+                        v-model="userName"
                         placeholder="手机号码"
+                        :rules="[{ required: true, message: '请填写手机号码' }]"
                 />
                 <div class="yzm">
                     <van-field
-                            v-model="msgcode"
-                            placeholder="短信验证码"
+                          v-model="msgcode"
+                          placeholder="短信验证码"
+                          :rules="[{ required: true, message: '请填写短信验证码' }]"
                     />
                     <div class="codeMsg" @click="sendMsg">发送验证码</div>
                 </div>
@@ -54,7 +56,7 @@
 </template>
 
 <script>
-    import { NavBar,   Form , Field , Button ,Dialog } from 'vant';
+    import { NavBar,   Form , Field , Button ,Dialog ,Toast } from 'vant';
     export default {
         name: "index",
         components:{
@@ -62,12 +64,13 @@
             "van-form" : Form,
             "van-field" : Field,
             "van-button" : Button,
-            "Dialog" :Dialog
+            "Dialog" :Dialog,
+            "Toast" : Toast
         },
         data(){
             return{
                 active:0,
-                username:'',//手机号
+                userName:'',//手机号
                 msgcode:'',//验证码
                 password:'',//密码
                 surepassword:'',//确认密码
@@ -77,15 +80,38 @@
         methods:{
             //回退按钮
             onClickLeft(){
-                this.$router.push('')
+                this.$router.push('/login')
             },
-            //发送手机验证码
+            //获取短信验证码
             sendMsg(){
+                if(this.userName != ''){
+                    let params = {};
+                    params.telphone=this.userName;
+                    this.$axios({
+                        url: '/api/user/sendRegisterSms',
+                        method: 'get',
+                        param:params
+                    }).then(res=>{
+                        console.log(res)
+                    }).catch(err=>{
+                        console.log(err)
+                    })
+                }else{
+                    Toast('请输入手机号')
+                }
 
+            },
+            telBlur(){
+                let code = this.$commonUtils.checkPhoneNo(this.userName)
+                if(code != 'success'){
+                    Toast('手机号输入有误，请重新输入')
+                }
             },
             //表单1
             onSubmit(){
                 this.active=1;
+
+                this.$axios({})
             },
             //表单2
             passNext(){
