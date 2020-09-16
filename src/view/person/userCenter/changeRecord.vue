@@ -6,9 +6,8 @@
                 <i class="i_img"  v-show="!show"></i>
                 <i class="i_imgActive"  v-show="show"></i>
             </div>
-            <div class="statusList" v-show="show">
-                 <div class="status" v-for="(item,index) in status" :key="index">
-                     <div>{{item}}</div></div>
+            <div class="statusList"  v-show="show">
+                <DropMenu @getStatus="getStatus"></DropMenu>
             </div>
         </div>
         <div class="group">
@@ -26,11 +25,13 @@
 
 <script>
     import { Cell, CellGroup } from 'vant'
+    import DropMenu from './dropMenu'
     export default {
         name: "changeRecord.vue",
         components:{
             "van-cell-group" : CellGroup,
             "van-cell" :Cell,
+            "DropMenu" :DropMenu
         },
         data(){
             return{
@@ -45,6 +46,10 @@
         methods:{
             changeIcon(){
                this.show=!this.show;
+            },
+            getStatus(e){
+                // console.log(e)
+                this.nowStatus=e;
             }
         },
         mounted() {
