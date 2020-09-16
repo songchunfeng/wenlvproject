@@ -23,7 +23,7 @@
                             placeholder="验证码"
                             :rules="[{ required: true, message: '请填写用户名' }]"
                         />
-                       <img :src=filePath alt="加载失败" class="codeImg" @click="changecodeImg">
+                       <img :src=filePath alt="" class="codeImg" @click="changecodeImg">
                     </div>
                     <div class="btn">
                         <van-button round block type="info" native-type="submit">
@@ -42,16 +42,16 @@
         </van-tab>
         <van-tab title="短信登录">
             <div class="msgLogin">
-                 <van-form @submit="onMsgSubmit">
+                 <van-form @submit="onMsgSubmit" :show-error-message="false">
                     <van-field
-                        v-model="username"
+                        v-model="msgUserName"
                         placeholder="手机号码"
                         :rules="[{ required: true, message: '请填写用户名' }]"
-                        @blur="telBlur"
+                        @blur="telBlur(msgUserName)"
                     />
                     <div class="yzm">
                         <van-field
-                            v-model="code"
+                            v-model="imgcode"
                             placeholder="验证码"
                             :rules="[{ required: true, message: '请填写用户名' }]"
                         />
@@ -103,8 +103,10 @@
                 username:'',
                 password:'',
                 code:'',
-                msgcode:'',
-                filePath:''
+                filePath:'',
+                msgcode:'',//短信登录
+                imgcode:'',//短信登录
+                msgUserName:'',//短信登录
             };
         },
         methods:{
@@ -122,14 +124,22 @@
                     }
                 }).then(res=>{
                     console.log(res)
+                    if(res.code==20000){
+                        this.$commonUtils.setSessionItem('token',res.data.Authorization)
+                        this.$commonUtils.setSessionItem('loginMsg',JSON.stringify(res.data.rows))
+                        this.$router.push('/preList')
+                    }else{
+                        Toast.fail(res.message)
+                        this.changecodeImg()
+                    }
                 }).catch(err=>{
                     Toast(err)
                 })
             },
             //短信登录
             onMsgSubmit(){
-                let params ={ "imgCode": this.code , "loginType":1, "passWord":this.password, "phoneCode": this.msgcode,
-                    "userName": this.username
+                let params ={ "imgCode": this.imgcode , "loginType":1, "passWord":'', "phoneCode": this.msgcode,
+                    "userName": this.msgUserName
                 }
                 this.$axios({
                     url:'/api/user/login',
@@ -139,22 +149,33 @@
                         'Content-Type': 'application/json'
                     }
                 }).then(res=>{
-                    console.log(res)
+                    if(res.code==20000){
+                        this.$commonUtils.setSessionItem('token',res.data.Authorization)
+                        this.$commonUtils.setSessionItem('loginMsg',JSON.stringify(res.data.rows))
+                        this.$router.push('/preList')
+                    }else{
+                        Toast.fail(res.message)
+                        this.changecodeImg()
+                    }
                 }).catch(err=>{
                     Toast(err)
                 })
             },
             //获取短信验证码
             sendMsg(){
-                if(this.userName != ''){
+                if(this.msgUserName != ''){
                     let params = {};
-                    params.telphone=this.userName;
+                    params.telphone=this.msgUserName;
                     this.$axios({
                         url: '/api/user/sendRegisterSms',
                         method: 'get',
-                        param:params
+                        params:params
                     }).then(res=>{
-                        console.log(res)
+                       if(res.code==20000){
+                           Toast.success('已发送')
+                       }else{
+                           Toast.fail(res.message)
+                       }
                     }).catch(err=>{
                         console.log(err)
                     })
@@ -163,8 +184,8 @@
                 }
 
             },
-            telBlur(){
-                let code = this.$commonUtils.checkPhoneNo(this.userName)
+            telBlur(tel){
+                let code = this.$commonUtils.checkPhoneNo(tel)
                 if(code != 'success'){
                     Toast('手机号输入有误，请重新输入')
                 }

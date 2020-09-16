@@ -64,25 +64,33 @@
                 code:'',
                 passWord:'',
                 msgCode:'',
-                checked:false,
+                checked:true,
             };
         },
         methods:{
             //提交表单
             onSubmit(){
-                if(this.passWord===this.password){
+                if(this.passWord===this.password && this.checked == true){
                     let params ={ passWord :this.passWord,userName: this.userName ,msgCode: this.msgCode }
                     this.$axios({
                         method:'post',
                         url:'/api/user/UserRegister',
                         data:params
                     }).then(res=>{
-                        console.log(res)
+                        // console.log(res)
+                        if(res.code==20000){
+                            Toast.success(res.message);
+                            this.$router.push('/login')
+                        }else{
+                            Toast.fail(res.message);
+                        }
                     }).catch(err=>{
                         Toast(err)
                     })
+                }else if(this.passWord!==this.password){
+                    Toast.fail('两次输入密码不一致')
                 }else{
-                    Toast('两次输入密码不一致')
+                    Toast('请选择同意协议')
                 }
 
             },
@@ -96,9 +104,12 @@
                     this.$axios({
                         url: '/api/user/sendRegisterSms',
                         method: 'get',
-                        param:params
+                        params:params
                     }).then(res=>{
                         console.log(res)
+                        if(res.code==20000){
+                            Toast.success('验证码已发送')
+                        }
                     }).catch(err=>{
                         console.log(err)
                     })

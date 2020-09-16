@@ -139,7 +139,7 @@ const routes = [
                 name:'tourRegister',
                 component: resolve => require(['../view/team/register/touristReg'],resolve),
                 meta:{
-                    title:'团队注册'
+                    title:'旅行社注册'
                 }
             },
             
