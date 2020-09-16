@@ -1,10 +1,9 @@
 <template>
   <div class="appointment">
     <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
-      <van-swipe-item>1</van-swipe-item>
-      <van-swipe-item>2</van-swipe-item>
-      <van-swipe-item>3</van-swipe-item>
-      <van-swipe-item>4</van-swipe-item>
+      <van-swipe-item style="height: 163px;" v-for="(image, index) in images" :key="index">
+        <img style="height: 163px;" :src="image" alt="">
+      </van-swipe-item>
     </van-swipe>
     <div class="scenicInfo">
       <div class="scenicName">{{scenic.spotName}}</div>
@@ -31,33 +30,44 @@
         </div>
         <div class="travelPeo">
           <div class="travelPeoLable">出行人：</div>
-          <div class="travelPeoCon">张三、张三、张三、张三、张三</div>
+          <div class="travelPeoCon">{{comPeoName}}</div>
         </div>
         <div class="checkPeoBox">
-          <div class="comPeo" @click="comPopShow = true">添加常用出行人</div>
+          <div class="comPeo" @click="checkComPeoShow">添加常用出行人</div>
           <div class="line"></div>
-          <div class="addPeo">新增出行人</div>
+          <div class="addPeo" @click="addTravelPeo">新增出行人</div>
         </div>
       </div>
+
+      <div class="travelPeoList" v-for="(item,index) in addPeo" :key="item.key">
+        <addPeo :index="index" @deleteItem="deleteItem" @getFormData="getUserFormDate" />
+      </div>
+
+      <div class="takeTicket">
+
+      </div>
     </div>
-    <van-popup v-model="comPopShow" :style="{ height: '50%', width: '60%'}">
-      <commonPeo></commonPeo>
+    <van-popup position="bottom" v-model="comPopShow" :style="{width: '100%'}">
+      <commonPeo :comPeoList="comPeoList" @close="closeCommonPeo" @checkComPeo="checkComPeo"></commonPeo>
     </van-popup>
   </div>
 </template>
 
 <script>
-import { Swipe, SwipeItem, Popup } from "vant";
+import { Swipe, SwipeItem, Popup, Toast, Dialog } from "vant";
 import dateChose from "../../../util/dateChose";
 import commonPeo from "./commonPeo";
+import addPeo from "./addPeo";
 export default {
   name: "appointment",
   components: {
     "van-swipe": Swipe,
     "van-swipe-item": SwipeItem,
     "van-popup": Popup,
+    [Dialog.Component.name]: Dialog.Component,
     dateChose,
     commonPeo,
+    addPeo,
   },
   data() {
     return {
@@ -66,27 +76,114 @@ export default {
       comPopShow: false,
       scenic: {},
       checkTime: "",
+      comPeoList: [], // 常用出行人列表
+      comPeo: [], // 常用出行人
+      addPeo: [], // 新增出行人
+      comPeoName: "",
+      doSelfCheck: false, // 触发自检
+      isChangedAll: true, // 是否有错误项
     };
   },
   created() {
+    this.getImg();
     this.scenicInfo();
+    this.getComPeoList();
   },
   methods: {
-    scenicInfo() {
-      let id = window.sessionStorage.getItem('scenicId')
+    // 获取轮播图
+    getImg() {
+      let id = window.sessionStorage.getItem("scenicId");
       this.$axios({
-        url:`/api/spot/get/${id}`,
-        method:'get',
-      }).then(res => {
-        console.log(res);
-        this.scenic = res.data.rows
-        this.getTime();
-      }).catch(err => {
-        console.log(err);
+        url: "/api/spot/getapppicture",
+        method: "get",
+        params: {
+          spotid: id,
+        },
       })
+        .then((res) => {
+          console.log(res);
+          let arr = res.data.rows
+          arr.map(item => {
+            this.images.push(item.app_urls)
+          })
+          console.log(this.images);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    // 获取出行人信息
+    getUserFormDate(obj) {
+      this.isChangedAll = true;
+      this.doSelfCheck = false;
+      this.addPeo[obj.index].data = obj.formData;
+    },
+    // 关闭常用出行人
+    closeCommonPeo() {
+      this.comPopShow = false;
+    },
+    // 选择常用出行人
+    checkComPeo(arr) {
+      this.comPeo = arr;
+      let brr = [];
+      for (let i = 0; i < arr.length; i++) {
+        brr.push(arr[i].surname);
+      }
+      this.comPeoName = brr.join("、");
+      this.comPopShow = false;
+    },
+    // 打开常用出行人
+    checkComPeoShow() {
+      if (window.sessionStorage.getItem("token")) {
+        if (this.addPeo.length + this.comPeo.length == 5) {
+          Dialog({ message: "最多填写5个出行人" });
+        } else {
+          if (this.comPeoList.length === 0) {
+            Dialog({ message: "您还未添加常用出行人" });
+          } else {
+            this.comPopShow = true;
+          }
+        }
+      } else {
+        Dialog({ message: "您还未登录请先登录" });
+      }
+    },
+    // 新增出行人
+    addTravelPeo() {
+      this.doSelfCheck = false;
+      if (this.addPeo.length + this.comPeo.length == 5) {
+        Dialog({ message: "最多填写5个出行人" });
+      } else {
+        let obj = {
+          key: new Date().getTime(),
+          data: {},
+        };
+        this.addPeo.push(obj);
+      }
+    },
+    // 删除出行人
+    deleteItem(index) {
+      this.isChangedAll = true;
+      this.addPeo = this.addPeo.filter(function (item, i) {
+        return i != index;
+      });
+    },
+    scenicInfo() {
+      let id = window.sessionStorage.getItem("scenicId");
+      this.$axios({
+        url: `/api/spot/get/${id}`,
+        method: "get",
+      })
+        .then((res) => {
+          this.scenic = res.data.rows;
+          this.getTime();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     getTime() {
-      let id = window.sessionStorage.getItem('scenicId')
+      let id = window.sessionStorage.getItem("scenicId");
       this.$axios({
         url: "/api/spot-stock/bigupdateById",
         method: "put",
@@ -102,6 +199,24 @@ export default {
           console.log(err);
         });
     },
+    // 获取常用人列表
+    getComPeoList() {
+      if (window.sessionStorage.getItem("token")) {
+        this.$axios({
+          url: "/api/user-identity-info/getuserinfo",
+          method: "get",
+          headers: {
+            Authorization: window.sessionStorage.getItem("token"),
+          },
+        })
+          .then((res) => {
+            this.comPeoList = res.data.rows;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    },
     // 选择日期
     checkDay(day) {
       this.checkTime = day;
@@ -111,16 +226,12 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.my-swipe .van-swipe-item {
-  color: #fff;
-  font-size: 20px;
-  line-height: 150px;
-  text-align: center;
-  background-color: #39a9ed;
-}
+
 .appointment {
   width: 100%;
   background-color: #f9f9f9;
+  padding-bottom: 50px;
+  box-sizing: border-box;
   .scenicInfo {
     width: 100%;
     height: 98px;
@@ -202,7 +313,7 @@ export default {
       background: #f8f8f8;
       border-radius: 5px;
       margin-top: 15px;
-      padding: 8px 10px 8px 10px;
+      padding: 15px 10px 15px 10px;
       box-sizing: border-box;
       .appTime {
         width: 100%;
@@ -229,7 +340,7 @@ export default {
         }
       }
       .checkTime {
-        margin-top: 9px;
+        margin-top: 15px;
         width: 100%;
         display: flex;
         align-items: center;
@@ -254,7 +365,7 @@ export default {
         }
       }
       .travelPeo {
-        margin-top: 9px;
+        margin-top: 15px;
         width: 100%;
         display: flex;
         align-items: center;
@@ -284,9 +395,9 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
-        padding-top: 5px;
+        padding-top: 12px;
         box-sizing: border-box;
-        margin-top: 10px;
+        margin-top: 15px;
         .comPeo {
           font-size: 15px;
           font-family: MicrosoftYaHei;
@@ -317,6 +428,14 @@ export default {
           letter-spacing: 0.02667rem;
         }
       }
+    }
+    .travelPeoList {
+      width: 100%;
+      margin-top: 10px;
+    }
+    .takeTicket {
+      width: 100%;
+      margin-top: 10px;
     }
   }
 }

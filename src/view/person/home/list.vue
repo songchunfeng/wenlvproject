@@ -36,9 +36,9 @@
     <van-popup
       :safe-area-inset-bottom="true"
       :overlay="false"
-      position="top"
+      position="right"
       v-model="readShow"
-      :style="{ height: '93%', width: '100%'}"
+      :style="{ height: '100%', width: '100%'}"
     >
       <read @close="closeRead"></read>
     </van-popup>
