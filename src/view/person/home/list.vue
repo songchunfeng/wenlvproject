@@ -15,31 +15,19 @@
     </div>
 
     <div class="listTitle">景区列表</div>
-    <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="getList">
+    <van-list
+      style="margin-bottom: 50px;"
+      v-model="loading"
+      :finished="finished"
+      finished-text="没有更多了"
+      @load="getList"
+    >
       <div class="List">
-        <div class="listItem">
+        <div class="listItem" v-for="(item,index) in list" :key="index" @click="toScenicInfo(item)">
           <div class="scenicImg">
-            <img src="../../../assets/images/青海湖.png" alt />
+            <img :src="item.app_r_url" alt />
           </div>
-          <div class="scenicName">青海湖景区</div>
-        </div>
-        <div class="listItem">
-          <div class="scenicImg">
-            <img src="../../../assets/images/青海湖.png" alt />
-          </div>
-          <div class="scenicName">青海湖景区</div>
-        </div>
-        <div class="listItem">
-          <div class="scenicImg">
-            <img src="../../../assets/images/青海湖.png" alt />
-          </div>
-          <div class="scenicName">青海湖景区</div>
-        </div>
-        <div class="listItem">
-          <div class="scenicImg">
-            <img src="../../../assets/images/青海湖.png" alt />
-          </div>
-          <div class="scenicName">青海湖景区</div>
+          <div class="scenicName">{{item.spot_name}}</div>
         </div>
       </div>
     </van-list>
@@ -59,7 +47,7 @@
 
 <script>
 import { Popup, Loading, List } from "vant";
-import { urlConfig } from '../../../util/httpConfig/ipConfig'
+import { urlConfig } from "../../../util/httpConfig/ipConfig";
 import read from "./readText";
 export default {
   name: "perList",
@@ -76,19 +64,43 @@ export default {
       loading: false,
       finished: false,
       page: 1,
-      limit:10
+      limit: 10,
     };
   },
   methods: {
     closeRead() {
       this.readShow = false;
     },
-    async getList() {
-      let res = await this.$axios({
-        url:'api/spot/listishot',
-        method:'get',
+    getList() {
+      this.$axios({
+        url: '/api/spot/applist',
+        method: "get",
+        params: {
+          limit:this.limit,
+          page:this.page,
+          spotname: "",
+        },
       })
-      console.log(res);
+        .then((res) => {
+          console.log(res);
+          this.loading = false;
+          const { rows } = res.data;
+          this.list.push(...rows);
+          if (rows.length) {
+            this.page++;
+          } else {
+            this.finished = true;
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      
+    },
+    toScenicInfo(item) {
+      window.sessionStorage.setItem("scenicId", item.id);
+      this.$router.push("/appointment");
     },
   },
 };
