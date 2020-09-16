@@ -1,18 +1,18 @@
 <template>
     <!--修改密码-->
     <div class="editPassword">
-        <van-form @submit="onSubmit">
+        <van-form @submit="onSubmit" :show-error-message="false">
             <van-field
-                    v-model="password"
+                    v-model="passWord"
                     type="password"
                     placeholder="输入新密码"
-
+                    :rules="[{ required: true, message: '请填写密码' }]"
             />
             <van-field
-                    v-model="surepassword"
+                    v-model="newPassWord"
                     type="password"
                     placeholder="再次输入新密码"
-
+                    :rules="[{ required: true, message: '请再次填写密码' }]"
             />
             <div class="btn">
                 <van-button round block type="info" native-type="submit">
@@ -24,23 +24,47 @@
 </template>
 
 <script>
-    import  {  Form , Field , Button }from 'vant'
+    import  {  Form , Field , Button , Toast}from 'vant'
     export default {
         name: "editPassword",
         components:{
             "van-form" : Form,
             "van-field" : Field,
-            "van-button" : Button
+            "van-button" : Button,
+            "Toast" : Toast
         },
         data(){
             return{
-                password:'',
-                surepassword:''
+                passWord:'',
+                newPassWord:''
             };
         },
         methods:{
-            onSubmit(){}
-        }
+            onSubmit(){
+                if(this.passWord === this.newPassWord){
+                    let params ={
+                        "newPassWord": this.newPassWord,
+                        "passWord": this.passWord
+                    }
+                    this.$axios({
+                        url:'/api/user/updateUser',
+                        method:'post',
+                        data:params,
+                        headers:{
+                            Authorization:this.$commonUtils.getSessionItem('token')
+                        }
+                    }).then(res=>{
+                        console.log(res)
+                    }).catch(err=>{
+                        Toast(err)
+                    })
+                }else {
+                    Toast.fail('两次密码输入不一致，请重新输入')
+                }
+
+            }
+        },
+
     }
 </script>
 

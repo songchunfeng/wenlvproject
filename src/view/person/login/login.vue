@@ -5,7 +5,7 @@
      <van-tabs v-model="active">
         <van-tab title="密码登录">
             <div class="passlogin">
-                <van-form @submit="onSubmit">
+                <van-form @submit="onSubmit" :show-error-message="false">
                     <van-field
                         v-model="username"
                         placeholder="手机号码"
@@ -23,7 +23,7 @@
                             placeholder="验证码"
                             :rules="[{ required: true, message: '请填写用户名' }]"
                         />
-                        <div class="codeImg"></div>
+                       <img :src=filePath alt="" class="codeImg" @click="changecodeImg">
                     </div>
                     <div class="btn">
                         <van-button round block type="info" native-type="submit">
@@ -32,9 +32,9 @@
                     </div>
                      <div class="bottomGn clearFix">
                         <ul class="bottom clearFix">
-                            <li>忘记密码</li>
+                            <li @click="forgetPassword">忘记密码</li>
                             <li> | </li>
-                            <li>注册</li>
+                            <li @click="toRegister">注册</li>
                         </ul>
                 </div>    
                 </van-form>  
@@ -42,19 +42,21 @@
         </van-tab>
         <van-tab title="短信登录">
             <div class="msgLogin">
-                 <van-form @submit="onMsgSubmit">
+                 <van-form @submit="onMsgSubmit" :show-error-message="false">
                     <van-field
-                        v-model="username"
+                        v-model="msgUserName"
                         placeholder="手机号码"
                         :rules="[{ required: true, message: '请填写用户名' }]"
+                        @blur="telBlur(msgUserName)"
                     />
                     <div class="yzm">
                         <van-field
-                            v-model="code"
+                            v-model="imgcode"
                             placeholder="验证码"
                             :rules="[{ required: true, message: '请填写用户名' }]"
                         />
-                        <div class="codeImg" @click="codeimg"></div>
+                        <img :src=filePath alt="" class="codeImg" @click="changecodeImg">
+
                     </div>
                     <div class="yzm">
                         <van-field
@@ -71,9 +73,9 @@
                     </div>
                      <div class="bottomGn clearFix">
                         <ul class="bottom clearFix">
-                            <li>忘记密码</li>
+                            <li @click="forgetPassword">忘记密码</li>
                             <li> | </li>
-                            <li>注册</li>
+                            <li @click="toRegister">注册</li>
                         </ul>
                 </div>    
                 </van-form>  
@@ -84,8 +86,7 @@
 </template>
 
 <script>
-    import { firstApi } from "../../util/httpConfig/apiUtils";//先引入Api
-    import { NavBar, Tab, Tabs ,  Form , Field , Button  } from 'vant'; 
+    import { NavBar, Tab, Tabs ,  Form , Field , Button ,Toast } from 'vant';
     export default {
         components:{
             "van-nav-bar" : NavBar,
@@ -93,7 +94,8 @@
             "van-tab" : Tab,
             "van-form" : Form,
             "van-field" : Field,
-            "van-button" : Button
+            "van-button" : Button,
+            "Toast": Toast
         },
         data(){
             return{
@@ -101,28 +103,115 @@
                 username:'',
                 password:'',
                 code:'',
-                msgcode:'',
+                filePath:'',
+                msgcode:'',//短信登录
+                imgcode:'',//短信登录
+                msgUserName:'',//短信登录
             };
         },
         methods:{
             //提交表单
             onSubmit(){
-
+                let params ={ "imgCode": this.code , "loginType":0, "passWord":this.password, "phoneCode": "",
+                    "userName": this.username
+                }
+                this.$axios({
+                    url:'/api/user/login',
+                    method:'post',
+                    data:params,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(res=>{
+                    console.log(res)
+                    if(res.code==20000){
+                        this.$commonUtils.setSessionItem('token',res.data.Authorization)
+                        this.$commonUtils.setSessionItem('loginMsg',JSON.stringify(res.data.rows))
+                        this.$router.push('/preList')
+                    }else{
+                        Toast.fail(res.message)
+                        this.changecodeImg()
+                    }
+                }).catch(err=>{
+                    Toast(err)
+                })
             },
             //短信登录
             onMsgSubmit(){
+                let params ={ "imgCode": this.imgcode , "loginType":1, "passWord":'', "phoneCode": this.msgcode,
+                    "userName": this.msgUserName
+                }
+                this.$axios({
+                    url:'/api/user/login',
+                    method:'post',
+                    data:params,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(res=>{
+                    if(res.code==20000){
+                        this.$commonUtils.setSessionItem('token',res.data.Authorization)
+                        this.$commonUtils.setSessionItem('loginMsg',JSON.stringify(res.data.rows))
+                        this.$router.push('/preList')
+                    }else{
+                        Toast.fail(res.message)
+                        this.changecodeImg()
+                    }
+                }).catch(err=>{
+                    Toast(err)
+                })
+            },
+            //获取短信验证码
+            sendMsg(){
+                if(this.msgUserName != ''){
+                    let params = {};
+                    params.telphone=this.msgUserName;
+                    this.$axios({
+                        url: '/api/user/sendRegisterSms',
+                        method: 'get',
+                        params:params
+                    }).then(res=>{
+                       if(res.code==20000){
+                           Toast.success('已发送')
+                       }else{
+                           Toast.fail(res.message)
+                       }
+                    }).catch(err=>{
+                        console.log(err)
+                    })
+                }else{
+                    Toast('请输入手机号')
+                }
 
             },
-            //获取验证码
-            codeimg(){},
-            //获取短信验证码
-            sendMsg(){},
+            telBlur(tel){
+                let code = this.$commonUtils.checkPhoneNo(tel)
+                if(code != 'success'){
+                    Toast('手机号输入有误，请重新输入')
+                }
+            },
              onClickLeft(){
                 this.$router.push('/perUser')
             },
+            changecodeImg(){
+                this.$axios.get('/api/defaultKaptcha',{responseType: 'arraybuffer'}).then(res=>{
+                    console.log(res)
+                    this.filePath = "data:image/jpeg;base64," + btoa(new Uint8Array(res).reduce((data, byte) => data + String.fromCharCode(byte), ''));
+                    console.log(this.filePath)
+                }).catch(err=>{
+                    Toast(err)
+                })
+            },
+            //忘记密码
+            forgetPassword(){
+              this.$router.push('/findPassword')
+            },
+            toRegister(){
+                this.$router.push('/register')
+            }
         },
         mounted() {
-            
+           this.changecodeImg();
         }
     };
 </script>
@@ -171,7 +260,6 @@
 .codeImg{
     width: 77px;
     height: 36px;
-    background-color: #999999;
     display: inline-block;
     margin-top: 19px;
     margin-left: 13px;

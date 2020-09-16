@@ -5,17 +5,17 @@ const prefix = 'dajia';
 export function setSessionItem(key, value) {
     const session = window.sessionStorage;
     if(session){
-        session.setItem(prefix+key, value);
+        session.setItem(key, value);
     }
 }
 //获取 localStorage
 export function getSessionItem(key) {
-    return sessionStorage.getItem(prefix+key)
+    return sessionStorage.getItem(key)
 }
 
 //删除 localStorage
 export function removeSessionItem(key) {
-   return sessionStorage.removeItem(prefix+key)
+   return sessionStorage.removeItem(key)
 }
 // ================================号码校验相关=======================================
 

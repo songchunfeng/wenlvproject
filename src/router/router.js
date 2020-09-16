@@ -13,22 +13,6 @@ const routes = [
         }
     },
     {
-        path:'/login',
-        name:'login',
-        component: resolve => require(['../view/login/login'], resolve),
-        meta: {
-            title: '登录'
-        }
-    },
-    {
-        path:'/register',
-        name:'register',
-        component: resolve => require(['../view/register/index'], resolve),
-        meta: {
-            title: '注册'
-        }
-    },
-    {
         path:'/findPassword',
         name:'findPassword',
         component: resolve => require(['../view/findPass/index'], resolve),
@@ -84,6 +68,22 @@ const routes = [
                 title:'用户中心'
             }
          },
+         {
+                path:'/register',
+                name:'register',
+                component: resolve => require(['../view/person/register/index'], resolve),
+                meta: {
+                    title: '注册'
+                }
+        },
+        {
+            path:'/login',
+            name:'login',
+            component: resolve => require(['../view/person/login/login'], resolve),
+            meta: {
+                title: '登录'
+            }
+         },
         ]
     },
     {
@@ -116,6 +116,30 @@ const routes = [
                 component: resolve => require(['../view/team/teamCenter/index'],resolve),
                 meta:{
                     title:'用户中心'
+                }
+            },
+            {
+                path:'/teamLogin',
+                name:'teamLogin',
+                component: resolve => require(['../view/team/login/login'],resolve),
+                meta:{
+                    title:'团队登录'
+                }
+            },
+            {
+                path:'/teamRegister',
+                name:'teamRegister',
+                component: resolve => require(['../view/team/register/index'],resolve),
+                meta:{
+                    title:'团队注册'
+                }
+            },
+            {
+                path:'/tourRegister',
+                name:'tourRegister',
+                component: resolve => require(['../view/team/register/touristReg'],resolve),
+                meta:{
+                    title:'旅行社注册'
                 }
             },
             

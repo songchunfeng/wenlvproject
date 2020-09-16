@@ -29,11 +29,11 @@ axios.interceptors.response.use(function (response) {
       break
     case 401:
       message = 'token过期或未出'
-      
+
       break
     case 403:
       message = '403 refresh_token未携带或已过期'
-     
+
       break
       case 404:
       message = '请求参数错误'

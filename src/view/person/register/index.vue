@@ -3,22 +3,23 @@
  <div class="register">
      <van-nav-bar  title="新用户注册"  left-arrow  @click-left="onClickLeft"></van-nav-bar>
       <div class="passlogin">
-                <van-form @submit="onSubmit">
+                <van-form @submit="onSubmit" :show-error-message="false">
                     <van-field
-                        v-model="username"
+                        v-model="userName"
                         placeholder="手机号码"
-                        :rules="[{ required: true, message: '请填写用户名' }]"
+                        :rules="[{ required: true,  message: '请填写用户名' }]"
+                        @blur="telBlur"
                     />
                      <div class="yzm">
                         <van-field
-                            v-model="msgcode"
+                            v-model="msgCode"
                             placeholder="短信验证码"
                             :rules="[{ required: true, message: '请填写短信验证码' }]"
                         />
                         <div class="codeMsg" @click="sendMsg">发送验证码</div>
                     </div>
                     <van-field
-                        v-model="password"
+                        v-model="passWord"
                         type="password"
                         placeholder="密码"
                         :rules="[{ required: true, message: '请填写密码' }]"
@@ -38,40 +39,94 @@
                         </van-button>
                         
                     </div>
-                    <div class="regist-btn">已有账户，立即登录</div>
+                    <div class="regist-btn" @click="toLogin">已有账户，立即登录</div>
                 </van-form>  
             </div>
 </div>
 </template>
 
 <script>
-    import { NavBar,  Form , Field , Button , Checkbox } from 'vant';
+    import { NavBar,  Form , Field , Button , Checkbox , Toast } from 'vant';
     export default {
         components:{
             "van-nav-bar" : NavBar,
             "van-form" : Form,
             "van-field" : Field,
             "van-button" : Button,
-            "van-checkbox" : Checkbox
+            "van-checkbox" : Checkbox,
+            "Toast" :Toast
         },
         data(){
             return{
                 active: 0,//tab
-                username:'',
+                userName:'',
                 password:'',
                 code:'',
-                msgcode:'',
-                checked:false,
+                passWord:'',
+                msgCode:'',
+                checked:true,
             };
         },
         methods:{
             //提交表单
             onSubmit(){
+                if(this.passWord===this.password && this.checked == true){
+                    let params ={ passWord :this.passWord,userName: this.userName ,msgCode: this.msgCode }
+                    this.$axios({
+                        method:'post',
+                        url:'/api/user/UserRegister',
+                        data:params
+                    }).then(res=>{
+                        // console.log(res)
+                        if(res.code==20000){
+                            Toast.success(res.message);
+                            this.$router.push('/login')
+                        }else{
+                            Toast.fail(res.message);
+                        }
+                    }).catch(err=>{
+                        Toast(err)
+                    })
+                }else if(this.passWord!==this.password){
+                    Toast.fail('两次输入密码不一致')
+                }else{
+                    Toast('请选择同意协议')
+                }
 
             },
             onClickLeft(){
                 this.$router.push('/perUser')
             },
+            sendMsg(){
+                if(this.userName != ''){
+                    let params = {};
+                    params.telphone=this.userName;
+                    this.$axios({
+                        url: '/api/user/sendRegisterSms',
+                        method: 'get',
+                        params:params
+                    }).then(res=>{
+                        console.log(res)
+                        if(res.code==20000){
+                            Toast.success('验证码已发送')
+                        }
+                    }).catch(err=>{
+                        console.log(err)
+                    })
+                }else{
+                    Toast('请输入手机号')
+                }
+
+            },
+            telBlur(){
+               let code = this.$commonUtils.checkPhoneNo(this.userName)
+               if(code != 'success'){
+                   Toast('手机号输入有误，请重新输入')
+               }
+            },
+            toLogin(){
+                this.$router.push('/login')
+            }
         }
     };
 </script>

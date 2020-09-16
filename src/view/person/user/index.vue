@@ -31,6 +31,13 @@ export default {
       this.$router.push('/register')
     },
   },
+    beforeRouteEnter(to,from,next){
+      if(window.sessionStorage.getItem('token')){
+          next({path:'/perUserCenter'})
+      }else{
+          next()
+      }
+    }
 };
 </script>
 

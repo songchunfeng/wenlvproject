@@ -6,14 +6,9 @@ import {router} from './router/router';
 import 'amfe-flexible/index.js';
 import { commonUtils } from './util/util';
 import { Toast } from 'vant';
-
 Vue.use(Toast);
 // import HttpUtils from './util/httpConfig/HttpUtils';
 // Vue.use(HttpUtils);
-
-
-
-
 Vue.prototype.$axios = axios
 
 
