@@ -1,27 +1,94 @@
 <template>
   <div class="comPeo">
+    <div class="comPeoTitle">
+      <div class="btn" @click="close">取消</div>
+      <div class="lable">常用出行人</div>
+      <div class="btn" @click="checkComPeo">完成</div>
+    </div>
     <van-checkbox-group v-model="check">
-      <van-checkbox name="a">复选框 a</van-checkbox>
-      <van-checkbox name="b">复选框 b</van-checkbox>
+      <div class="checkCell" v-for="(item,index) in comPeoList" :key="index">
+        <div class="name">{{item.surname}}</div>
+        <van-checkbox :name="item.id"></van-checkbox>
+      </div>
     </van-checkbox-group>
   </div>
 </template>
 
 <script>
-import { Checkbox,CheckboxGroup } from 'vant';
+import { Checkbox, CheckboxGroup } from "vant";
 export default {
-    name:'commonPeo',
-    components:{
-        'van-checkbox':Checkbox,
-        'van-checkbox-group':CheckboxGroup
+  name: "commonPeo",
+  props: {
+    comPeoList: Array,
+  },
+  components: {
+    "van-checkbox": Checkbox,
+    "van-checkbox-group": CheckboxGroup,
+  },
+  data() {
+    return {
+      check: [],
+    };
+  },
+  methods: {
+    close() {
+      this.$emit("close");
     },
-    data () {
-        return {
-            check:[]
+    checkComPeo() {
+        let arr = []
+        for (let i = 0; i < this.check.length; i++) {
+            for (let j = 0; j < this.comPeoList.length; j++) {
+                if (this.check[i] == this.comPeoList[j].id) {
+                    arr.push(this.comPeoList[j])
+                }
+            }
         }
-    }
-}
+        this.$emit('checkComPeo',arr)
+    },
+  },
+};
 </script>
 
-<style>
+<style lang="less" scoped>
+.comPeo {
+  width: 100%;
+  .comPeoTitle {
+    width: 100%;
+    padding: 8px 15px 8px 15px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #dddddd;
+    .btn {
+      font-size: 17px;
+      font-family: PingFangSC-Regular, PingFang SC;
+      font-weight: 400;
+      color: #3983e5;
+      line-height: 26px;
+    }
+    .lable {
+      font-size: 17px;
+      font-family: PingFangSC-Regular, PingFang SC;
+      font-weight: 400;
+      color: #000000;
+      line-height: 26px;
+    }
+  }
+  .checkCell {
+    width: 100%;
+    padding: 5px 15px 5px 15px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .name {
+      font-size: 15px;
+      font-family: PingFangSC-Regular, PingFang SC;
+      font-weight: 400;
+      color: #000000;
+      line-height: 23px;
+    }
+  }
+}
 </style>
