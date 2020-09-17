@@ -1,6 +1,6 @@
 <template>
     <div class="register">
-        <van-nav-bar  title="团队用户注册"  left-arrow @click-left="onClickLeft"></van-nav-bar>
+        <van-nav-bar  title="团队用户注册" fixed left-arrow @click-left="onClickLeft"></van-nav-bar>
         <div class="form">
             <van-form @submit="onSubmit" :show-error-message="false">
                 <van-field
@@ -133,7 +133,7 @@
                     </div>
                 </div>
                 <div class="sign">
-                    <van-checkbox v-model="checked" icon-size="11px">我已阅读并同意 <span style="color:#3983E5" @click="readShow=true">《大美青海景区门票预约平台注册协议》</span></van-checkbox>
+                    <van-checkbox v-model="checked" icon-size="14px">我已阅读并同意 <span style="color:#3983E5" @click="readShow=true">《大美青海景区门票预约平台注册协议》</span></van-checkbox>
                 </div>
                 <div class="btn">
                     <van-button round block type="info" native-type="submit">
@@ -274,7 +274,7 @@
                 return true;
             },
             onClickLeft(){
-                this.$router.push('')
+                this.$router.push('/teamUser')
             },
             //跳转旅行社
             toTourGuide(){

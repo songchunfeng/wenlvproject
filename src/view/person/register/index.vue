@@ -1,7 +1,7 @@
 <template>
 
  <div class="register">
-     <van-nav-bar  title="新用户注册"  left-arrow fixed @click-left="onClickLeft"></van-nav-bar>
+     <van-nav-bar  title="新用户注册"  left-arrow  @click-left="onClickLeft"></van-nav-bar>
       <div class="passlogin">
                 <van-form @submit="onSubmit" :show-error-message="false">
                     <van-field
@@ -52,7 +52,7 @@
              v-model="readShow"
              :style="{ height: '100%', width: '100%'}"
      >
-         <read @close="closeRead"></read>
+         <read @close="closeRead" style="position:relative"></read>
      </van-popup>
 </div>
 </template>

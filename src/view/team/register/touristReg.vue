@@ -1,6 +1,6 @@
 <template>
     <div class="register">
-        <van-nav-bar  title="旅行社注册"  left-arrow @click-left="onClickLeft"></van-nav-bar>
+        <van-nav-bar  title="旅行社注册" fixed left-arrow @click-left="onClickLeft"></van-nav-bar>
         <div class="form">
             <van-form @submit="onSubmit" :show-error-message="false">
                 <div class="usic">
@@ -118,7 +118,7 @@
 </template>
 
 <script>
-    import { NavBar,  Form , Field , Button ,Toast ,Uploader ,Cell } from 'vant';
+    import { NavBar,  Form , Field , Button ,Toast ,Uploader  } from 'vant';
     export default {
         name: "index.vue",
         components:{
@@ -127,8 +127,7 @@
             "van-field" : Field,
             "van-button" : Button,
             "van-uploader" : Uploader,
-            "van-cell" : Cell ,
-            "Toast": Toast
+
         },
         data(){
             return{
@@ -185,7 +184,7 @@
                     Toast.fail(err)
                 })
             },
-            fileDeletebusiness(file){
+            fileDeletebusiness(){
                 this.businessLicenseUrl=''
             },
             //旅游
@@ -199,7 +198,7 @@
                     Toast.fail(err)
                 })
             },
-            fileDeletetour(file){
+            fileDeletetour(){
                 this.tourPermissionUrl=''
             },
             afterRead(file) {
@@ -215,7 +214,7 @@
             fileDelete(){
                 this.itineraryTemplateUrl=''
             },
-            onOversize(file) {
+            onOversize() {
                 // console.log(file);
                 Toast.fail('文件大小不能超过 3M');
             },

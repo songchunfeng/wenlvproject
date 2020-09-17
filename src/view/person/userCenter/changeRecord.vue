@@ -17,7 +17,7 @@
                     finished-text="没有更多了"
                     @load="getList"
             >
-            <div v-for="(item,index) in list" :key="index" >
+            <div v-for="(item,index) in list" :key="index" style="background-color: #fff">
                <div class="listHead"><span>{{index+1}}</span><span>{{getTicket(item.ticket)}}</span></div>
                 <van-cell title="订单编号" value="内容" />
                 <van-cell title="预约凭证" value="内容" />
@@ -160,6 +160,7 @@
         font-size: 15px;
         line-height: 39px;
         border-bottom: 1px solid #EEEEEE;
+        background-color: #fff;
     }
     .listHead span:first-child{
         padding-left: 10px;
