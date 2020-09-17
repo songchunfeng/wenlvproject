@@ -143,7 +143,31 @@
         },
         methods:{
             onSubmit(){
-
+                if(this.businessLicenseUrl!= '' && this.itineraryTemplateUrl!='' && this.tourPermissionUrl!=''){
+                    let params ={
+                        "businessLicenseUrl":this.businessLicenseUrl,
+                        "companyName": this.companyName,
+                        "itineraryTemplateUrl":this.itineraryTemplateUrl,
+                        "telephone": this.telephone,
+                        "tourPermissionUrl": this.tourPermissionUrl,
+                        "usci": this.usci
+                    }
+                    this.$axios({
+                        url:'/api/teamInfo/touristAgencyRegister',
+                        method:'post',
+                        data:params
+                    }).then(res=>{
+                        // console.log(res)
+                        if(res.code==20000){
+                            Toast.success('注册成功');
+                            this.$router.push('/teamRegister')
+                        }else{
+                            Toast.fail(res.message)
+                        }
+                    }).catch(err=>{
+                        Toast.fail(err)
+                    })
+                }
             },
             onClickLeft(){
                 this.$router.push('/teamRegister')

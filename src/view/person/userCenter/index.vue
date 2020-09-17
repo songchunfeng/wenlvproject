@@ -7,7 +7,7 @@
                 <div class="userPhone">{{phone}}</div>
             </div>
             <div class="topRight">
-                <van-button plain type="info">退出账号</van-button>
+                <van-button plain type="info" @click="exit">退出账号</van-button>
             </div>
         </div>
         <div class="content">
@@ -51,9 +51,20 @@
             return{
                 username:'用户名',
                 phone:'13081054159',
-                active: 1,
+                active: 0,
             }
         },
+        methods:{
+            exit(){
+                window.sessionStorage.clear();
+                this.$router.push('/')
+            },
+        },
+        mounted() {
+            let user= JSON.parse(sessionStorage.getItem('loginMsg'));
+            this.username=user.userName;
+            this.phone=user.telephone;
+        }
     }
 </script>
 
@@ -76,6 +87,7 @@
         display: flex;
         flex-direction: column;
         padding-left: 10px;
+        width: 60%;
     }
     .userName{
         font-size: 17px;

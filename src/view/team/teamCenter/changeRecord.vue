@@ -11,46 +11,127 @@
             </div>
         </div>
         <div class="group">
-            <van-cell-group>
-                <div class="listHead"><span>1</span><span>操作</span></div>
-                <van-cell title="订单编号" value="内容" />
-                <van-cell title="预约凭证" value="内容" />
-                <van-cell title="预定景区" value="内容" />
-                <van-cell title="创建时间" value="内容" />
-                <van-cell title="修改时间" value="内容" />
-            </van-cell-group>
+            <van-list
+                    v-model="loading"
+                    :finished="finished"
+                    finished-text="没有更多了"
+                    @load="getList"
+            >
+                <div v-for="(item,index) in list" :key="index" >
+                    <div class="listHead"><span>{{index+1}}</span><span>{{getTicket(item.ticket)}}</span></div>
+                    <van-cell title="订单编号" value="内容" />
+                    <van-cell title="预约凭证" value="内容" />
+                    <van-cell title="预定景区" :value="item.spotName" />
+                    <van-cell title="创建时间" :value="item.gmtCreate" />
+                    <van-cell title="修改时间" :value="item.gmtModified" />
+                </div>
+            </van-list>
         </div>
     </div>
 </template>
 
 <script>
-    import { Cell, CellGroup } from 'vant'
+    import { Cell, CellGroup ,List} from 'vant'
     import DropMenu from '../../person/userCenter/dropMenu'
     export default {
         name: "changeRecord.vue",
         components:{
             "van-cell-group" : CellGroup,
             "van-cell" :Cell,
-            "DropMenu" :DropMenu
+            "DropMenu" :DropMenu,
+            "van-list" :List
         },
         data(){
             return{
                 list:[
-                    {}
+
                 ],
                 status:['全部状态','未验票','已验票','已改签','逾期作废','退订预约'],
                 nowStatus:'全部状态',
+                ticket:5,
                 show:false,
+                loading:false,
+                finished:false,
+                limit: 5,
+                page: 1,
+                total:0
+
             }
         },
         methods:{
             changeIcon(){
                 this.show=!this.show;
             },
+            getTicket(item){
+                //0：未验票   1：已验票  2 ：已改签  3：逾期   4 退票   5：退改记录
+                let str ='';
+                switch(item) {
+                    case 0:
+                        str= '未验票';
+                        break;
+                    case 1:
+                        str='已验票';
+                        break;
+                    case 2:
+                        str = '已改签';
+                        break;
+                    case 3:
+                        str = '逾期作废';
+                        break;
+                    case 4:
+                        str = '退订预约';
+                        break;
+                    case 5 :
+                        str='全部状态'
+                        break;
+                }
+                return str;
+
+            },
             getStatus(e){
                 // console.log(e)
-                this.nowStatus=e;
-            }
+                this.nowStatus=e.title;
+                this.ticket=e.value;
+                this.show=false;
+                this.list=[];
+                this.page=1;
+                this.getList();
+
+            },
+            getroadList(){
+                this.$axios({
+                    url: '/api/user-reserve/list',
+                    method: "get",
+                    headers:{
+                        Authorization:this.$commonUtils.getSessionItem('token')
+                    },
+                    params: {
+                        limit:this.limit,
+                        page:this.page,
+                        ticket: this.ticket,
+                    },
+                })
+                .then((res) => {
+                    this.loading = false;
+                    this.total = res.data.total;
+                    const { rows } = res.data;
+                    this.list.push(...rows);
+                    if (rows.length) {
+                        this.page++;
+                    } else {
+                        this.finished = true;
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+
+            },
+            getList() {
+                // this.page++;
+                this.getroadList();
+
+            },
         },
         mounted() {
 

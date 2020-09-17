@@ -1,8 +1,6 @@
 <template>
   <div>
-      <keep-alive>
       <router-view/>
-    </keep-alive>
       <van-tabbar route>
       <van-tabbar-item icon="wap-home-o" to="/teamList">首页</van-tabbar-item>
       <van-tabbar-item icon="comment-o" to="/teamUser">用户中心 </van-tabbar-item>

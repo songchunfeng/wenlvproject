@@ -54,7 +54,15 @@
                             Authorization:this.$commonUtils.getSessionItem('token')
                         }
                     }).then(res=>{
-                        console.log(res)
+                        // console.log(res)
+                        if(res.code==20000){
+                            Toast.success(res.message)
+                            this.$router.push('/login')
+                            this.$commonUtils.removeSessionItem('token')
+                        }else{
+                            Toast.fail(res.message)
+                        }
+
                     }).catch(err=>{
                         Toast(err)
                     })

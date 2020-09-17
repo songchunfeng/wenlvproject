@@ -122,6 +122,15 @@
                let code = this.$commonUtils.checkPhoneNo(this.userName)
                if(code != 'success'){
                    Toast('手机号输入有误，请重新输入')
+               }else{
+                   this.$axios.get('/api/user/findUser?telphone='+this.userName+'?type=0')
+                   .then(res=>{
+                       if(res.code!==2000){
+                           Toast.fail(res.message)
+                       }
+                   }).catch(err=>{
+                       Toast.fail(err)
+                   })
                }
             },
             toLogin(){

@@ -1,7 +1,7 @@
 <template>
     <div class="statusList">
         <div class="status" v-for="(item,index) in status" :key="index" @click="getStatus(item)">
-            <div>{{item}}</div>
+            <div>{{item.title}}</div>
         </div>
     </div>
 </template>
@@ -11,7 +11,14 @@
         name: "dropMenu.vue",
         data(){
             return{
-                status:['全部状态','未验票','已验票','已改签','逾期作废','退订预约'],
+                status:[
+                    {title:'全部状态',value:5},
+                    {title:'未验票',value:0},
+                    {title:'已验票',value:1},
+                    {title:'已改签' , value:2},
+                    {title:'逾期作废',value:3},
+                    {title:'退订预约',value:4}
+                    ],
                 nowStatus:'全部状态',
             }
         },

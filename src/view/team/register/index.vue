@@ -20,6 +20,7 @@
                     label="联系电话"
                     placeholder="联系电话"
                     :rules="[{ required: true, message: '请填写联系电话' }]"
+                     @blur="telBlur"
                 >
                     <template #left-icon>
                         <img src="../../../assets/images/必选.png" alt="" class="checkSure">
@@ -66,6 +67,7 @@
                         label="导游证号"
                         placeholder="导游证号"
                         :rules="[{ required: true, message: '请填写导游证号' }]"
+
                 >
                     <template #left-icon>
                         <img src="../../../assets/images/必选.png" alt="" class="checkSure">
@@ -149,7 +151,6 @@
             "van-form" : Form,
             "van-field" : Field,
             "van-button" : Button,
-            "Toast": Toast,
             "van-uploader" : Uploader,
             "van-popup" : Popup
 
@@ -187,7 +188,12 @@
                         method:'post',
                         data:params
                     }).then(res=>{
-                        console.log(res)
+                        // console.log(res)
+                        if(res.code==20000){
+                            Toast.success(res.message)
+                        }else{
+                            Toast.fail(res.message)
+                        }
                     }).catch(err=>{
                         Toast.fail(err)
                     })
@@ -227,11 +233,11 @@
                     Toast.fail(err)
                 })
             },
-            onOversize(file) {
+            onOversize() {
                 // console.log(file);
                 Toast.fail('文件大小不能超过 3M');
             },
-            fileDelete(file){
+            fileDelete(){
                 this.tourGuideUrl=''
             },
             beforeRead(file) {
@@ -247,7 +253,22 @@
             //跳转旅行社
             toTourGuide(){
                 this.$router.push('/tourRegister')
-            }
+            },
+            telBlur(){
+                let code = this.$commonUtils.checkPhoneNo(this.userName)
+                if(code != 'success'){
+                    Toast('手机号输入有误，请重新输入')
+                }else{
+                    this.$axios.get('/api/user/findUser?telphone='+this.userName+'?type=0')
+                    .then(res=>{
+                        if(res.code!==2000){
+                            Toast.fail(res.message)
+                        }
+                    }).catch(err=>{
+                        Toast.fail(err)
+                    })
+                }
+            },
         }
 
     }

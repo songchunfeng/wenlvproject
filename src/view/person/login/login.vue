@@ -112,7 +112,7 @@
         methods:{
             //提交表单
             onSubmit(){
-                let params ={ "imgCode": this.code , "loginType":0, "passWord":this.password, "phoneCode": "",
+                let params ={ "imgCode": this.code , "loginType":0, "type" : 0,"passWord":this.password, "phoneCode": "",
                     "userName": this.username
                 }
                 this.$axios({
@@ -138,7 +138,7 @@
             },
             //短信登录
             onMsgSubmit(){
-                let params ={ "imgCode": this.imgcode , "loginType":1, "passWord":'', "phoneCode": this.msgcode,
+                let params ={ "imgCode": this.imgcode , "loginType":1,"type" : 0, "passWord":'', "phoneCode": this.msgcode,
                     "userName": this.msgUserName
                 }
                 this.$axios({

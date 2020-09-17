@@ -49,6 +49,17 @@
                 active: 0,
             }
         },
+        methods:{
+            exit(){
+                window.sessionStorage.clear();
+                this.$router.push('/')
+            },
+        },
+        mounted() {
+            let user= JSON.parse(sessionStorage.getItem('loginMsg'));
+            this.username=user.userName;
+            this.phone=user.telephone;
+        }
     }
 </script>
 
@@ -71,6 +82,7 @@
         display: flex;
         flex-direction: column;
         padding-left: 10px;
+        width: 60%;
     }
     .userName{
         font-size: 17px;

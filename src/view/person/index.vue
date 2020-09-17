@@ -1,8 +1,6 @@
 <template>
   <div>
-    <keep-alive>
       <router-view />
-    </keep-alive>
     <van-tabbar v-model="active" route>
       <van-tabbar-item to="/preList">
         <span>首页</span>
