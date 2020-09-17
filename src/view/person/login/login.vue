@@ -134,7 +134,7 @@
                         if(res.data.rows.userType==1){
                             this.$router.push('/teamList')
                         }else if(res.data.rows.userType==0){
-                            this.$router.push('/perList')
+                            this.$router.push('/preList')
                         }
                     }else{
                         Toast.fail(res.message)
@@ -164,7 +164,7 @@
                         if(res.data.rows.userType==1){
                             this.$router.push('/teamList')
                         }else if(res.data.rows.userType==0){
-                            this.$router.push('/perList')
+                            this.$router.push('/preList')
                         }
 
                     }else{
