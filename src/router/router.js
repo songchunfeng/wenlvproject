@@ -103,6 +103,14 @@ const routes = [
                 },
             },
             {
+                path:'/teamApp',
+                name: 'teamApp',
+                component: resolve => require(['../view/team/teamApp'], resolve),
+                meta: {
+                    title: '团队预约'
+                },
+            },
+            {
                 path:'/teamUser',
                 name: 'teamUser',
                 component: resolve => require(['../view/team/user'], resolve),
