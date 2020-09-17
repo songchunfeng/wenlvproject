@@ -10,6 +10,7 @@
                         label="统一社会信用代码"
                         placeholder="统一社会信用代码"
                         :rules="[{ required: true, message: '请填写统一社会信用代码' }]"
+                        @blur="getUsciMsg(usci)"
                 >
                     <template #left-icon>
                         <img src="../../../assets/images/必选.png" alt="" class="checkSure">
@@ -99,6 +100,7 @@
                                label="联系邮箱"
                                placeholder="请输入公司邮箱"
                                :rules="[{ required: true, message: '请输入公司邮箱' }]"
+                               @blur="checkemail(telephone)"
                     >
                         <template #left-icon>
                             <img src="../../../assets/images/必选.png" alt="" class="checkSure">
@@ -224,6 +226,20 @@
                 }
                 return true;
             },
+            getUsciMsg(val) {
+                let code = this.$commonUtils.tourist(val)
+                if (code != 'success') {
+                    Toast.fail('请检查统一社会信用代码')
+                    this.usci=''
+                }
+            },
+            checkemail(val){
+                let reg = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
+                if(!reg.test(val)){
+                    Toast.fail('请检查邮箱')
+                    this.telephone=''
+                }
+            }
 
         }
 

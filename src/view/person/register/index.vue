@@ -1,7 +1,7 @@
 <template>
 
  <div class="register">
-     <van-nav-bar  title="新用户注册"  left-arrow  @click-left="onClickLeft"></van-nav-bar>
+     <van-nav-bar  title="新用户注册"  left-arrow fixed @click-left="onClickLeft"></van-nav-bar>
       <div class="passlogin">
                 <van-form @submit="onSubmit" :show-error-message="false">
                     <van-field
@@ -34,7 +34,7 @@
                          @blur="checkpassword(password)"
                     />
                     <div class="sign">
-                        <van-checkbox v-model="checked" icon-size="14px">我已阅读并同意 <span style="color:#3983E5">《大美青海景区门票预约平台注册协议》</span></van-checkbox>
+                        <van-checkbox v-model="checked" icon-size="14px">我已阅读并同意 <span style="color:#3983E5" @click="readShow=true">《大美青海景区门票预约平台注册协议》</span></van-checkbox>
                     </div>
                     <div class="btn">
                         <van-button round block type="info" native-type="submit">
@@ -45,11 +45,21 @@
                     <div class="regist-btn" @click="toLogin">已有账户，立即登录</div>
                 </van-form>  
             </div>
+     <van-popup
+             :safe-area-inset-bottom="true"
+             :overlay="false"
+             position="right"
+             v-model="readShow"
+             :style="{ height: '100%', width: '100%'}"
+     >
+         <read @close="closeRead"></read>
+     </van-popup>
 </div>
 </template>
 
 <script>
-    import { NavBar,  Form , Field , Button , Checkbox , Toast } from 'vant';
+    import { NavBar,  Form , Field , Button , Checkbox , Toast ,Popup} from 'vant';
+    import read from './registerText'
     export default {
         components:{
             "van-nav-bar" : NavBar,
@@ -57,7 +67,9 @@
             "van-field" : Field,
             "van-button" : Button,
             "van-checkbox" : Checkbox,
-            "Toast" :Toast
+            "Toast" :Toast,
+            "van-popup" : Popup,
+             read
         },
         data(){
             return{
@@ -70,7 +82,8 @@
                 checked:true,
                 i:60,
                 timer:null,
-                show:true
+                show:true,
+                readShow: false,
             };
         },
         methods:{
@@ -96,13 +109,15 @@
                 }else if(this.passWord!==this.password){
                     Toast.fail('两次输入密码不一致')
                 }else{
-                    Toast('请选择同意协议')
+                    Toast('请先阅读平台注册协议并同意')
                 }
 
             },
+            //返回
             onClickLeft(){
                 this.$router.push('/perUser')
             },
+            //验证码
             sendMsg(){
                 if(this.userName != ''){
                     let params = {};
@@ -158,7 +173,10 @@
                 if(code ==  'fail'){
                     Toast.fail('请输入六位以上数字字母组合')
                 }
-            }
+            },
+            closeRead() {
+                this.readShow = false;
+            },
         }
     };
 </script>

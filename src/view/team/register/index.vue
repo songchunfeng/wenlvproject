@@ -9,6 +9,7 @@
                         label="真实姓名"
                         placeholder="请填写真实姓名"
                         :rules="[{ required: true, message: '请填写真实姓名' }]"
+                        @blur="checkName(reallyName)"
                 >
                     <template #left-icon>
                      <img src="../../../assets/images/必选.png" alt="" class="checkSure">
@@ -71,7 +72,7 @@
                         label="导游证号"
                         placeholder="导游证号"
                         :rules="[{ required: true, message: '请填写导游证号' }]"
-
+                        @blur="checkTourGuide(tourGuideCode)"
                 >
                     <template #left-icon>
                         <img src="../../../assets/images/必选.png" alt="" class="checkSure">
@@ -115,7 +116,7 @@
                                name="公司社会统一信用代码"
                                label="公司社会统一信用代码"
                                placeholder="请输入信用代码"
-                               @blur="getUsciMsg"
+                               @blur="getUsciMsg(usci)"
                                :rules="[{ required: true, message: '请填写公司社会统一信用代码' }]"
                     >
                         <template #left-icon>
@@ -132,7 +133,7 @@
                     </div>
                 </div>
                 <div class="sign">
-                    <van-checkbox v-model="checked" icon-size="11px">我已阅读并同意 <span style="color:#3983E5">《大美青海景区门票预约平台注册协议》</span></van-checkbox>
+                    <van-checkbox v-model="checked" icon-size="11px">我已阅读并同意 <span style="color:#3983E5" @click="readShow=true">《大美青海景区门票预约平台注册协议》</span></van-checkbox>
                 </div>
                 <div class="btn">
                     <van-button round block type="info" native-type="submit">
@@ -141,11 +142,21 @@
                 </div>
             </van-form>
         </div>
+        <van-popup
+                :safe-area-inset-bottom="true"
+                :overlay="false"
+                position="right"
+                v-model="readShow"
+                :style="{ height: '100%', width: '100%'}"
+        >
+            <read @close="closeRead"></read>
+        </van-popup>
     </div>
 </template>
 
 <script>
     import { NavBar, Form , Field , Button ,Toast , Checkbox ,Uploader ,Popup ,Icon} from 'vant';
+    import read from '../../person/register/registerText'
     export default {
         name: "index.vue",
         components:{
@@ -156,7 +167,8 @@
             "van-field" : Field,
             "van-button" : Button,
             "van-uploader" : Uploader,
-
+            "van-popup" : Popup,
+            read
         },
         data(){
             return{
@@ -171,11 +183,12 @@
                 checked:true,
                 show:true,
                 list:[],
+                readShow:false
             }
         },
         methods:{
             onSubmit(){
-                if(this.tourGuideUrl!='' && this.passWord===this.surepassword ){
+                if(this.tourGuideUrl!=''&& this.checked ==true  && this.passWord===this.surepassword && this.passWord!=''&& this.surepassword!='' ){
                     let params = {
                         "identityCardCode": this.identityCardCode,
                         "passWord": this.passWord,
@@ -202,27 +215,37 @@
                     })
                 }else if(this.passWord!==this.surepassword){
                     Toast.fail('两次密码输入不一致')
-                }else{
+                }else if(this.passWord =='' || this.surepassword == '' ){
+                    Toast.fail('请确认密码')
+                }else if(this.checked== false){
+                   Toast.fail('请先阅读平台注册协议并同意')
+                } else{
                     Toast.fail('请上传旅游证照片')
                 }
             },
             //获取信用代码信息
-            getUsciMsg(){
-                let params = {"usci" :this.usci}
-                this.$axios({
-                    url:'/api/teamInfo/findCompanyName',
-                    method:'get',
-                    params:params
-                }).then(res=>{
-                    console.log(res)
-                    if(res.code==20000){
-                        this.show=false
-                    }else{
-                        this.show=true
-                    }
-                }).catch(err=>{
-                   Toast.fail(err)
-                })
+            getUsciMsg(val){
+                let code = this.$commonUtils.tourist(val)
+                if(code != 'success'){
+                    Toast.fail('请检查统一社会信用代码')
+                }else{
+                    let params = {"usci" :val}
+                    this.$axios({
+                        url:'/api/teamInfo/findCompanyName',
+                        method:'get',
+                        params:params
+                    }).then(res=>{
+                        console.log(res)
+                        if(res.code==20000){
+                            this.show=false
+                        }else{
+                            this.show=true
+                        }
+                    }).catch(err=>{
+                        Toast.fail(err)
+                    })
+                }
+
             },
             afterRead(file) {
                 // 此时可以自行将文件上传至服务器
@@ -257,6 +280,7 @@
             toTourGuide(){
                 this.$router.push('/tourRegister')
             },
+            //失焦校验
             telBlur(){
                 let code = this.$commonUtils.checkPhoneNo(this.telephone)
                 if(code != 'success'){
@@ -281,9 +305,27 @@
             checkIDNo(val){
                 let code = this.$commonUtils.checkIDNo(val)
                 if(code != 'success'){
-                    Toast.fail(code)
+                    Toast.fail(code);
+                    this.identityCardCode=''
                 }
-            }
+            },
+            checkName(val){
+                let code =this.$commonUtils.checkName(val);
+                if(code != 'success'){
+                    Toast.fail(code)
+                    this.reallyName=''
+                }
+            },
+            checkTourGuide(val){
+                let code =this.$commonUtils.tourist(val);
+                if(code != 'success'){
+                    Toast.fail('请检查导游证号')
+                    this.tourGuideCode=''
+                }
+            },
+            closeRead() {
+                this.readShow = false;
+            },
         }
 
     }
