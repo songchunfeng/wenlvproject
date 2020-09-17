@@ -152,7 +152,6 @@
             "van-field" : Field,
             "van-button" : Button,
             "van-uploader" : Uploader,
-            "van-popup" : Popup
 
         },
         data(){
@@ -255,11 +254,11 @@
                 this.$router.push('/tourRegister')
             },
             telBlur(){
-                let code = this.$commonUtils.checkPhoneNo(this.userName)
+                let code = this.$commonUtils.checkPhoneNo(this.telephone)
                 if(code != 'success'){
                     Toast('手机号输入有误，请重新输入')
                 }else{
-                    this.$axios.get('/api/user/findUser?telphone='+this.userName+'?type=0')
+                    this.$axios.get('/api/user/findUser?telphone='+this.telephone+'?type=1')
                     .then(res=>{
                         if(res.code!==2000){
                             Toast.fail(res.message)

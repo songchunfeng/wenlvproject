@@ -8,12 +8,12 @@
         <div class="title">大美青海</div>
         <div class="platform">青海省文化和旅游厅官方景区票务预约平台</div>
       </div>
-      <div class="btnBox">
-        <div class="btn">
-          <div class="btnText" @click="login">登录</div>
+      <div class="btnBox" >
+        <div class="btn" @click="login">
+          <div class="btnText" >登录</div>
         </div>
-        <div class="btn">
-          <div class="btnText" @click="register">注册</div>
+        <div class="btn" @click="register">
+          <div class="btnText" >注册</div>
         </div>
       </div>
     </div>
@@ -32,7 +32,8 @@ export default {
     },
   },
     beforeRouteEnter(to,from,next){
-      if(window.sessionStorage.getItem('token')){
+      let user = JSON.parse(sessionStorage.getItem('loginMsg'))
+      if(window.sessionStorage.getItem('token') && user.userType ==0 ){
           next({path:'/perUserCenter'})
       }else{
           next()

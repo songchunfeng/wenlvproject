@@ -58,7 +58,7 @@
                         if(res.code==20000){
                             Toast.success(res.message)
                             this.$router.push('/login')
-                            this.$commonUtils.removeSessionItem('token')
+                            this.$commonUtils.clear();
                         }else{
                             Toast.fail(res.message)
                         }

@@ -64,7 +64,8 @@
                             placeholder="短信验证码"
                             :rules="[{ required: true, message: '请填写短信验证码' }]"
                         />
-                        <div class="codeMsg" @click="sendMsg">发送验证码</div>
+                        <div class="codeMsg" @click="sendMsg" v-show="show">发送验证码</div>
+                        <div class="codeDisable" v-show="!show">{{i}}S后重新发送</div>
                     </div>
                     <div class="btn">
                         <van-button round block type="info" native-type="submit">
@@ -107,6 +108,9 @@
                 msgcode:'',//短信登录
                 imgcode:'',//短信登录
                 msgUserName:'',//短信登录
+                i:60,
+                timer:null,
+                show:true
             };
         },
         methods:{
@@ -127,10 +131,15 @@
                     if(res.code==20000){
                         this.$commonUtils.setSessionItem('token',res.data.Authorization)
                         this.$commonUtils.setSessionItem('loginMsg',JSON.stringify(res.data.rows))
-                        this.$router.push('/preList')
+                        if(res.data.rows.userType==1){
+                            this.$router.push('/teamList')
+                        }else if(res.data.rows.userType==0){
+                            this.$router.push('/perList')
+                        }
                     }else{
                         Toast.fail(res.message)
                         this.changecodeImg()
+                        this.code=''
                     }
                 }).catch(err=>{
                     Toast(err)
@@ -152,10 +161,16 @@
                     if(res.code==20000){
                         this.$commonUtils.setSessionItem('token',res.data.Authorization)
                         this.$commonUtils.setSessionItem('loginMsg',JSON.stringify(res.data.rows))
-                        this.$router.push('/preList')
+                        if(res.data.rows.userType==1){
+                            this.$router.push('/teamList')
+                        }else if(res.data.rows.userType==0){
+                            this.$router.push('/perList')
+                        }
+
                     }else{
                         Toast.fail(res.message)
                         this.changecodeImg()
+                        this.imgcode=''
                     }
                 }).catch(err=>{
                     Toast(err)
@@ -173,7 +188,16 @@
                     }).then(res=>{
                        if(res.code==20000){
                            Toast.success('已发送')
-                       }else{
+                           this.show=false;
+                           this.timer=setInterval(()=>{
+                               this.i--;
+                               if(this.i<=0){
+                                   this.show=true;
+                                   this.i=60;
+                                   clearInterval(this.timer)
+                               }
+                           },1000)
+                       } else{
                            Toast.fail(res.message)
                        }
                     }).catch(err=>{
@@ -204,7 +228,7 @@
             },
             //忘记密码
             forgetPassword(){
-              this.$router.push('/findPassword')
+              this.$router.push({name:'findPassword',query:{type:0}})
             },
             toRegister(){
                 this.$router.push('/register')
@@ -263,6 +287,16 @@
     display: inline-block;
     margin-top: 19px;
     margin-left: 13px;
+}
+.codeDisable{
+    color: #999999;
+    width: auto;
+    height: 36px;
+    display: inline-block;
+    margin-top: 19px;
+    margin-left: 5px;
+    font-size: 13px;
+    line-height: 36px;
 }
 .passlogin{
     display: flex;

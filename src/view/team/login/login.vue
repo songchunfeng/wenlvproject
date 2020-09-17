@@ -112,7 +112,7 @@
         methods:{
             //提交表单
             onSubmit(){
-                let params ={ "imgCode": this.code , "loginType":0, "type" : 0,"passWord":this.password, "phoneCode": "",
+                let params ={ "imgCode": this.code , "loginType":0, "type" : 1,"passWord":this.password, "phoneCode": "",
                     "userName": this.username
                 }
                 this.$axios({
@@ -126,8 +126,12 @@
                     console.log(res)
                     if(res.code==20000){
                         this.$commonUtils.setSessionItem('token',res.data.Authorization)
-                        this.$commonUtils.setSessionItem('loginMsg',JSON.stringify(res.data.rows))
-                        this.$router.push('/preList')
+                        this.$commonUtils.setSessionItem('loginMsg',JSON.stringify(res.data.rows));
+                        if(res.data.rows.userType==1){
+                            this.$router.push('/teamList')
+                        }else if(res.data.rows.userType==0){
+                            this.$router.push('/perList')
+                        }
                     }else{
                         Toast.fail(res.message)
                         this.changecodeImg()
@@ -138,7 +142,7 @@
             },
             //短信登录
             onMsgSubmit(){
-                let params ={ "imgCode": this.imgcode , "loginType":1,"type" : 0, "passWord":'', "phoneCode": this.msgcode,
+                let params ={ "imgCode": this.imgcode , "loginType":1,"type" : 1, "passWord":'', "phoneCode": this.msgcode,
                     "userName": this.msgUserName
                 }
                 this.$axios({
@@ -152,7 +156,11 @@
                     if(res.code==20000){
                         this.$commonUtils.setSessionItem('token',res.data.Authorization)
                         this.$commonUtils.setSessionItem('loginMsg',JSON.stringify(res.data.rows))
-                        this.$router.push('/preList')
+                        if(res.data.rows.userType==1){
+                            this.$router.push('/teamList')
+                        }else if(res.data.rows.userType==0){
+                            this.$router.push('/perList')
+                        }
                     }else{
                         Toast.fail(res.message)
                         this.changecodeImg()
@@ -204,7 +212,7 @@
             },
             //忘记密码
             forgetPassword(){
-                this.$router.push('/findPassword')
+                this.$router.push({name:'findPassword',query:{type:1}})
             },
             toRegister(){
                 this.$router.push('/teamRegister')

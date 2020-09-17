@@ -5,7 +5,7 @@ Vue.use(Router);
 
 const routes = [
     {
-        path: '*',
+        path: '/',
         name: 'index',
         component: resolve => require(['../view/index'], resolve),
         meta: {

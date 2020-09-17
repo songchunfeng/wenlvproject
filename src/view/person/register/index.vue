@@ -16,7 +16,8 @@
                             placeholder="短信验证码"
                             :rules="[{ required: true, message: '请填写短信验证码' }]"
                         />
-                        <div class="codeMsg" @click="sendMsg">发送验证码</div>
+                        <div class="codeMsg" @click="sendMsg" v-show="show">发送验证码</div>
+                         <div class="codeDisable" v-show="!show">{{i}}S后重新发送</div>
                     </div>
                     <van-field
                         v-model="passWord"
@@ -65,6 +66,9 @@
                 passWord:'',
                 msgCode:'',
                 checked:true,
+                i:60,
+                timer:null,
+                show:true
             };
         },
         methods:{
@@ -108,7 +112,18 @@
                     }).then(res=>{
                         console.log(res)
                         if(res.code==20000){
-                            Toast.success('验证码已发送')
+                            Toast.success('验证码已发送');
+                            this.show=false;
+                            this.timer=setInterval(()=>{
+                                this.i--;
+                                if(this.i<=0){
+                                    this.show=true;
+                                    this.i=60;
+                                    clearInterval(this.timer)
+                                }
+                            },1000)
+                        }else{
+                            this.show=true
                         }
                     }).catch(err=>{
                         console.log(err)
@@ -125,7 +140,7 @@
                }else{
                    this.$axios.get('/api/user/findUser?telphone='+this.userName+'?type=0')
                    .then(res=>{
-                       if(res.code!==2000){
+                       if(res.code!==20000){
                            Toast.fail(res.message)
                        }
                    }).catch(err=>{
@@ -231,6 +246,16 @@
     margin-top: 19px;
     margin-left: 13px;
     font-size: 15px;
+    line-height: 36px;
+}
+.codeDisable{
+    color: #999999;
+    width: auto;
+    height: 36px;
+    display: inline-block;
+    margin-top: 19px;
+    margin-left: 5px;
+    font-size: 13px;
     line-height: 36px;
 }
 .regist-btn{

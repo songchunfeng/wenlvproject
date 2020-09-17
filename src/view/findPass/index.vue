@@ -11,7 +11,7 @@
             </div>
         </div>
         <div class="form">
-            <van-form @submit="onSubmit" v-if="active==0">
+            <van-form @submit="onSubmit" v-if="active==0" :show-error-message="false">
                 <van-field
                         v-model="userName"
                         placeholder="手机号码"
@@ -23,7 +23,8 @@
                           placeholder="短信验证码"
                           :rules="[{ required: true, message: '请填写短信验证码' }]"
                     />
-                    <div class="codeMsg" @click="sendMsg">发送验证码</div>
+                    <div class="codeMsg" @click="sendMsg" v-show="show">发送验证码</div>
+                    <div class="codeDisable" v-show="!show">{{i}}S后重新发送</div>
                 </div>
                 <div class="btn">
                     <van-button round block type="info" native-type="submit">
@@ -31,7 +32,7 @@
                     </van-button>
                 </div>
             </van-form>
-            <van-form @submit="passNext" v-if="active==1">
+            <van-form @submit="passNext" v-if="active==1" :show-error-message="false">
                 <van-field
                         v-model="password"
                         type="password"
@@ -74,13 +75,19 @@
                 msgcode:'',//验证码
                 password:'',//密码
                 surepassword:'',//确认密码
-
+                i:60,
+                timer:null,
+                show:true
             }
         },
         methods:{
             //回退按钮
             onClickLeft(){
-                this.$router.push('/login')
+                if(this.$route.query.type==0){
+                    this.$router.push('/login')
+                }else{
+                    this.$router.push('/teamLogin')
+                }
             },
             //获取短信验证码
             sendMsg(){
@@ -90,9 +97,22 @@
                     this.$axios({
                         url: '/api/user/sendRegisterSms',
                         method: 'get',
-                        param:params
+                        params:params
                     }).then(res=>{
-                        console.log(res)
+                        if (res.code==20000){
+                            Toast.success('已发送')
+                            this.show=false;
+                            this.timer=setInterval(()=>{
+                                this.i--;
+                                if(this.i<=0){
+                                    this.show=true;
+                                    this.i=60;
+                                    clearInterval(this.timer)
+                                }
+                            },1000)
+                        }else{
+                            Toast.fail(res.message)
+                        }
                     }).catch(err=>{
                         console.log(err)
                     })
@@ -105,29 +125,70 @@
                 let code = this.$commonUtils.checkPhoneNo(this.userName)
                 if(code != 'success'){
                     Toast('手机号输入有误，请重新输入')
+                }else{
+                    this.$axios.get('/api/user/findUser?telphone='+this.userName+'?type='+this.$route.query.type)
+                    .then(res=>{
+                        if(res.code!==20000){
+                            Toast.fail(res.message)
+                        }
+                    }).catch(err=>{
+                        Toast.fail(err)
+                    })
                 }
             },
             //表单1
             onSubmit(){
                 this.active=1;
-
-                this.$axios({})
             },
             //表单2
             passNext(){
-                Dialog.alert({
-                    title: '标题',
-                    message: '弹窗内容',
-                }).then(() => {
-                    // on close
-                });
+                if(this.password===this.surepassword){
+                    let params = {
+                        "msgCode":this.msgcode ,
+                        "newPassWord":this.password,
+                        "type": this.$route.query.type,
+                        "userName": this.userName
+                    }
+                    this.$axios({
+                        url:'/api/user/updateOutUser',
+                        method:'post',
+                        data:params
+                    }).then(res=>{
+                        Dialog.alert({
+                            title: '新密码设置',
+                            message: res.message,
+                        }).then(() => {
+                           if(this.$route.query.type==0){
+                               this.$router.push('/login')
+                           }else{
+                               this.$router.push('/teamLogin')
+                           }
+                        });
+                    }).catch(err=>{
+                        Toast.fail(err)
+                    })
+                }else{
+                    Toast.fail('两次输入密码不一致')
+                }
+
 
             },
-        }
+        },
+
     }
 </script>
 
 <style scoped>
+    .codeDisable{
+        color: #999999;
+        width: auto;
+        height: 36px;
+        display: inline-block;
+        margin-top: 19px;
+        margin-left: 5px;
+        font-size: 13px;
+        line-height: 36px;
+    }
      .findPass{
          min-height: 100vh;
          background-color: #ffffff;

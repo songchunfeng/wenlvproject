@@ -16,7 +16,8 @@ export default {
   components:{
     'van-tabbar':Tabbar,
     'van-tabbar-item':TabbarItem
-  }
+  },
+
 }
 </script>
 
