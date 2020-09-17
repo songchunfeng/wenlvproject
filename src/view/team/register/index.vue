@@ -332,6 +332,9 @@
 </script>
 
 <style scoped>
+    .form{
+        margin-top: 40px;
+    }
     .register{
         min-height: 100vh;
         background-color: #fff;
@@ -374,15 +377,19 @@
     }
     .tour >>> .van-field__label{
         width: 100%;
+        padding-left: 10px;
     }
     .tour >>> .van-cell:not(:last-child)::after{
+        border: none;
+    }
+    .cell >>> .van-cell:not(:last-child)::after{
         border: none;
     }
     .uploadMain{
         /*width: 100%;*/
         padding-left: 10px ;
         padding-right: 10px;
-        border-bottom: 0.02667rem solid #ebedf0;
+        /*border-bottom: 0.02667rem solid #ebedf0;*/
         padding-bottom: 19px;
         box-sizing: border-box;
     }

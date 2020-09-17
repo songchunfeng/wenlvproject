@@ -1,14 +1,14 @@
 <!--退改记录-->
 <template>
     <div class="changeRecord">
-        <div class="chooseStatus">
+        <div class="chooseStatus" id="chooseStatus">
             <div @click="changeIcon" :class="show ? 'fsActive' : ''">{{nowStatus}}
                 <i class="i_img"  v-show="!show"></i>
                 <i class="i_imgActive"  v-show="show"></i>
             </div>
-            <div class="statusList"  v-show="show">
-                <DropMenu @getStatus="getStatus"></DropMenu>
-            </div>
+                <div class="statusList"  v-show="show">
+                    <DropMenu @getStatus="getStatus"></DropMenu>
+                </div>
         </div>
         <div class="group">
             <van-list
@@ -19,8 +19,8 @@
             >
             <div v-for="(item,index) in list" :key="index" style="background-color: #fff">
                <div class="listHead"><span>{{index+1}}</span><span>{{getTicket(item.ticket)}}</span></div>
-                <van-cell title="订单编号" value="内容" />
-                <van-cell title="预约凭证" value="内容" />
+                <van-cell title="订单编号" :value="item.id" />
+                <van-cell title="预约凭证" :value="item.voucher" />
                 <van-cell title="预定景区" :value="item.spotName" />
                 <van-cell title="创建时间" :value="item.gmtCreate" />
                 <van-cell title="修改时间" :value="item.gmtModified" />
@@ -31,7 +31,7 @@
 </template>
 
 <script>
-    import { Cell, CellGroup ,List} from 'vant'
+    import { Cell, CellGroup ,List ,Popup} from 'vant'
     import DropMenu from './dropMenu'
     export default {
         name: "changeRecord.vue",
@@ -39,7 +39,7 @@
             "van-cell-group" : CellGroup,
             "van-cell" :Cell,
             "DropMenu" :DropMenu,
-            "van-list" :List
+            "van-list" :List,
         },
         data(){
             return{
@@ -184,16 +184,16 @@
        border: 0;
    }
     .i_img{
-        width: 10px;
-        height: 7px;
+        width: 15px;
+        height: 8px;
         display: inline-block;
         background-image: url("../../../assets/images/showUp.png");
         background-size: 100% 100%;
         background-position: 0px ;
     }
     .i_imgActive{
-        width: 10px;
-        height: 7px;
+        width: 15px;
+        height: 8px;
         display: inline-block;
         background-image: url("../../../assets/images/展开-灰.png");
         background-size: 100% 100%;
