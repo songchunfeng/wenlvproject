@@ -24,15 +24,17 @@
                         type="password"
                         placeholder="密码"
                         :rules="[{ required: true, message: '请填写密码' }]"
+                        @blur="checkpassword(passWord)"
                     />
                     <van-field
                          v-model="password"
                          type="password"
                          placeholder="确认密码"
                         :rules="[{ required: true, message: '请填写确认密码' }]"
+                         @blur="checkpassword(password)"
                     />
                     <div class="sign">
-                        <van-checkbox v-model="checked" icon-size="11px">我已阅读并同意 <span style="color:#3983E5">《大美青海景区门票预约平台注册协议》</span></van-checkbox>
+                        <van-checkbox v-model="checked" icon-size="14px">我已阅读并同意 <span style="color:#3983E5">《大美青海景区门票预约平台注册协议》</span></van-checkbox>
                     </div>
                     <div class="btn">
                         <van-button round block type="info" native-type="submit">
@@ -150,6 +152,12 @@
             },
             toLogin(){
                 this.$router.push('/login')
+            },
+            checkpassword(val){
+               let code = this.$commonUtils.checkPassword(val)
+                if(code ==  'fail'){
+                    Toast.fail('请输入六位以上数字字母组合')
+                }
             }
         }
     };

@@ -10,12 +10,14 @@
                         v-model="username"
                         placeholder="手机号码"
                         :rules="[{ required: true, message: '请填写用户名' }]"
+                        @blur="telBlur(username)"
                     />
                     <van-field
                         v-model="password"
                         type="password"
                         placeholder="密码"
                         :rules="[{ required: true, message: '请填写密码' }]"
+                        @blur="checkpassword(password)"
                     />
                     <div class="yzm">
                         <van-field
@@ -110,7 +112,8 @@
                 msgUserName:'',//短信登录
                 i:60,
                 timer:null,
-                show:true
+                show:true,
+
             };
         },
         methods:{
@@ -232,6 +235,13 @@
             },
             toRegister(){
                 this.$router.push('/register')
+            },
+            checkpassword(val){
+                let code = this.$commonUtils.checkPassword(val)
+                if(code ==  'fail'){
+                    Toast.fail('请输入六位以上数字字母组合');
+                    this.password=''
+                }
             }
         },
         mounted() {

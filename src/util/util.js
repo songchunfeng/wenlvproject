@@ -39,6 +39,34 @@ export function checkPhoneNo(data) {
 
 
 }
+//==================================密码==========================================
+export function checkPassword(key) {
+
+    let reg =/(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,}/;
+    if(reg.test(key)){
+        return 'success'
+    }else {
+        return 'fail'
+    }
+}
+//================================导游证================================================
+export  function  tourist(idcard) {
+    let reg= /([D][-]\d{4}[-]\d{6})/;
+    if(reg.test(idcard)){
+        return 'success'
+    }else {
+        return 'fail'
+    }
+}
+//===================================社会信用的正则===========================================
+  export function socitycode(idcard) {
+      let reg =/[^_IOZSVa-z\W]{2}\d{6}[^_IOZSVa-z\W]{10}$/
+      if(reg.test(idcard)){
+          return 'success'
+      }else{
+          return 'fail'
+      }
+  }
 // ================================名字校验相关=======================================
 
 //中文名字校验
@@ -423,6 +451,15 @@ let  commonUtils = {
     removeSessionItem: function (key) {
         removeSessionItem(key)
     },
+    checkPassword: function (key) {
+       return  checkPassword(key)
+    },
+    tourist:function (key) {
+       return tourist(key)
+    },
+    socitycode:function (key) {
+        return socitycode(key)
+    }
 }
 export {
     commonUtils

@@ -33,6 +33,8 @@
                         label="登录密码"
                         placeholder="登录密码"
                         :rules="[{ required: true, message: '请填写登录密码' }]"
+                        @blur="checkpassword(passWord)"
+
                 >
                     <template #left-icon>
                         <img src="../../../assets/images/必选.png" alt="" class="checkSure">
@@ -45,6 +47,7 @@
                         label="确认密码"
                         placeholder="确认密码"
                         :rules="[{ required: true, message: '请填写确认密码' }]"
+                        @blur="checkpassword(surepassword)"
                 >
                     <template #left-icon>
                         <img src="../../../assets/images/必选.png" alt="" class="checkSure">
@@ -56,6 +59,7 @@
                         label="身份证号"
                         placeholder="身份证号"
                         :rules="[{ required: true, message: '请填写身份证号' }]"
+                        @blur="checkIDNo(identityCardCode)"
                 >
                     <template #left-icon>
                         <img src="../../../assets/images/必选.png" alt="" class="checkSure">
@@ -268,6 +272,18 @@
                     })
                 }
             },
+            checkpassword(val){
+                let code = this.$commonUtils.checkPassword(val)
+                if(code ==  'fail'){
+                    Toast.fail('请输入六位以上数字字母组合');
+                }
+            },
+            checkIDNo(val){
+                let code = this.$commonUtils.checkIDNo(val)
+                if(code != 'success'){
+                    Toast.fail(code)
+                }
+            }
         }
 
     }

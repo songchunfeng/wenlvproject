@@ -7,12 +7,14 @@
                     type="password"
                     placeholder="输入新密码"
                     :rules="[{ required: true, message: '请填写密码' }]"
+                    @blur="checkpassword(passWord)"
             />
             <van-field
                     v-model="newPassWord"
                     type="password"
                     placeholder="再次输入新密码"
                     :rules="[{ required: true, message: '请再次填写密码' }]"
+                    @blur="checkpassword(newPassWord)"
             />
             <div class="btn">
                 <van-button round block type="info" native-type="submit">
@@ -68,6 +70,12 @@
                     Toast.fail('两次密码输入不一致，请重新输入')
                 }
 
+            },
+            checkpassword(val){
+                let code = this.$commonUtils.checkPassword(val)
+                if(code ==  'fail'){
+                    Toast.fail('请输入六位以上数字字母组合');
+                }
             }
         },
 
