@@ -100,7 +100,7 @@ export default {
     },
     toScenicInfo(item) {
       window.sessionStorage.setItem("scenicId", item.id);
-      this.$router.push("/appointment");
+      this.$router.push("/teamApp");
     },
   },
 };
