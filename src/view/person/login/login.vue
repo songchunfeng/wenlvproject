@@ -17,7 +17,7 @@
                         type="password"
                         placeholder="密码"
                         :rules="[{ required: true, message: '请填写密码' }]"
-                        @blur="checkpassword(password)"
+                       
                     />
                     <div class="yzm">
                         <van-field

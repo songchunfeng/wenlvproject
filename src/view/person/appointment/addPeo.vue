@@ -6,7 +6,7 @@
         <img src="../../../assets/images/编 辑.png" alt />
       </div>
     </div>
-    <div v-if="editShow">
+    <div v-show="editShow">
       <van-form
         :scroll-to-error="true"
         class="travelForm"
@@ -18,9 +18,10 @@
           name="surname"
           label="姓名"
           v-model="travelUser.surname"
+          @blur="checkName"
           input-align="right"
           placeholder="请输入姓名"
-          :rules="[{ required: true,validator:checkName, message: '请填写姓名' }]"
+          :rules="[{ required: true,pattern:patternName, message: '请填写姓名' }]"
         >
           <template #left-icon>
             <img src="../../../assets/images/必选.png" alt style="width:8px;height:8px" />
@@ -31,8 +32,9 @@
           label="联系电话"
           input-align="right"
           v-model="travelUser.telphone"
+          @blur="checkPhone"
           placeholder="请输入联系电话"
-          :rules="[{ required: true, message: '请输入联系电话' }]"
+          :rules="[{ required: true,pattern:patternPhone, message: '请输入联系电话' }]"
         >
           <template #left-icon>
             <img src="../../../assets/images/必选.png" alt style="width:8px;height:8px" />
@@ -60,6 +62,7 @@
           :disabled="!travelUser.identityType"
           v-model="travelUser.identityCard"
           placeholder="请输入证件号码"
+          @blur="checkIdNo"
           :rules="[{ required: true, message: '请输入证件号码' }]"
         >
           <template #left-icon>
@@ -88,7 +91,7 @@
         <div class="confim" @click="editShow = false">确定</div>
       </div>
     </div>
-    <div v-else>
+    <div v-show="!editShow">
       <div class="travelCell">
         <div class="travelCellLable">姓名</div>
         <div class="travelCellValue">{{travelUser.surname}}</div>
@@ -139,6 +142,10 @@ import { Dialog, Toast, Field, Form, Picker, Popup } from "vant";
 export default {
   props: {
     index: Number,
+    checkBySelfs: {
+      type: Boolean,
+      default: false
+    }
   },
   components: {
     "van-form": Form,
@@ -147,6 +154,11 @@ export default {
     "van-picker": Picker,
   },
   watch: {
+    checkBySelfs: function(newVal) {
+      if (newVal) {
+        this.checkBySelf();
+      }
+    },
     travelUser: {
       handler(newVal) {
         if (newVal) {
@@ -155,13 +167,23 @@ export default {
       },
       deep: true,
     },
+    "travelUser.identityType": {
+      handler(newVal) {
+        if (newVal) {
+          this.travelUser.identityCard = "";
+        }
+      },
+      deep: true
+    },
   },
   created() {
-    this.checkName = this.$commonUtils.checkName;
+    this.patternPhone = this.$constants.REG.tel; // 手机号校验
+    this.patternName = this.$constants.REG.realName; // 姓名校验
   },
   data() {
     return {
-      checkName: "",
+      patternPhone: "", // 手机校验
+      patternName: "", // 名字校验
       editShow: true,
       identityTypeShow: false,
       ticketTypeShow: false,
@@ -197,6 +219,32 @@ export default {
     };
   },
   methods: {
+    // 校验姓名
+    checkName(){
+      let check = this.$commonUtils.checkName(this.travelUser.surname);
+      if (check != "success") {
+        Toast(this.$commonUtils.checkName(this.travelUser.surname));
+        this.travelUser.surname = "";
+      }
+    },
+    // 校验身份证号
+    checkIdNo(){
+      if (this.travelUser.identityType == '0') {
+        let check = this.$commonUtils.checkIDNo(this.travelUser.identityCard);
+        if (check != "success") {
+          Toast(this.$commonUtils.checkIDNo(this.travelUser.identityCard));
+          this.travelUser.identityCard = "";
+        }
+      }
+    },
+    //  校验手机号
+    checkPhone(){
+      let check = this.$commonUtils.checkPhoneNo(this.travelUser.telphone);
+      if (check != "success") {
+        Toast(this.$commonUtils.checkPhoneNo(this.travelUser.telphone));
+        this.travelUser.telphone = "";
+      }
+    },
     deleteItem() {
       this.$emit("deleteItem", this.index);
     },
@@ -225,6 +273,10 @@ export default {
     onFailed() {
       this.$emit("reportErrorMessage");
     },
+    // 自检
+    checkBySelf() {
+      this.$refs.form.submit();
+    },
   },
 };
 </script>
@@ -234,7 +286,6 @@ export default {
   width: 100%;
   box-sizing: border-box;
   padding: 10px;
-  box-sizing: border-box;
   .titleBox {
     width: 100%;
     display: flex;
