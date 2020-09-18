@@ -51,7 +51,7 @@
             return{
                 username:'用户名',
                 phone:'13081054159',
-                active: 2,
+                active: 0,
             }
         },
         methods:{

@@ -25,7 +25,7 @@
 
     <div class="listTitle">景区列表</div>
     <van-list
-      style="margin-bottom: 50px;"
+      style="margin-bottom: 50px;width: 100%"
       v-model="loading"
       :finished="finished"
       finished-text="没有更多了"
