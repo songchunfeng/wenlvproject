@@ -57,7 +57,7 @@ export default {
     align-items: center;
     .logoBox {
       width: 100%;
-      height: 100px;
+      /*height: 00px;*/
       display: flex;
       flex-direction: column;
       align-items: center;

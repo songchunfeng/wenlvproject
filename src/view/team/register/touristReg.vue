@@ -266,6 +266,9 @@
         font-weight: bold;
         line-height: 38px;
     }
+    .form{
+        margin-top: 40px;
+    }
     .register >>>.van-nav-bar__title{
         font-size: 17px;
         font-weight: bold;
