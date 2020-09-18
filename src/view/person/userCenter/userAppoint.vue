@@ -11,6 +11,7 @@
             </div>
     </div>
     <div class="main">
+
         <div class="msgnull"   v-if="showVanList">您还没有预约信息</div>
         <div class="content" v-if="!showVanList">
 
@@ -22,6 +23,7 @@
 
                     @load="getList"
             >
+
                 <div v-for="(item,index) in list" :key="index" style="background-color: #fff;margin-bottom: 10px">
                     <div class="listHead"><span>{{item.spotName}}</span><span>{{getTicket(item.ticket)}}</span></div>
                     <van-cell title="订单编号:" :value="item.id" />
@@ -63,7 +65,7 @@
                             收起 <img src="../../../assets/images/展开-灰.png" alt="">
                         </div>
                         <div class="btn">
-                            <div class="exit" v-if="item.ticket ==  0" @click="getTime(item.spotId)">改签</div>
+                            <div class="exit" v-if="item.ticket ==  0" @click="getTime(item.spotId,index)">改签</div>
                             <div class="quitreserve" @click="quit(item)" v-if="item.ticket ==  0 || item.ticket==2">退订</div>
                         </div>
                     </div>
@@ -73,21 +75,18 @@
         </div>
 
     </div>
-
 </div>
 </template>
 
 <script>
-    import { Cell, CellGroup ,List , Toast ,Dialog} from 'vant'
+    import { Cell, List , Toast ,Dialog} from 'vant'
     import DropMenu from './dropMenu'
     import  DateChose from '../../../util/dateChose'
     export default {
         name: "userAppoint.vue",
         components:{
             DropMenu,
-            "van-cell-group" : CellGroup,
             "van-cell" :Cell,
-            "DropMenu" :DropMenu,
             "van-list" :List,
             "Toast" : Toast,
             [Dialog.Component.name]: Dialog.Component,
@@ -116,6 +115,10 @@
             }
         },
         methods:{
+            text(){
+                console.log(1)
+                location.reload()
+            },
             changeIcon(){
                 this.show=!this.show;
             },
@@ -259,9 +262,7 @@
                 }).then(res=>{
                     if(res.code==20000){
                         Toast.success(res.message);
-                        this.loading=false;
-                        this.page=1;
-                        this.getList()
+                       this.text();
                     }else{
                         Toast.fail(res.message)
                     }
@@ -294,8 +295,7 @@
                     // console.log(res)
                     if(res.code==20000){
                         Toast.success('改签成功');
-                        this.footerShow=true;
-                        this.getList();
+                        location.reload()
                     }else{
                         Toast.fail(res.message)
                     }
@@ -305,7 +305,8 @@
                 })
             },
             //改签
-            getTime(id){
+            getTime(id,index){
+                this.i=index;
                 this.footerShow=false;
                 this.$axios({
                     url:"/api/spot-stock/bigupdateById",
@@ -317,6 +318,7 @@
                 })
                 .then((res)=>{
                     this.dateTime=res.data.rows;
+
                 })
                 .catch((err)=>{
                     console.log(err);

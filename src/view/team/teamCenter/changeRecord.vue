@@ -1,8 +1,8 @@
 <!--退改记录-->
 <template>
     <div class="changeRecord">
-
-        <div class="group">
+        <div class="msgnull"   v-if="showVanList">您还没有退改记录</div>
+        <div class="group" v-if="!showVanList">
             <van-list
                     v-model="loading"
                     :finished="finished"
@@ -11,8 +11,8 @@
             >
                 <div v-for="(item,index) in list" :key="index" style="background-color: #fff">
                     <div class="listHead"><span>{{index+1}}</span><span>{{getTicket(item.ticket)}}</span></div>
-                    <van-cell title="订单编号" value="内容" />
-                    <van-cell title="预约凭证" value="内容" />
+                    <van-cell title="订单编号" :value="item.id" />
+                    <van-cell title="预约凭证" :value="item.voucher" />
                     <van-cell title="预定景区" :value="item.spotName" />
                     <van-cell title="创建时间" :value="item.gmtCreate" />
                     <van-cell title="修改时间" :value="item.gmtModified" />
@@ -23,14 +23,14 @@
 </template>
 
 <script>
-    import { Cell, List} from 'vant'
+    import { Cell, List } from 'vant'
     import DropMenu from '../../person/userCenter/dropMenu'
     export default {
         name: "changeRecord.vue",
         components:{
             "van-cell" :Cell,
-            "DropMenu" :DropMenu,
-            "van-list" :List
+             DropMenu,
+            "van-list" :List,
         },
         data(){
             return{
@@ -45,8 +45,8 @@
                 finished:false,
                 limit: 5,
                 page: 1,
-                total:0
-
+                total:0,
+                showVanList:true,
             }
         },
         methods:{
@@ -103,14 +103,21 @@
                     },
                 })
                 .then((res) => {
-                    this.loading = false;
-                    this.total = res.data.total;
-                    const { rows } = res.data;
-                    this.list.push(...rows);
-                    if (rows.length) {
-                        this.page++;
-                    } else {
-                        this.finished = true;
+                    if(res.code==20000 && res.data.total!=0){
+                        this.showVanList=false;
+                        this.loading = false;
+                        // this.total = res.data.total;
+                        const { rows } = res.data;
+                        this.list.push(...rows);
+                        if (rows.length) {
+                            this.page++;
+                        } else {
+                            this.finished = true;
+                        }
+                    }else if(res.data.total==0){
+                        this.showVanList=true;
+                    }else {
+                        Toast.fail(res.message)
                     }
                 })
                 .catch((err) => {
@@ -125,7 +132,7 @@
             },
         },
         mounted() {
-
+            this.getroadList();
         }
     }
 </script>
@@ -175,16 +182,16 @@
         border: 0;
     }
     .i_img{
-        width: 10px;
-        height: 7px;
+        width: 15px;
+        height: 8px;
         display: inline-block;
         background-image: url("../../../assets/images/showUp.png");
         background-size: 100% 100%;
         background-position: 0px ;
     }
     .i_imgActive{
-        width: 10px;
-        height: 7px;
+        width: 15px;
+        height: 8px;
         display: inline-block;
         background-image: url("../../../assets/images/展开-灰.png");
         background-size: 100% 100%;
@@ -221,5 +228,12 @@
     }
     .statusList .status:last-child  div{
         border: none;
+    }
+    .msgnull{
+        width: 100%;
+        line-height: 60vh;
+        color: #999999;
+        text-align: center;
+        font-size: 16px;
     }
 </style>

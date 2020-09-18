@@ -12,7 +12,8 @@
             </div>
         </div>
         <div class="main">
-            <div class="content" v-show="isRouteAlive">
+            <div class="msgnull"   v-if="showVanList">您还没有预约信息</div>
+            <div class="content" v-show="!showVanList">
                 <van-list
                         v-model="loading"
                         :finished="finished"
@@ -53,9 +54,12 @@
                                 </div>
                             <!--</div>-->
                         </div>
-                        <div class="dateChose" v-show="!footerShow && i==index">
-                            <dateChose :dateTime="dateTime" @checkDay="checkDay"></dateChose>
-                            <div class="dateBtn">
+                        <div class="date" v-show="!footerShow && i==index">
+                            <div class="dateChose" >
+                                <dateChose :dateTime="dateTime" @checkDay="checkDay"></dateChose>
+
+                            </div>
+                            <div class="dateBtn" >
                                 <div class="exit"  @click="editTime(item.id)">确定</div>
                                 <div class="quitreserve" @click="footerShow=true">取消</div>
                             </div>
@@ -68,7 +72,7 @@
                                 收起 <img src="../../../assets/images/展开-灰.png" alt="">
                             </div>
                             <div class="btn">
-                                <div class="exit" v-if="item.ticket ==  0" @click="getTime(item.spotId)">改签</div>
+                                <div class="exit" v-if="item.ticket ==  0" @click="getTime(item.spotId,index)">改签</div>
                                 <div class="quitreserve" @click="quit(item)" v-if="item.ticket ==  0 || item.ticket==2">退订</div>
                             </div>
                         </div>
@@ -117,10 +121,14 @@
                 dateTime: {},
                 footerShow:true,
                 checkTime:'',//选择预约时间
-                isRouteAlive:true,
+                showVanList:true,
             }
         },
         methods:{
+            text(){
+                console.log(1)
+                location.reload()
+            },
             changeIcon(){
                 this.show=!this.show;
             },
@@ -211,15 +219,23 @@
                     },
                 })
                 .then((res) => {
-                    this.loading = false;
-                    // this.total = res.data.total;
-                    const { rows } = res.data;
-                    this.list.push(...rows);
-                    if (rows.length) {
-                        this.page++;
-                    } else {
-                        this.finished = true;
+                    if(res.code==20000 && res.data.total!=0){
+                        this.showVanList=false;
+                        this.loading = false;
+                        // this.total = res.data.total;
+                        const { rows } = res.data;
+                        this.list.push(...rows);
+                        if (rows.length) {
+                            this.page++;
+                        } else {
+                            this.finished = true;
+                        }
+                    }else if(res.data.total==0){
+                        this.showVanList=true;
+                    }else {
+                        Toast.fail(res.message)
                     }
+
                 })
                 .catch((err) => {
                     console.log(err);
@@ -234,7 +250,7 @@
             //退订弹框
             quit(item){
                 Dialog.confirm({
-                    // title: "退订",
+                    // title: "提交成功",
                     message: "您确定要退订吗？",
                 })
                 .then(() => {
@@ -256,10 +272,7 @@
                 }).then(res=>{
                     if(res.code==20000){
                         Toast.success(res.message);
-                        this.isRouteAlive=false;
-                        this.$nextTick(()=>{
-                            this.isRouteAlive=true;
-                        })
+                        this.text();
                     }else{
                         Toast.fail(res.message)
                     }
@@ -292,8 +305,7 @@
                     // console.log(res)
                     if(res.code==20000){
                         Toast.success('改签成功');
-                        this.footerShow=true;
-                        this.getList();
+                        location.reload()
                     }else{
                         Toast.fail(res.message)
                     }
@@ -303,7 +315,8 @@
                 })
             },
             //改签
-            getTime(id){
+            getTime(id,index){
+                this.i=index;
                 this.footerShow=false;
                 this.$axios({
                     url:"/api/spot-stock/bigupdateById",
@@ -315,6 +328,7 @@
                 })
                 .then((res)=>{
                     this.dateTime=res.data.rows;
+
                 })
                 .catch((err)=>{
                     console.log(err);
@@ -324,6 +338,7 @@
         },
         mounted() {
             // this.getList()
+            this.getTourArea();
         }
     }
 </script>
@@ -410,7 +425,7 @@
         padding-right: 9px;
     }
     .main{
-        padding: 0px 10px;
+        /*padding: 0px 10px;*/
         margin-bottom: 60px;
     }
     .content{
@@ -470,9 +485,20 @@
         text-align: center;
         line-height: 30px;
     }
-
-    .dateBtn{
+    .date{
+        height: auto;
+        padding-bottom: 10px;
+    }
+    .dateChose {
         margin-top: 10px;
+        width: 100%;
+        height: 140px;
+        background: #ffffff;
+        padding: 15px 10px 0px 10px;
+        box-sizing: border-box;
+    }
+    .dateBtn{
+        margin-bottom: 10px;
         padding-right: 10px;
         display: flex;
         align-items: flex-end;
@@ -519,5 +545,12 @@
         justify-content: center;
         border-left: 1px solid #e0e0e0;
         border-bottom: 1px solid #e0e0e0;
+    }
+    .msgnull{
+        width: 100%;
+        line-height: 50vh;
+        color: #999999;
+        text-align: center;
+        font-size: 16px;
     }
 </style>
