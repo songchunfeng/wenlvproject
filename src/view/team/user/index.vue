@@ -34,7 +34,7 @@ export default {
     beforeRouteEnter(to,from,next){
         let user = JSON.parse(sessionStorage.getItem('loginMsg'))
         if(window.sessionStorage.getItem('token') && user.userType ==1 ){
-            next({path:'/perUserCenter'})
+            next({path:'/teamUserCenter'})
         }else{
             next()
         }
