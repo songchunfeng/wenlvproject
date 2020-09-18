@@ -68,7 +68,7 @@
           class="download"
           href="https://test-qinghai-tour-1254292961.cos.ap-beijing.myqcloud.com/tuanduimoban/%E5%9B%A2%E9%98%9F%E9%A2%84%E7%BA%A6%E5%87%BA%E8%A1%8C%E4%BA%BA%E4%BF%A1%E6%81%AF%E6%A8%A1%E6%9D%BF.xls"
         >附件下载</a>
-        <van-uploader :after-read="afterRead" accept='.xls,.xlsx'>
+        <van-uploader :after-read="afterRead" accept=".xls, .xlsx">
           <div class="uploaderBox">
             <div class="uploaderIMG">
               <img src="../../../assets/images/添加.png" alt />
@@ -142,7 +142,8 @@ export default {
       dateTime: {},
       scenic: {},
       checkTime: "",
-      teamName: "",
+      teamName: "", // 团队名
+      travelUserVo: [],
       readShow: false,
       checked: false, // 阅读须知
       reserveVo: {}, // 取票人信息
@@ -159,12 +160,19 @@ export default {
     afterRead(file) {
       var formData = new FormData(); //构造一个 FormData，把后台需要发送的参数添加
       formData.append("file", file.file); //接口需要传的参数
-      this.$axios.post('/api/travelers/import',formData).then(res => {
-        console.log(res);
-      }).catch((err) => {
+      this.$axios
+        .post("/api/travelers/import", formData)
+        .then((res) => {
+          if (res.code == 20000) {
+            Toast.success("上传成功");
+            this.travelUserVo = res.data.rows.peopleList;
+          } else {
+            Toast.fail("上传失败");
+          }
+        })
+        .catch((err) => {
           console.log(err);
         });
-     
     },
     closeRead() {
       this.readShow = false;
@@ -174,36 +182,32 @@ export default {
       if (window.sessionStorage.getItem("token")) {
         if (this.checked) {
           if (this.checkTime) {
-            if (this.comPeo.length + this.addPeo.length > 0) {
-              this.doSelfCheck = true;
-              let that = this;
-              setTimeout(function () {
-                if (that.isChangedAll) {
-                  let currentAddPeo = that.addPeo; // 被保人信息，含有key字段
-                  let targetAddPeo = []; // 去除key字段的新增的人
-                  currentAddPeo.map((item) => {
-                    targetAddPeo.push(item.data);
-                  });
-                  let travelUserVo = [];
-                  travelUserVo.push(...targetAddPeo);
-                  travelUserVo.push(...that.comPeo);
-                  console.log(travelUserVo, that.reserveVo);
-                  let params = {
-                    identity_card: that.reserveVo.identity_card,
-                    identity_type: that.reserveVo.identity_type,
-                    name: that.reserveVo.name,
-                    telphone: that.reserveVo.name,
-                    spotid: window.sessionStorage.getItem("scenicId"),
-                    tour_time_info: that.checkTime,
-                    travelUserVo: travelUserVo,
-                  };
-                  that.toSave(params);
-                } else {
-                  Toast.fail("请完善预约信息");
-                }
-              }, 100);
+            if (this.teamName != "") {
+              if (this.travelUserVo.length > 0) {
+                this.doSelfCheck = true;
+                let that = this;
+                setTimeout(function () {
+                  if (that.isChangedAll) {
+                    let params = {
+                      identity_card: that.reserveVo.identity_card,
+                      identity_type: that.reserveVo.identity_type,
+                      name: that.reserveVo.name,
+                      telphone: that.reserveVo.name,
+                      spotid: window.sessionStorage.getItem("scenicId"),
+                      tour_time_info: that.checkTime,
+                      travelUserVo: that.travelUserVo,
+                      teamName:that.teamName
+                    };
+                    that.toSave(params);
+                  } else {
+                    Toast.fail("请完善预约信息");
+                  }
+                }, 100);
+              } else {
+                Toast.fail("请添加出行人");
+              }
             } else {
-              Toast.fail("请添加出行人");
+              Toast.fail("请填写旅行团名称");
             }
           } else {
             Toast.fail("请选择预约日期");
@@ -238,7 +242,7 @@ export default {
               message: "请前往用户中心—我的预约查看",
             })
               .then(() => {
-                this.$router.push("/preList");
+                this.$router.push("/teamList");
               })
               .catch(() => {
                 // on cancel
