@@ -278,9 +278,9 @@
         text-align: right;
         font-weight: 400;
     }
-    .register >>> .van-field__left-icon{
-        margin-right: 15px;
-    }
+    /*.register >>> .van-field__left-icon{*/
+        /*margin-right: 15px;*/
+    /*}*/
     .checkSure{
         width: 8px;
         height: 8px;
@@ -333,6 +333,17 @@
     }
     .upload >>> .van-uploader__input-wrapper{
         text-align: center;
+    }
+    .tour>>> .van-uploader__preview-image{
+        border-radius: 3px;
+        margin-top: 8px;
+        background: rgba(0, 0, 0, 0.04);
+        width:78px;
+        height: 78px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
     .btn{
         margin-top: 16px;

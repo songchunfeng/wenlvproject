@@ -89,6 +89,8 @@
         display: flex;
         flex-direction: row;
         justify-content: center;
+        background-color: #fff;
+        height: 90vh;
     }
     .editPassword >>> .van-cell{
         width: 355px;

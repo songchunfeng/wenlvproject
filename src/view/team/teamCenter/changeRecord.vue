@@ -1,15 +1,7 @@
 <!--退改记录-->
 <template>
     <div class="changeRecord">
-        <div class="chooseStatus">
-            <div @click="changeIcon" :class="show ? 'fsActive' : ''">{{nowStatus}}
-                <i class="i_img"  v-show="!show"></i>
-                <i class="i_imgActive"  v-show="show"></i>
-            </div>
-            <div class="statusList"  v-show="show">
-                <DropMenu @getStatus="getStatus"></DropMenu>
-            </div>
-        </div>
+
         <div class="group">
             <van-list
                     v-model="loading"
@@ -31,12 +23,11 @@
 </template>
 
 <script>
-    import { Cell, CellGroup ,List} from 'vant'
+    import { Cell, List} from 'vant'
     import DropMenu from '../../person/userCenter/dropMenu'
     export default {
         name: "changeRecord.vue",
         components:{
-            "van-cell-group" : CellGroup,
             "van-cell" :Cell,
             "DropMenu" :DropMenu,
             "van-list" :List
@@ -108,7 +99,7 @@
                     params: {
                         limit:this.limit,
                         page:this.page,
-                        ticket: this.ticket,
+                        ticket: 5,
                     },
                 })
                 .then((res) => {

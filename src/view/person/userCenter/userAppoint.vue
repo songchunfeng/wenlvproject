@@ -11,11 +11,15 @@
             </div>
     </div>
     <div class="main">
-        <div class="content">
+        <div class="msgnull"   v-if="showVanList">您还没有预约信息</div>
+        <div class="content" v-if="!showVanList">
+
             <van-list
                     v-model="loading"
                     :finished="finished"
+                    :immediate-check="true"
                     finished-text="没有更多了"
+
                     @load="getList"
             >
                 <div v-for="(item,index) in list" :key="index" style="background-color: #fff;margin-bottom: 10px">
@@ -41,12 +45,15 @@
                         <van-cell title="验票时间:" :value="changeTime(item.tourTimeInfo)" />
                         </div>
                     </div>
-                    <div class="dateChose" v-show="!footerShow">
+                    <div class="date" v-show="!footerShow && i==index">
+                    <div class="dateChose" >
                         <dateChose :dateTime="dateTime" @checkDay="checkDay"></dateChose>
-                        <div class="dateBtn">
-                            <div class="exit"  @click="editTime(item.id)">确定</div>
-                            <div class="quitreserve" @click="footerShow=true">取消</div>
-                        </div>
+
+                    </div>
+                    <div class="dateBtn" >
+                        <div class="exit"  @click="editTime(item.id)">确定</div>
+                        <div class="quitreserve" @click="footerShow=true">取消</div>
+                    </div>
                     </div>
                     <div class="content-footer" v-show="footerShow">
                         <div class="lookAll" v-show="showList || i!=index" @click="lookAll(item,index)">
@@ -57,10 +64,11 @@
                         </div>
                         <div class="btn">
                             <div class="exit" v-if="item.ticket ==  0" @click="getTime(item.spotId)">改签</div>
-                            <div class="quitreserve" @click="quitreserve(item)" v-if="item.ticket ==  0 || item.ticket==2">退订</div>
+                            <div class="quitreserve" @click="quit(item)" v-if="item.ticket ==  0 || item.ticket==2">退订</div>
                         </div>
                     </div>
                 </div>
+
             </van-list>
         </div>
 
@@ -70,7 +78,7 @@
 </template>
 
 <script>
-    import { Cell, CellGroup ,List  } from 'vant'
+    import { Cell, CellGroup ,List , Toast ,Dialog} from 'vant'
     import DropMenu from './dropMenu'
     import  DateChose from '../../../util/dateChose'
     export default {
@@ -81,6 +89,8 @@
             "van-cell" :Cell,
             "DropMenu" :DropMenu,
             "van-list" :List,
+            "Toast" : Toast,
+            [Dialog.Component.name]: Dialog.Component,
             DateChose
 
         },
@@ -101,7 +111,8 @@
                 personList:[],
                 dateTime: {},
                 footerShow:true,
-                checkTime:''//选择预约时间
+                checkTime:'',//选择预约时间
+                showVanList:true
             }
         },
         methods:{
@@ -195,15 +206,23 @@
                     },
                 })
                 .then((res) => {
-                    this.loading = false;
-                    // this.total = res.data.total;
-                    const { rows } = res.data;
-                    this.list.push(...rows);
-                    if (rows.length) {
-                        this.page++;
-                    } else {
-                        this.finished = true;
+                    if(res.code==20000 && res.data.total!=0){
+                        this.showVanList=false;
+                        this.loading = false;
+                        // this.total = res.data.total;
+                        const { rows } = res.data;
+                        this.list.push(...rows);
+                        if (rows.length) {
+                            this.page++;
+                        } else {
+                            this.finished = true;
+                        }
+                    }else if(res.data.total==0){
+                        this.showVanList=true;
+                    }else {
+                        Toast.fail(res.message)
                     }
+
                 })
                 .catch((err) => {
                     console.log(err);
@@ -214,6 +233,19 @@
                 // this.page++;
                 this.getTourArea();
 
+            },
+            //退订弹框
+            quit(item){
+                Dialog.confirm({
+                    // title: "提交成功",
+                    message: "您确定要退订吗？",
+                })
+                .then(() => {
+                    this.quitreserve(item)
+                })
+                .catch(() => {
+                    // on cancel
+                });
             },
             //退订
             quitreserve(item){
@@ -227,7 +259,9 @@
                 }).then(res=>{
                     if(res.code==20000){
                         Toast.success(res.message);
-                        this.getList();
+                        this.loading=false;
+                        this.page=1;
+                        this.getList()
                     }else{
                         Toast.fail(res.message)
                     }
@@ -257,7 +291,15 @@
                         Authorization:this.$commonUtils.getSessionItem('token')
                     }
                 }).then(res=>{
-                    console.log(res)
+                    // console.log(res)
+                    if(res.code==20000){
+                        Toast.success('改签成功');
+                        this.footerShow=true;
+                        this.getList();
+                    }else{
+                        Toast.fail(res.message)
+                    }
+
                 }).catch(err=>{
                     Toast.fail(err)
                 })
@@ -284,13 +326,14 @@
         },
         mounted() {
             // this.getList()
+            this.getTourArea()
         }
     }
 </script>
 
 <style scoped>
     .userAppoint{
-        min-height: 100%;
+        /*min-height: vh;*/
         background: #F9F9F9;
     }
     .chooseStatus{
@@ -302,6 +345,18 @@
         text-align: right;
         padding-right: 10px;
         line-height: 36px;
+    }
+    .date{
+        height: auto;
+        padding-bottom: 10px;
+    }
+    .dateChose {
+        margin-top: 10px;
+        width: 100%;
+        height: 140px;
+        background: #ffffff;
+        padding: 15px 10px 0px 10px;
+        box-sizing: border-box;
     }
     .i_img{
         width: 15px;
@@ -370,7 +425,8 @@
         padding-right: 9px;
     }
     .main{
-        padding: 0px 10px;
+        /*padding: 0px 10px;*/
+        box-sizing: border-box;
         margin-bottom: 60px;
     }
     .content{
@@ -382,6 +438,7 @@
     .content >>> .van-cell__title, .van-cell__value{
         flex: inherit;
         font-size: 15px;
+        margin-right: 10px;
     }
     .content-footer{
         height: 44px;
@@ -395,6 +452,7 @@
         color: #3983E5;
         font-size: 14px;
         width: 40%;
+        padding-left: 5px;
     }
     .lookAll img{
         margin-left: 5px;
@@ -432,10 +490,17 @@
     }
 
     .dateBtn{
-        margin-top: 10px;
+        margin-bottom: 10px;
         padding-right: 10px;
         display: flex;
         align-items: flex-end;
         justify-content: flex-end;
+    }
+    .msgnull{
+        width: 100%;
+        line-height: 50vh;
+        color: #999999;
+        text-align: center;
+        font-size: 16px;
     }
 </style>

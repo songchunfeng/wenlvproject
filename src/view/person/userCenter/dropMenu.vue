@@ -32,12 +32,9 @@
 </script>
 
 <style scoped>
-    /*.statusList{*/
-        /*z-index: 100;*/
-        /*background-color: #000000;*/
-        /*position: absolute;*/
-        /*right: 0;*/
-    /*}*/
+    .statusList{
+       border-radius: 10px;
+    }
     .statusList .status{
         width: 101px;
         height: 39px;

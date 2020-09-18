@@ -1,16 +1,8 @@
 <!--退改记录-->
 <template>
     <div class="changeRecord">
-        <!--<div class="chooseStatus" id="chooseStatus">-->
-            <!--<div @click="changeIcon" :class="show ? 'fsActive' : ''">{{nowStatus}}-->
-                <!--<i class="i_img"  v-show="!show"></i>-->
-                <!--<i class="i_imgActive"  v-show="show"></i>-->
-            <!--</div>-->
-                <!--<div class="statusList"  v-show="show">-->
-                    <!--<DropMenu @getStatus="getStatus"></DropMenu>-->
-                <!--</div>-->
-        <!--</div>-->
-        <div class="group">
+        <div class="msgnull"   v-if="showVanList">您还没有退改记录</div>
+        <div class="group" v-if="!showVanList">
             <van-list
                     v-model="loading"
                     :finished="finished"
@@ -54,8 +46,8 @@
                 finished:false,
                 limit: 5,
                 page: 1,
-                total:0
-
+                total:0,
+                showVanList:true,
             }
         },
         methods:{
@@ -112,14 +104,21 @@
                     },
                 })
                 .then((res) => {
-                    this.loading = false;
-                    this.total = res.data.total;
-                    const { rows } = res.data;
-                    this.list.push(...rows);
-                    if (rows.length) {
-                        this.page++;
-                    } else {
-                        this.finished = true;
+                    if(res.code==20000 && res.data.total!=0){
+                        this.showVanList=false;
+                        this.loading = false;
+                        // this.total = res.data.total;
+                        const { rows } = res.data;
+                        this.list.push(...rows);
+                        if (rows.length) {
+                            this.page++;
+                        } else {
+                            this.finished = true;
+                        }
+                    }else if(res.data.total==0){
+                        this.showVanList=true;
+                    }else {
+                        Toast.fail(res.message)
                     }
                 })
                 .catch((err) => {
@@ -134,7 +133,7 @@
             },
         },
         mounted() {
-
+            this.getroadList();
         }
     }
 </script>
@@ -230,5 +229,12 @@
     }
     .statusList .status:last-child  div{
         border: none;
+    }
+    .msgnull{
+        width: 100%;
+        line-height: 60vh;
+        color: #999999;
+        text-align: center;
+        font-size: 16px;
     }
 </style>

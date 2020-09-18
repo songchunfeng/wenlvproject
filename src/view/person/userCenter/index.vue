@@ -13,16 +13,16 @@
         <div class="content">
             <van-tabs v-model="active">
                 <van-tab title="我的预约">
-                    <user-appoint></user-appoint>
+                    <user-appoint v-if="active==0"></user-appoint>
                 </van-tab>
                 <van-tab title="退改记录">
-                    <change-record></change-record>
+                    <change-record v-if="active==1"></change-record>
                 </van-tab>
                 <van-tab title="出行人处理">
-                    <travel-record></travel-record>
+                    <travel-record v-if="active==2"></travel-record>
                 </van-tab>
                 <van-tab title="修改密码">
-                    <edit-password></edit-password>
+                    <edit-password v-if="active==3"></edit-password>
                 </van-tab>
             </van-tabs>
         </div>
@@ -72,7 +72,7 @@
     .userCenter{
         min-height: 100vh;
         width: 100%;
-        background: #FFFFFF;
+        background: #F9F9F9;
         box-sizing: border-box;
     }
     .top{

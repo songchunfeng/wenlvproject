@@ -7,11 +7,13 @@
                 <div class="userPhone">{{phone}}</div>
             </div>
             <div class="topRight">
-                <van-button plain type="info">退出账号</van-button>
+
+                <van-button plain type="info" @click="exit">退出账号</van-button>
             </div>
         </div>
         <div class="content">
-            <van-tabs v-model="active">
+            <!--<van-sticky>-->
+            <van-tabs v-model="active" sticky >
                 <van-tab title="我的预约">
                     <user-appoint></user-appoint>
                 </van-tab>
@@ -22,12 +24,13 @@
                     <edit-password></edit-password>
                 </van-tab>
             </van-tabs>
+            <!--</van-sticky>-->
         </div>
     </div>
 </template>
 
 <script>
-    import { Button , Tab, Tabs} from 'vant';
+    import { Button , Tab, Tabs , Sticky} from 'vant';
     import EditPassword from  './editPassword'
     import UserAppoint from './userAppoint'
     import  ChangeRecord from  './changeRecord'
@@ -40,7 +43,7 @@
             "edit-password" :EditPassword,
             "user-appoint" :UserAppoint,
             "change-record" :ChangeRecord,
-
+            "van-sticky" :Sticky
         },
         data(){
             return{
