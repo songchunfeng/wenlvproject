@@ -11,7 +11,7 @@
             </div>
         </div>
         <div class="content">
-            <van-tabs v-model="active">
+            <van-tabs v-model="active" sticky>
                 <van-tab title="我的预约">
                     <user-appoint v-if="active==0"></user-appoint>
                 </van-tab>
@@ -51,7 +51,7 @@
             return{
                 username:'用户名',
                 phone:'13081054159',
-                active: 0,
+                active: 2,
             }
         },
         methods:{
