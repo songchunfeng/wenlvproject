@@ -294,7 +294,6 @@ export default {
       this.addPeo = this.addPeo.filter(function (item, i) {
         return i != index;
       });
-      console.log("shanchu", this.isChangedAll);
     },
     scenicInfo() {
       let id = window.sessionStorage.getItem("scenicId");

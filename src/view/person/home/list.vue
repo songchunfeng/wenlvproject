@@ -1,6 +1,15 @@
 <template>
   <div class="ListBox">
-    <div class="headBanner"></div>
+    <div class="headBanner">
+      <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
+        <van-swipe-item>
+          <img style="width:100%;" src="../../../assets/images/轮播1.png" alt />
+        </van-swipe-item>
+        <van-swipe-item>
+          <img style="width:100%;" src="../../../assets/images/轮播2.png" alt />
+        </van-swipe-item>
+      </van-swipe>
+    </div>
 
     <div class="noticeBox" @click="readShow = true">
       <div class="noticeLeft">
@@ -47,6 +56,7 @@
 
 <script>
 import { Popup, Loading, List } from "vant";
+import { Swipe, SwipeItem } from "vant";
 import { urlConfig } from "../../../util/httpConfig/ipConfig";
 import read from "./readText";
 export default {
@@ -55,10 +65,16 @@ export default {
     "van-popup": Popup,
     "van-loading": Loading,
     "van-list": List,
+    "van-swipe": Swipe,
+    "van-swipe-item": SwipeItem,
     read,
   },
   data() {
     return {
+      images: [
+        "../../../assets/images/轮播1.png",
+        "../../../assets/images/轮播2.png",
+      ],
       readShow: false,
       list: [],
       loading: false,
@@ -73,11 +89,11 @@ export default {
     },
     getList() {
       this.$axios({
-        url: '/api/spot/applist',
+        url: "/api/spot/applist",
         method: "get",
         params: {
-          limit:this.limit,
-          page:this.page,
+          limit: this.limit,
+          page: this.page,
           spotname: "",
         },
       })
@@ -95,8 +111,6 @@ export default {
         .catch((err) => {
           console.log(err);
         });
-
-      
     },
     toScenicInfo(item) {
       window.sessionStorage.setItem("scenicId", item.id);
@@ -112,11 +126,15 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  .imgone {
+    width: 100%;
+    height: auto;
+    background-color: red;
+    // background: url('../../../assets/images/轮播1.png') no-repeat;
+    // background-size: cover;
+  }
   .headBanner {
     width: 100%;
-    height: 163px;
-    background: url("../../../assets/images/banner.png") no-repeat;
-    background-size: cover;
   }
   .noticeBox {
     box-sizing: border-box;
