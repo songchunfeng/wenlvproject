@@ -198,6 +198,7 @@ export default {
   width: 100%;
   box-sizing: border-box;
   padding: 10px;
+  background-color: #fff;
   .takeTicketForm {
     width: 100%;
     .van-cell {

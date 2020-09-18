@@ -47,17 +47,16 @@
           @getFormData="getUserFormDate"
         />
       </div>
-
-      <div class="takeTicket">
-        <span class="takeTitle">取票信息</span>
-        <span class="hint">(需预留导游的信息，用于预约成功的信息发送至导游手机，导游务必保管好该条短信，至景区后需出示该短信进行订单查询及确认。)</span>
-      </div>
-      <takeTicket
-        :checkBySelfs="doSelfCheck"
-        @reportErrorMessage="getErrorMessage"
-        @getFormData="getTicketFormDate"
-      ></takeTicket>
     </div>
+    <div class="takeTicket">
+      <span class="takeTitle">取票信息</span>
+      <span class="hint">(需预留导游的信息，用于预约成功的信息发送至导游手机，导游务必保管好该条短信，至景区后需出示该短信进行订单查询及确认。)</span>
+    </div>
+    <takeTicket
+      :checkBySelfs="doSelfCheck"
+      @reportErrorMessage="getErrorMessage"
+      @getFormData="getTicketFormDate"
+    ></takeTicket>
     <div class="bottomBox">
       <van-checkbox icon-size="14px" v-model="checked">
         <div class="readAgree" @click="readShow = true">我已认真阅读提示信息及注意事项，知晓并同意平台及景区相关规定。</div>
@@ -177,25 +176,25 @@ export default {
         message: "信息提交中。。。",
         loadingType: "spinner",
         duration: 0, // 持续展示 toast
-        forbidClick: true // 禁止点击背景
+        forbidClick: true, // 禁止点击背景
       });
       this.$axios({
         url: "/api/user-reserve/savereserve",
         method: "post",
         data: params,
         headers: {
-            Authorization: window.sessionStorage.getItem("token"),
-          },
+          Authorization: window.sessionStorage.getItem("token"),
+        },
       })
         .then((res) => {
           if (res.code == "20000") {
             Toast.clear();
             Dialog.confirm({
               title: "提交成功",
-              message: '请前往用户中心—我的预约查看',
+              message: "请前往用户中心—我的预约查看",
             })
               .then(() => {
-                this.$router.push('/preList')
+                this.$router.push("/preList");
               })
               .catch(() => {
                 // on cancel
@@ -404,6 +403,8 @@ export default {
     width: 100%;
     background-color: #fff;
     margin-top: 10px;
+    padding-bottom: 10px;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -569,45 +570,40 @@ export default {
       width: 100%;
       margin-top: 10px;
     }
-    .takeTicket {
-      width: 100%;
-      margin-top: 10px;
-      border-bottom: 1px solid #eeeeee;
-      padding: 10px 10px 10px 21px;
-      box-sizing: border-box;
-      // .takeLine {
-      //   width: 4px;
-      //   height: 16px;
-      //   background: #3983e5;
-      //   border-radius: 3px;
-      //   margin-right: 8px;
-      // }
-      .takeTitle {
-        font-size: 15px;
-        font-family: MicrosoftYaHei-Bold, MicrosoftYaHei;
-        font-weight: bold;
-        color: #333333;
-        line-height: 20px;
-        letter-spacing: 1px;
-        position: relative;
-        &::after {
-          content: "";
-          width: 4px;
-          height: 16px;
-          background: #3983e5;
-          border-radius: 3px;
-          position: absolute;
-          left: -11px;
-          top: 2px;
-        }
+  }
+  .takeTicket {
+    background-color: #fff;
+    width: 100%;
+    margin-top: 10px;
+    border-bottom: 1px solid #eeeeee;
+    padding: 10px 10px 10px 21px;
+    box-sizing: border-box;
+
+    .takeTitle {
+      font-size: 15px;
+      font-family: MicrosoftYaHei-Bold, MicrosoftYaHei;
+      font-weight: bold;
+      color: #333333;
+      line-height: 20px;
+      letter-spacing: 1px;
+      position: relative;
+      &::after {
+        content: "";
+        width: 4px;
+        height: 16px;
+        background: #3983e5;
+        border-radius: 3px;
+        position: absolute;
+        left: -11px;
+        top: 2px;
       }
-      .hint {
-        font-size: 13px;
-        font-family: MicrosoftYaHei;
-        color: #999999;
-        line-height: 19px;
-        letter-spacing: 1px;
-      }
+    }
+    .hint {
+      font-size: 13px;
+      font-family: MicrosoftYaHei;
+      color: #999999;
+      line-height: 19px;
+      letter-spacing: 1px;
     }
   }
   .bottomBox {
