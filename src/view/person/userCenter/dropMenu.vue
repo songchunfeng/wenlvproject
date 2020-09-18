@@ -12,7 +12,7 @@
         data(){
             return{
                 status:[
-                    {title:'全部状态',value:5},
+                    {title:'全部状态',value:6},
                     {title:'未验票',value:0},
                     {title:'已验票',value:1},
                     {title:'已改签' , value:2},
@@ -32,12 +32,9 @@
 </script>
 
 <style scoped>
-    /*.statusList{*/
-        /*z-index: 100;*/
-        /*background-color: #000000;*/
-        /*position: absolute;*/
-        /*right: 0;*/
-    /*}*/
+    .statusList{
+       border-radius: 10px;
+    }
     .statusList .status{
         width: 101px;
         height: 39px;

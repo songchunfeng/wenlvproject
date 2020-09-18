@@ -99,7 +99,9 @@
                             </van-uploader>
                         </div>
                     </div>
+
                 </div>
+                <!--<div class="teamType">-->
                 <van-field  value="旅行社" readonly >
                     <template #label>
                         <span class="custom-title">团队类型</span>
@@ -111,6 +113,7 @@
                         <van-icon name="arrow" />
                     </template>
                 </van-field>
+                <!--</div>-->
                 <div class="cell">
                     <van-field v-model="usci"
                                name="公司社会统一信用代码"
@@ -284,11 +287,11 @@
             telBlur(){
                 let code = this.$commonUtils.checkPhoneNo(this.telephone)
                 if(code != 'success'){
-                    Toast('手机号输入有误，请重新输入')
+                    Toast.fail('手机号输入有误，请重新输入')
                 }else{
                     this.$axios.get('/api/user/findUser?telphone='+this.telephone+'?type=1')
                     .then(res=>{
-                        if(res.code!==2000){
+                        if(res.code!==20000){
                             Toast.fail(res.message)
                         }
                     }).catch(err=>{
@@ -361,9 +364,9 @@
         text-align: right;
         font-weight: 400;
     }
-    .register >>> .van-field__left-icon{
-        margin-right: 15px;
-    }
+    /*.register >>> .van-field__left-icon{*/
+        /*margin-right: 15px;*/
+    /*}*/
     .checkSure{
         width: 8px;
         height: 8px;
@@ -377,7 +380,7 @@
     }
     .tour >>> .van-field__label{
         width: 100%;
-        padding-left: 10px;
+        /*padding-left: 10px;*/
     }
     .tour >>> .van-cell:not(:last-child)::after{
         border: none;
@@ -389,7 +392,7 @@
         /*width: 100%;*/
         padding-left: 10px ;
         padding-right: 10px;
-        /*border-bottom: 0.02667rem solid #ebedf0;*/
+        /*border-bottom: 1px solid #ebedf0;*/
         padding-bottom: 19px;
         box-sizing: border-box;
     }
@@ -458,4 +461,18 @@
     .register >>> .van-nav-bar .van-icon{
         color: #999999;
     }
+    .upload>>> .van-uploader__preview-image{
+        border-radius: 3px;
+        margin-top: 8px;
+        background: rgba(0, 0, 0, 0.04);
+        width:78px;
+        height: 78px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    /*.teamType .van-cell::before{*/
+        /*border: 1px solid #ebedf0;*/
+    /*}*/
 </style>
