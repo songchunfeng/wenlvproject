@@ -1,15 +1,15 @@
 <!--退改记录-->
 <template>
     <div class="changeRecord">
-        <div class="chooseStatus" id="chooseStatus">
-            <div @click="changeIcon" :class="show ? 'fsActive' : ''">{{nowStatus}}
-                <i class="i_img"  v-show="!show"></i>
-                <i class="i_imgActive"  v-show="show"></i>
-            </div>
-                <div class="statusList"  v-show="show">
-                    <DropMenu @getStatus="getStatus"></DropMenu>
-                </div>
-        </div>
+        <!--<div class="chooseStatus" id="chooseStatus">-->
+            <!--<div @click="changeIcon" :class="show ? 'fsActive' : ''">{{nowStatus}}-->
+                <!--<i class="i_img"  v-show="!show"></i>-->
+                <!--<i class="i_imgActive"  v-show="show"></i>-->
+            <!--</div>-->
+                <!--<div class="statusList"  v-show="show">-->
+                    <!--<DropMenu @getStatus="getStatus"></DropMenu>-->
+                <!--</div>-->
+        <!--</div>-->
         <div class="group">
             <van-list
                     v-model="loading"
@@ -108,7 +108,7 @@
                     params: {
                         limit:this.limit,
                         page:this.page,
-                        ticket: this.ticket,
+                        ticket: 5,
                     },
                 })
                 .then((res) => {

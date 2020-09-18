@@ -41,7 +41,14 @@
                         <van-cell title="验票时间:" :value="changeTime(item.tourTimeInfo)" />
                         </div>
                     </div>
-                    <div class="content-footer">
+                    <div class="dateChose" v-show="!footerShow">
+                        <dateChose :dateTime="dateTime" @checkDay="checkDay"></dateChose>
+                        <div class="dateBtn">
+                            <div class="exit"  @click="editTime(item.id)">确定</div>
+                            <div class="quitreserve" @click="footerShow=true">取消</div>
+                        </div>
+                    </div>
+                    <div class="content-footer" v-show="footerShow">
                         <div class="lookAll" v-show="showList || i!=index" @click="lookAll(item,index)">
                             查看详情 <img src="../../../assets/images/展开.png" alt="">
                         </div>
@@ -49,20 +56,23 @@
                             收起 <img src="../../../assets/images/展开-灰.png" alt="">
                         </div>
                         <div class="btn">
-                            <div class="exit" v-if="item.ticket ==  0">改签</div>
+                            <div class="exit" v-if="item.ticket ==  0" @click="getTime(item.spotId)">改签</div>
                             <div class="quitreserve" @click="quitreserve(item)" v-if="item.ticket ==  0 || item.ticket==2">退订</div>
                         </div>
                     </div>
                 </div>
             </van-list>
         </div>
+
     </div>
+
 </div>
 </template>
 
 <script>
     import { Cell, CellGroup ,List  } from 'vant'
     import DropMenu from './dropMenu'
+    import  DateChose from '../../../util/dateChose'
     export default {
         name: "userAppoint.vue",
         components:{
@@ -71,13 +81,13 @@
             "van-cell" :Cell,
             "DropMenu" :DropMenu,
             "van-list" :List,
-
+            DateChose
 
         },
         data(){
             return{
                 nowStatus:'全部状态',
-                ticket:5,
+                ticket:6,
                 show:false,
                 loading:false,
                 finished:false,
@@ -89,6 +99,9 @@
                 limit:5,
                 page:1,
                 personList:[],
+                dateTime: {},
+                footerShow:true,
+                checkTime:''//选择预约时间
             }
         },
         methods:{
@@ -229,10 +242,48 @@
                 }else{
                     return arr[0]+'  12:00-18:00'
                 }
+            },
+            //选择日期
+            checkDay(day) {
+                this.checkTime = day;
+            },
+            //修改预约时间
+            editTime(id){
+                this.$axios({
+                    url:'/api/user-reserve/getbyreserve',
+                    method:'get',
+                    params:{id: id, tour_time_info:this.checkTime},
+                    headers:{
+                        Authorization:this.$commonUtils.getSessionItem('token')
+                    }
+                }).then(res=>{
+                    console.log(res)
+                }).catch(err=>{
+                    Toast.fail(err)
+                })
+            },
+            //改签
+            getTime(id){
+                this.footerShow=false;
+                this.$axios({
+                    url:"/api/spot-stock/bigupdateById",
+                    method:"put",
+                    data:{
+                        spotId:id,
+                        startTime:this.$commonUtils.changeFullTime(new Date()),
+                    },
+                })
+                .then((res)=>{
+                    this.dateTime=res.data.rows;
+                })
+                .catch((err)=>{
+                    console.log(err);
+                });
             }
+
         },
         mounted() {
-
+            // this.getList()
         }
     }
 </script>
@@ -378,5 +429,13 @@
         color: #999999;
         text-align: center;
         line-height: 30px;
+    }
+
+    .dateBtn{
+        margin-top: 10px;
+        padding-right: 10px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: flex-end;
     }
 </style>

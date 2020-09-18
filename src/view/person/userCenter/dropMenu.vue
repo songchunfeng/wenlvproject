@@ -12,7 +12,7 @@
         data(){
             return{
                 status:[
-                    {title:'全部状态',value:5},
+                    {title:'全部状态',value:6},
                     {title:'未验票',value:0},
                     {title:'已验票',value:1},
                     {title:'已改签' , value:2},
