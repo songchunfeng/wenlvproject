@@ -28,7 +28,7 @@
         </div>
         <div class="checkTime">
           <div class="checkTimeLable">验票时间：</div>
-            <div class="checkTimeCon" v-if="checkTime==''"></div>
+          <div class="checkTimeCon" v-if="checkTime==''"></div>
           <div class="checkTimeCon" v-if="checkTime != ''">{{checkTiTime(checkTime)}}</div>
         </div>
         <div class="travelPeo">
@@ -52,15 +52,21 @@
         />
       </div>
     </div>
-    <div class="takeTicketBox">
-      <span class="takeTitle">取票信息</span>
-      <span class="hint">(需预留1位出行人的信息，用于现场兑换门票.)</span>
+    <div class="takeBox">
+      <div class="travelInfoTitle">
+        <div class="titleName">
+          取票信息
+          <span class="numberMax">(需预留1位出行人的信息，用于现场兑换门票.)</span>
+        </div>
+        <!-- <div class="numberMax">(同一用户同一预约日期限购1份，每单最多可预约5张门票)</div> -->
+      </div>
+      <takeTicket
+        :checkBySelfs="doSelfCheck"
+        @reportErrorMessage="getErrorMessage"
+        @getFormData="getTicketFormDate"
+      ></takeTicket>
     </div>
-    <takeTicket
-      :checkBySelfs="doSelfCheck"
-      @reportErrorMessage="getErrorMessage"
-      @getFormData="getTicketFormDate"
-    ></takeTicket>
+
     <div class="bottomBox">
       <van-checkbox icon-size="14px" v-model="checked">
         <div class="readAgree" @click="readShow = true">我已认真阅读提示信息及注意事项，知晓并同意平台及景区相关规定。</div>
@@ -76,7 +82,7 @@
       v-model="readShow"
       :style="{ height: '100%', width: '100%'}"
     >
-      <read @close="closeRead"></read>
+      <read class="read" @close="closeRead"></read>
     </van-popup>
   </div>
 </template>
@@ -160,7 +166,7 @@ export default {
       comPeoName: "",
       doSelfCheck: false, // 触发自检
       isChangedAll: true, // 是否有错误项
-        tcmAts:''
+      tcmAts: "",
     };
   },
   created() {
@@ -169,19 +175,19 @@ export default {
     this.getComPeoList();
   },
   methods: {
-      //验票时间
-      checkTiTime(val){
-          let arr = val.split(' ');
-          let str = arr[1];
-          let content =arr[0]
-          if(str == '上午'){
-              this.tcmAts=content+' '+ this.scenic.amTcmAts;
-              return content+' '+ this.scenic.amTcmAts
-          }else{
-              this.tcmAts=content+' '+ this.scenic.amTcmAts;
-              return content+' '+ this.scenic.pmTcmAts
-          }
-      },
+    //验票时间
+    checkTiTime(val) {
+      let arr = val.split(" ");
+      let str = arr[1];
+      let content = arr[0];
+      if (str == "上午") {
+        this.tcmAts = content + " " + this.scenic.amTcmAts;
+        return content + " " + this.scenic.amTcmAts;
+      } else {
+        this.tcmAts = content + " " + this.scenic.amTcmAts;
+        return content + " " + this.scenic.pmTcmAts;
+      }
+    },
     closeRead() {
       this.readShow = false;
     },
@@ -212,7 +218,7 @@ export default {
                     spotid: window.sessionStorage.getItem("scenicId"),
                     tour_time_info: that.checkTime,
                     travelUserVo: travelUserVo,
-                      tcmAts:that.tcmAts
+                    tcmAts: that.tcmAts,
                   };
                   that.toSave(params);
                 } else {
@@ -459,6 +465,43 @@ export default {
     padding: 15px 10px 15px 10px;
     box-sizing: border-box;
   }
+  .travelInfoTitle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    padding: 15px 0px 15px 21px;
+    box-sizing: border-box;
+    border-bottom: 1px solid #eeeeee;
+    .titleName {
+      font-size: 15px;
+      font-family: MicrosoftYaHei-Bold, MicrosoftYaHei;
+      font-weight: bold;
+      color: #333333;
+      line-height: 20px;
+      letter-spacing: 1px;
+      margin-right: 8px;
+      position: relative;
+      &::after {
+        content: "";
+        width: 4px;
+        height: 16px;
+        background: #3983e5;
+        border-radius: 3px;
+        position: absolute;
+        left: -11px;
+        top: 2px;
+      }
+    }
+    .numberMax {
+      font-size: 13px;
+      font-family: MicrosoftYaHei;
+      color: #999999;
+      font-weight: 400;
+      line-height: 18px;
+      letter-spacing: 1px;
+    }
+  }
   .travelInfoBox {
     width: 100%;
     background-color: #fff;
@@ -468,42 +511,7 @@ export default {
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    .travelInfoTitle {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      padding: 15px 0px 15px 21px;
-      box-sizing: border-box;
-      border-bottom: 1px solid #eeeeee;
-      .titleName {
-        font-size: 15px;
-        font-family: MicrosoftYaHei-Bold, MicrosoftYaHei;
-        font-weight: bold;
-        color: #333333;
-        line-height: 20px;
-        letter-spacing: 1px;
-        margin-right: 8px;
-        position: relative;
-        &::after {
-          content: "";
-          width: 4px;
-          height: 16px;
-          background: #3983e5;
-          border-radius: 3px;
-          position: absolute;
-          left: -11px;
-          top: 2px;
-        }
-      }
-      .numberMax {
-        font-size: 13px;
-        font-family: MicrosoftYaHei;
-        color: #999999;
-        font-weight: 400;
-        line-height: 18px;
-        letter-spacing: 1px;
-      }
-    }
+
     .travelInfoTime {
       width: 355px;
       height: 175px;
@@ -632,12 +640,17 @@ export default {
       margin-top: 10px;
     }
   }
+  .takeBox {
+    width: 100%;
+    margin-top: 10px;
+    background-color: #fff;
+  }
   .takeTicketBox {
     background-color: #fff;
     width: 100%;
-    margin-top: 10px;
+    // margin-top: 10px;
     border-bottom: 1px solid #eeeeee;
-    padding: 10px 10px 10px 21px;
+    // padding: 10px 10px 10px 21px;
     box-sizing: border-box;
     .takeTitle {
       font-size: 15px;
