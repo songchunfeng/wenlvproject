@@ -59,7 +59,7 @@
                   <van-col class="col" span="4">{{ite.surname}}</van-col>
                   <van-col style="width: 107%;" class="col" span="5">{{ite.telphone}}</van-col>
                   <van-col class="col" span="5">{{ite.identityType==0? '居民身份证' : '护照'}}</van-col>
-                  <van-col class="col" span="5">{{ite.identityCard}}</van-col>
+                  <van-col class="col" span="5">{{getId(ite.identityCard)}}</van-col>
                   <van-col class="col" span="5">{{getTicketType(ite.ticketType)}}</van-col>
                 </van-row>
               </div>
@@ -184,6 +184,13 @@ export default {
         return "特殊票";
       }
     },
+      //换身份证号
+      getId(val){
+        let str =val;
+        let font=str.substr(0,3);
+        let after =str.substr(-4);
+       return font+'XXXX'+after
+      },
     //收起
     pack(index) {
       // this.=true;

@@ -26,6 +26,12 @@ export default {
     "van-tabbar": Tabbar,
     "van-tabbar-item": TabbarItem,
   },
+    watch:{
+      tabPath(old,now){
+          console.log(old);
+          console.log(now);
+      }
+    },
   data() {
     return {
       active: 0,
