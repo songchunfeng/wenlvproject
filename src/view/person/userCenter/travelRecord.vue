@@ -81,7 +81,7 @@ export default {
                     arr[i].identityCard;
                   this.$refs.add[i].travelUser.ticketType = arr[i].ticketType;
                   if (arr[i].identityType == "0") {
-                    this.$refs.add[i].identityTypeText = "身份证";
+                    this.$refs.add[i].identityTypeText = "居民身份证";
                   }
                   if (arr[i].identityType == "1") {
                     this.$refs.add[i].identityTypeText = "护照";
@@ -162,7 +162,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 10px;
+    // margin-top: 10px;
     padding: 10px;
     box-sizing: border-box;
     background-color: #fff;

@@ -57,7 +57,7 @@
                 >
                   <van-col class="col" span="4">{{ite.surname}}</van-col>
                   <van-col style="width: 107%;" class="col" span="5">{{ite.telphone}}</van-col>
-                  <van-col class="col" span="5">{{ite.identityType==0? '身份证' : '护照'}}</van-col>
+                  <van-col class="col" span="5">{{ite.identityType==0? '居民身份证' : '护照'}}</van-col>
                   <van-col class="col" span="5">{{ite.identityCard}}</van-col>
                   <van-col class="col" span="5">{{getTicketType(ite.ticketType)}}</van-col>
                 </van-row>

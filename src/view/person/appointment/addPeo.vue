@@ -191,7 +191,7 @@ export default {
       ticketTypeText: "",
       identityTypeList: [
         {
-          text: "身份证",
+          text: "居民身份证",
           key: "0",
         },
         {
@@ -285,7 +285,9 @@ export default {
 .addPeo {
   width: 100%;
   box-sizing: border-box;
-  padding: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-top: 8px;
   .titleBox {
     width: 100%;
     display: flex;
@@ -323,6 +325,12 @@ export default {
     /deep/ .van-field__control:disabled {
       color: #333;
     }
+    .van-cell:not(:last-child)::after {
+      border: none;
+    }
+    .van-cell[data-v-464440d2] {
+      border-bottom: 1px solid #eeeeee;
+    }
   }
   .bottomBtn {
     width: 100%;
@@ -332,7 +340,7 @@ export default {
     padding: 12px;
     box-sizing: border-box;
     border-bottom: 1px solid #eeeeee;
-    border-top: 1px solid #eeeeee;
+    // border-top: 1px solid #eeeeee;
     .line {
       width: 1px;
       height: 12px;

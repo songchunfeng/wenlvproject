@@ -106,7 +106,7 @@ export default {
       identityTypeText: "",
       identityTypeList: [
         {
-          text: "身份证",
+          text: "居民身份证",
           key: "0",
         },
         {
@@ -197,7 +197,8 @@ export default {
 .takeTicketBox {
   width: 100%;
   box-sizing: border-box;
-  padding: 10px;
+  padding-right: 10px;
+  padding-left: 10px;
   background-color: #fff;
   .takeTicketForm {
     width: 100%;
@@ -206,10 +207,15 @@ export default {
       padding-right: 0px;
       font-family: MicrosoftYaHei;
       color: #333333;
+      border-bottom: 1px solid #eeeeee;
     }
     /deep/ .van-field__control:disabled {
       color: #333;
     }
+    .van-cell:not(:last-child)::after {
+      border: none;
+    }
+    
   }
 }
 </style>

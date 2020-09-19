@@ -1,19 +1,25 @@
 <template>
   <div>
-      <router-view />
-    <van-tabbar v-model="active" route>
+    <router-view />
+    <van-tabbar v-model="active" route @click="tab">
       <van-tabbar-item to="/preList">
         <span>首页</span>
         <template #icon="props">
           <img :src="props.active ? icon.active : icon.inactive" />
         </template>
       </van-tabbar-item>
-      <van-tabbar-item icon="search" to="/perUser">
+      <van-tabbar-item to="/perUser">
+        <span>用户中心</span>
+        <template #icon="props">
+          <img :src="props.active ? icon.active : icon.inactive" />
+        </template>
+      </van-tabbar-item>
+      <!-- <van-tabbar-item to="/perUser">
         <span>用户中心</span>
         <template #icon="props">
           <img :src="props.active ? icon.user : icon.inuser" />
         </template>
-      </van-tabbar-item>
+      </van-tabbar-item> -->
     </van-tabbar>
   </div>
 </template>
@@ -37,8 +43,16 @@ export default {
       },
     };
   },
+  methods:{
+    tab(){
+      console.log(this.active);
+    }
+  }
 };
 </script>
 
-<style>
+<style lang="less" scoped>
+.van-tabbar {
+  border-top: 1px solid #eee;
+}
 </style>

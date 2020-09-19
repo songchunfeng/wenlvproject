@@ -1,13 +1,13 @@
 <template>
   <div class="appointment">
     <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
-      <van-swipe-item  v-for="(image, index) in images" :key="index">
-        <img style="width:100%;"  :src="image" alt />
+      <van-swipe-item v-for="(image, index) in images" :key="index">
+        <img style="width:100%;" :src="image" alt />
       </van-swipe-item>
     </van-swipe>
     <div class="scenicInfo">
       <div class="scenicName">{{scenic.spotName}}</div>
-      <div class="openTime">开放时间：{{scenic.businessHour}}</div>
+      <div class="openTime">开放时间：{{scenic.businessHour}} (最晚入园时间：{{scenic.latestTime}})</div>
       <div class="scenicAddress">景区地址：{{scenic.spotAddress}}</div>
     </div>
     <div class="dateChose">
@@ -15,8 +15,11 @@
     </div>
     <div class="travelInfoBox">
       <div class="travelInfoTitle">
-        <div class="titleName">出行信息</div>
-        <div class="numberMax">(最多填写5个出行人)</div>
+        <div class="titleName">
+          出行信息
+          <span class="numberMax">(同一用户同一预约日期限购1份，每单最多可预约5张门票)</span>
+        </div>
+        <!-- <div class="numberMax">(同一用户同一预约日期限购1份，每单最多可预约5张门票)</div> -->
       </div>
       <div class="travelInfoTime">
         <div class="appTime">
@@ -48,9 +51,9 @@
         />
       </div>
     </div>
-    <div class="takeTicket">
+    <div class="takeTicketBox">
       <span class="takeTitle">取票信息</span>
-      <span class="hint">(需预留导游的信息，用于预约成功的信息发送至导游手机，导游务必保管好该条短信，至景区后需出示该短信进行订单查询及确认。)</span>
+      <span class="hint">(需预留1位出行人的信息，用于现场兑换门票.)</span>
     </div>
     <takeTicket
       :checkBySelfs="doSelfCheck"
@@ -97,6 +100,48 @@ export default {
     addPeo,
     takeTicket,
     read,
+  },
+  watch: {
+    addPeo: {
+      handler: function (newVal, oldVal) {
+        if (newVal) {
+          let arr = [];
+          for (let i = 0; i < newVal.length; i++) {
+            console.log(newVal[i].data.surname);
+            if (newVal[i].data.surname != undefined) {
+              arr.push(newVal[i].data.surname);
+            }
+          }
+          if (this.comPeo.length != 0) {
+            for (let i = 0; i < this.comPeo.length; i++) {
+              arr.push(this.comPeo[i].surname);
+            }
+          }
+          this.comPeoName = arr.join("、");
+        }
+      },
+      deep: true,
+    },
+    comPeo: {
+      handler: function (newVal, oldVal) {
+        if (newVal) {
+          let arr = [];
+          for (let i = 0; i < newVal.length; i++) {
+            console.log(newVal[i].surname);
+            if (newVal[i].surname != undefined) {
+              arr.push(newVal[i].surname);
+            }
+          }
+          if (this.addPeo.length != 0) {
+            for (let i = 0; i < this.addPeo.length; i++) {
+              arr.push(this.addPeo[i].data.surname);
+            }
+          }
+          this.comPeoName = arr.join("、");
+        }
+      },
+      deep: true,
+    },
   },
   data() {
     return {
@@ -173,7 +218,7 @@ export default {
     },
     toSave(params) {
       Toast({
-        message: "信息提交中。。。",
+        message: "信息提交中",
         loadingType: "spinner",
         duration: 0, // 持续展示 toast
         forbidClick: true, // 禁止点击背景
@@ -191,7 +236,7 @@ export default {
             Toast.clear();
             Dialog.confirm({
               title: "提交成功",
-              message: "请前往用户中心—我的预约查看",
+              message: "请前往“用户中心-我的预约”查看“预约详情”",
             })
               .then(() => {
                 this.$router.push("/preList");
@@ -252,11 +297,11 @@ export default {
     // 选择常用出行人
     checkComPeo(arr) {
       this.comPeo = arr;
-      let brr = [];
-      for (let i = 0; i < arr.length; i++) {
-        brr.push(arr[i].surname);
-      }
-      this.comPeoName = brr.join("、");
+      // let brr = [];
+      // for (let i = 0; i < arr.length; i++) {
+      //   brr.push(arr[i].surname);
+      // }
+      // this.comPeoName = brr.join("、");
       this.comPopShow = false;
     },
     // 打开常用出行人
@@ -401,8 +446,7 @@ export default {
   .travelInfoBox {
     width: 100%;
     background-color: #fff;
-    margin-top: 10px;
-    padding-bottom: 10px;
+    margin-top: 5px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -439,6 +483,7 @@ export default {
         font-size: 13px;
         font-family: MicrosoftYaHei;
         color: #999999;
+        font-weight: 400;
         line-height: 18px;
         letter-spacing: 1px;
       }
@@ -449,6 +494,7 @@ export default {
       background: #f8f8f8;
       border-radius: 5px;
       margin-top: 15px;
+      margin-bottom: 15px;
       padding: 15px 10px 15px 10px;
       box-sizing: border-box;
       .appTime {
@@ -570,14 +616,13 @@ export default {
       margin-top: 10px;
     }
   }
-  .takeTicket {
+  .takeTicketBox {
     background-color: #fff;
     width: 100%;
     margin-top: 10px;
     border-bottom: 1px solid #eeeeee;
     padding: 10px 10px 10px 21px;
     box-sizing: border-box;
-
     .takeTitle {
       font-size: 15px;
       font-family: MicrosoftYaHei-Bold, MicrosoftYaHei;
