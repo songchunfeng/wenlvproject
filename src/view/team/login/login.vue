@@ -231,6 +231,9 @@
         min-height: 100vh;
         background-color: #ffffff;
     }
+    .login >>> .van-tab--active{
+        font-weight: bold;
+    }
     .login >>> .van-tab{
         color: #999999;
         font-size: 16px;

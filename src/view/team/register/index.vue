@@ -231,6 +231,7 @@ export default {
           tourGuideCode: this.tourGuideCode,
           tourGuideUrl: this.tourGuideUrl,
           usci: this.usci,
+          type:1,
         };
         this.$axios({
           url: "/api/teamInfo/teamUserRegister",
@@ -260,7 +261,8 @@ export default {
     },
     //获取信用代码信息
     getUsciMsg(val) {
-      let code = this.$commonUtils.tourist(val);
+      let code = this.$commonUtils.socitycode(val);
+
       if (code != "success") {
         Toast.fail("请检查统一社会信用代码");
       } else {
@@ -408,7 +410,7 @@ export default {
   font-size: 15px;
   color: #333333;
   font-family: MicrosoftYaHei;
-  font-weight: bold;
+  /*font-weight: bold;*/
   line-height: 38px;
 }
 .van-cell {

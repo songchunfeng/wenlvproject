@@ -269,7 +269,7 @@ export default {
       return true;
     },
     getUsciMsg(val) {
-      let code = this.$commonUtils.tourist(val);
+      let code = this.$commonUtils.socitycode(val);
       if (code != "success") {
         Toast.fail("请检查统一社会信用代码");
         this.usci = "";
@@ -310,7 +310,7 @@ export default {
   font-size: 15px;
   color: #333333;
   font-family: MicrosoftYaHei;
-  font-weight: bold;
+  /*font-weight: bold;*/
   line-height: 38px;
 }
 .form {

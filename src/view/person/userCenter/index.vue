@@ -18,7 +18,7 @@
                 <van-tab title="退改记录">
                     <change-record v-if="active==1"></change-record>
                 </van-tab>
-                <van-tab title="出行人处理">
+                <van-tab title="出行人管理">
                     <travel-record v-if="active==2"></travel-record>
                 </van-tab>
                 <van-tab title="修改密码">
@@ -74,6 +74,9 @@
         width: 100%;
         background: #F9F9F9;
         box-sizing: border-box;
+    }
+    .userCenter >>> .van-tab--active{
+        font-weight: bold;
     }
     .top{
         height: 84px;
