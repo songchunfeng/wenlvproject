@@ -31,14 +31,7 @@ export default {
       this.$router.push('/register')
     },
   },
-    beforeRouteEnter(to,from,next){
-      let user = JSON.parse(sessionStorage.getItem('loginMsg'))
-      if(window.sessionStorage.getItem('token') && user.userType ==0 ){
-          next({path:'/perUserCenter'})
-      }else{
-          next()
-      }
-    }
+
 };
 </script>
 

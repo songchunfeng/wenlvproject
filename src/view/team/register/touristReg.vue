@@ -143,11 +143,25 @@
         </div>
       </van-form>
     </div>
+      <van-tabbar v-model="activeFoot" route>
+          <van-tabbar-item to="/preList">
+              <span>首页</span>
+              <template #icon="props">
+                  <img :src="props.active ? icon.active : icon.inactive" />
+              </template>
+          </van-tabbar-item>
+          <van-tabbar-item icon="search" to="/perUser">
+              <span>用户中心</span>
+              <template #icon="props">
+                  <img :src="props.active ? icon.user : icon.inuser" />
+              </template>
+          </van-tabbar-item>
+      </van-tabbar>
   </div>
 </template>
 
 <script>
-import { NavBar, Form, Field, Button, Toast, Uploader } from "vant";
+import { NavBar, Form, Field, Button, Toast, Uploader ,Tabbar, TabbarItem} from "vant";
 export default {
   name: "index.vue",
   components: {
@@ -156,6 +170,8 @@ export default {
     "van-field": Field,
     "van-button": Button,
     "van-uploader": Uploader,
+      "van-tabbar": Tabbar,
+      "van-tabbar-item": TabbarItem,
   },
   data() {
     return {
@@ -168,6 +184,13 @@ export default {
       list: [],
       list1: [],
       list2: [],
+        icon: {
+            active: require("../../../assets/images/首页已选择.png"),
+            inactive: require("../../../assets/images/个人 -未选中.png"),
+            user: require("../../../assets/images/首页已选择 (2).png"),
+            inuser: require("../../../assets/images/个人 -未选中(1).png"),
+        },
+        activeFoot:0,
     };
   },
   methods: {
@@ -269,7 +292,7 @@ export default {
       return true;
     },
     getUsciMsg(val) {
-      let code = this.$commonUtils.tourist(val);
+      let code = this.$commonUtils.socitycode(val);
       if (code != "success") {
         Toast.fail("请检查统一社会信用代码");
         this.usci = "";
@@ -310,7 +333,7 @@ export default {
   font-size: 15px;
   color: #333333;
   font-family: MicrosoftYaHei;
-  font-weight: bold;
+  /*font-weight: bold;*/
   line-height: 38px;
 }
 .form {

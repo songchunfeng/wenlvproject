@@ -1,25 +1,19 @@
 <template>
   <div>
-    <router-view />
-    <van-tabbar v-model="active" route @click="tab">
+      <router-view />
+    <van-tabbar v-model="active" route>
       <van-tabbar-item to="/preList">
         <span>首页</span>
         <template #icon="props">
           <img :src="props.active ? icon.active : icon.inactive" />
         </template>
       </van-tabbar-item>
-      <van-tabbar-item to="/perUser">
-        <span>用户中心</span>
-        <template #icon="props">
-          <img :src="props.active ? icon.active : icon.inactive" />
-        </template>
-      </van-tabbar-item>
-      <!-- <van-tabbar-item to="/perUser">
+      <van-tabbar-item icon="search" :to="tabPath">
         <span>用户中心</span>
         <template #icon="props">
           <img :src="props.active ? icon.user : icon.inuser" />
         </template>
-      </van-tabbar-item> -->
+      </van-tabbar-item>
     </van-tabbar>
   </div>
 </template>
@@ -32,6 +26,12 @@ export default {
     "van-tabbar": Tabbar,
     "van-tabbar-item": TabbarItem,
   },
+    watch:{
+      tabPath(old,now){
+          console.log(old);
+          console.log(now);
+      }
+    },
   data() {
     return {
       active: 0,
@@ -41,18 +41,19 @@ export default {
         user: require("../../assets/images/首页已选择 (2).png"),
         inuser: require("../../assets/images/个人 -未选中(1).png"),
       },
+        tabPath:''
     };
   },
-  methods:{
-    tab(){
-      console.log(this.active);
+    mounted() {
+            let user = JSON.parse(sessionStorage.getItem('loginMsg'))
+            if(window.sessionStorage.getItem('token') && user.userType ==0 ){
+                  this.tabPath='/perUserCenter'
+            }else{
+                this.tabPath='/perUser'
+            }
     }
-  }
 };
 </script>
 
-<style lang="less" scoped>
-.van-tabbar {
-  border-top: 1px solid #eee;
-}
+<style>
 </style>

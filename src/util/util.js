@@ -60,7 +60,8 @@ export  function  tourist(idcard) {
 }
 //===================================社会信用的正则===========================================
   export function socitycode(idcard) {
-      let reg =/[^_IOZSVa-z\W]{2}\d{6}[^_IOZSVa-z\W]{10}$/
+      let reg =/^([0-9A-HJ-NPQRTUWXY]{2}\d{6}[0-9A-HJ-NPQRTUWXY]{10}|[1-9]\d{14})$/
+
       if(reg.test(idcard)){
           return 'success'
       }else{

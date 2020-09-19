@@ -27,6 +27,7 @@
             <van-cell title="订单编号:" :value="item.id" />
             <van-cell title="创建时间:" :value="item.gmtCreate" />
             <van-cell title="预约时间:" :value="item.tourTimeInfo" />
+            <van-cell title="验票时间:" :value="item.tcmAts" />
             <van-cell title="预约凭证:" :value="item.voucher" />
             <van-cell title="联系人:" :value="item.linkName" />
             <van-cell title="旅行团名:" :value="item.teamName" />
@@ -58,7 +59,7 @@
                   <van-col class="col" span="4">{{ite.surname}}</van-col>
                   <van-col style="width: 107%;" class="col" span="5">{{ite.telphone}}</van-col>
                   <van-col class="col" span="5">{{ite.identityType==0? '居民身份证' : '护照'}}</van-col>
-                  <van-col class="col" span="5">{{ite.identityCard}}</van-col>
+                  <van-col class="col" span="5">{{getId(ite.identityCard)}}</van-col>
                   <van-col class="col" span="5">{{getTicketType(ite.ticketType)}}</van-col>
                 </van-row>
               </div>
@@ -183,6 +184,13 @@ export default {
         return "特殊票";
       }
     },
+      //换身份证号
+      getId(val){
+        let str =val;
+        let font=str.substr(0,3);
+        let after =str.substr(-4);
+       return font+'XXXX'+after
+      },
     //收起
     pack(index) {
       // this.=true;
@@ -389,13 +397,15 @@ export default {
   color: #3983e5;
 }
 .listHead {
+    box-sizing: border-box;
+    padding-left: 8px;
   height: 39px;
   width: 100%;
   font-size: 16px;
   line-height: 39px;
   color: #333333;
   font-weight: bold;
-  border-bottom: 1px solid #eeeeee;
+  /*border-bottom: 1px solid #eeeeee;*/
   background-color: #fff;
 }
 .listHead span:first-child {
@@ -409,14 +419,15 @@ export default {
   font-weight: 400;
 }
 .listHeadPerson {
+    box-sizing: border-box;
+    border-top: 1px solid #eeeeee;
   height: 39px;
   width: 100%;
   font-size: 15px;
   line-height: 39px;
   color: #333333;
   font-weight: bold;
-  padding-left: 10px;
-  border-bottom: 1px solid #eeeeee;
+  padding-left: 15px;
   background-color: #fff;
 }
 .statusList {
@@ -456,6 +467,7 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: center;
+    border-top: 1px solid #eeeeee;
 }
 .lookAll {
   color: #3983e5;
@@ -507,6 +519,7 @@ export default {
   background: #ffffff;
   padding: 15px 10px 0px 10px;
   box-sizing: border-box;
+    border-top: 1px solid #eeeeee;
 }
 .dateBtn {
   margin-bottom: 10px;
@@ -520,6 +533,7 @@ export default {
   padding-left: 10px;
   padding-right: 10px;
   box-sizing: border-box;
+    margin-bottom: 15px;
 }
 .titleRow {
   height: 40px;

@@ -54,11 +54,25 @@
      >
          <read @close="closeRead" style="position:relative"></read>
      </van-popup>
+     <van-tabbar v-model="activeFoot" route>
+         <van-tabbar-item to="/preList">
+             <span>首页</span>
+             <template #icon="props">
+                 <img :src="props.active ? icon.active : icon.inactive" />
+             </template>
+         </van-tabbar-item>
+         <van-tabbar-item icon="search" to="/perUser">
+             <span>用户中心</span>
+             <template #icon="props">
+                 <img :src="props.active ? icon.user : icon.inuser" />
+             </template>
+         </van-tabbar-item>
+     </van-tabbar>
 </div>
 </template>
 
 <script>
-    import { NavBar,  Form , Field , Button , Checkbox , Toast ,Popup} from 'vant';
+    import { NavBar,  Form , Field , Button , Checkbox , Toast ,Popup,Tabbar,TabbarItem} from 'vant';
     import read from './registerText'
     export default {
         components:{
@@ -69,6 +83,8 @@
             "van-checkbox" : Checkbox,
             "Toast" :Toast,
             "van-popup" : Popup,
+            "van-tabbar": Tabbar,
+            "van-tabbar-item": TabbarItem,
              read
         },
         data(){
@@ -84,6 +100,13 @@
                 timer:null,
                 show:true,
                 readShow: false,
+                activeFoot:0,
+                icon: {
+                    active: require("../../../assets/images/首页已选择.png"),
+                    inactive: require("../../../assets/images/个人 -未选中.png"),
+                    user: require("../../../assets/images/首页已选择 (2).png"),
+                    inuser: require("../../../assets/images/个人 -未选中(1).png"),
+                },
             };
         },
         methods:{

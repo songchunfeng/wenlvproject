@@ -31,14 +31,7 @@ export default {
             this.$router.push('/teamRegister')
         },
     },
-    beforeRouteEnter(to,from,next){
-        let user = JSON.parse(sessionStorage.getItem('loginMsg'))
-        if(window.sessionStorage.getItem('token') && user.userType ==1 ){
-            next({path:'/teamUserCenter'})
-        }else{
-            next()
-        }
-    }
+
 };
 </script>
 

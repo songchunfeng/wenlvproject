@@ -27,7 +27,8 @@
         </div>
         <div class="checkTime">
           <div class="checkTimeLable">验票时间：</div>
-          <div class="checkTimeCon">{{checkTime}}</div>
+          <div class="checkTimeCon" v-if="checkTime==''"></div>
+          <div class="checkTimeCon" v-if="checkTime != ''">{{checkTiTime(checkTime)}}</div>
         </div>
         <div class="travelPeo">
           <div class="travelPeoLable">导游-旅行团名称:</div>
@@ -38,7 +39,7 @@
       <!-- <div class="appTitleBox">
         <span class="appLable">出行人</span>
         <span class="hint">(团队预约请自行下载附件模版，依照如下格式标准填写全部出行人信息（含导游个人信息），并导入信息文件上传团队出行人信息)</span>
-      </div> -->
+      </div>-->
       <div class="travelInfoTitleTwo">
         <div class="titleNameTwo">
           出行人
@@ -165,6 +166,7 @@ export default {
       reserveVo: {}, // 取票人信息
       doSelfCheck: false, // 触发自检
       isChangedAll: true, // 是否有错误项
+      tcmAts: "",
     };
   },
   created() {
@@ -172,6 +174,19 @@ export default {
     this.scenicInfo();
   },
   methods: {
+    //验票时间
+    checkTiTime(val) {
+      let arr = val.split(" ");
+      let str = arr[1];
+      let content = arr[0];
+      if (str == "上午") {
+        this.tcmAts = content + " " + this.scenic.amTcmAts;
+        return content + " " + this.scenic.amTcmAts;
+      } else {
+        this.tcmAts = content + " " + this.scenic.amTcmAts;
+        return content + " " + this.scenic.pmTcmAts;
+      }
+    },
     // 上传文件
     afterRead(file) {
       var formData = new FormData(); //构造一个 FormData，把后台需要发送的参数添加
@@ -213,6 +228,7 @@ export default {
                       tour_time_info: that.checkTime,
                       travelUserVo: that.travelUserVo,
                       teamName: that.teamName,
+                      tcmAts: that.tcmAts,
                     };
                     that.toSave(params);
                   } else {

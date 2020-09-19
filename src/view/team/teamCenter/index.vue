@@ -73,6 +73,9 @@
         background: #F9F9F9;
         box-sizing: border-box;
     }
+    .userCenter >>> .van-tab--active{
+        font-weight: bold;
+    }
     .top{
         height: 84px;
         width: 100%;
