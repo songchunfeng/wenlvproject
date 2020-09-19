@@ -192,7 +192,7 @@ export default {
                       identity_card: that.reserveVo.identity_card,
                       identity_type: that.reserveVo.identity_type,
                       name: that.reserveVo.name,
-                      telphone: that.reserveVo.name,
+                      telphone: that.reserveVo.telphone,
                       spotid: window.sessionStorage.getItem("scenicId"),
                       tour_time_info: that.checkTime,
                       travelUserVo: that.travelUserVo,

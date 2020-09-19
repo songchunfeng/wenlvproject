@@ -1,8 +1,8 @@
 <template>
   <div class="appointment">
     <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
-      <van-swipe-item style="height: 163px;" v-for="(image, index) in images" :key="index">
-        <img style="height: 163px;" :src="image" alt />
+      <van-swipe-item  v-for="(image, index) in images" :key="index">
+        <img style="width:100%;"  :src="image" alt />
       </van-swipe-item>
     </van-swipe>
     <div class="scenicInfo">
@@ -148,7 +148,7 @@ export default {
                     identity_card: that.reserveVo.identity_card,
                     identity_type: that.reserveVo.identity_type,
                     name: that.reserveVo.name,
-                    telphone: that.reserveVo.name,
+                    telphone: that.reserveVo.telphone,
                     spotid: window.sessionStorage.getItem("scenicId"),
                     tour_time_info: that.checkTime,
                     travelUserVo: travelUserVo,
