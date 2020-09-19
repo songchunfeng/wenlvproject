@@ -399,6 +399,10 @@ export default {
 </script>
 
 <style scoped>
+    .register >>>  .van-nav-bar--fixed {
+        margin-top: 10px;
+        top: 10px;
+    }
 .customLine {
   width: 100%;
   height: 1px;

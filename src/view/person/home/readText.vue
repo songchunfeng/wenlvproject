@@ -42,6 +42,8 @@ export default {
 .readText {
   width: 100%;
   position: relative;
+    padding-top: 10px;
+    box-sizing: border-box;
   .textContent {
     width: 100%;
     margin-top: 56px;

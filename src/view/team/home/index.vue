@@ -124,6 +124,10 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+    /deep/ .van-nav-bar--fixed {
+        margin-top: 10px;
+        top: 10px;
+    }
   .headBanner {
     width: 100%;
     

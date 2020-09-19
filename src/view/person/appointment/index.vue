@@ -429,6 +429,10 @@ export default {
   background-color: #f9f9f9;
   padding-bottom: 80px;
   box-sizing: border-box;
+    /deep/ .van-nav-bar--fixed {
+        margin-top: 10px;
+        top: 10px;
+    }
   .scenicInfo {
     width: 100%;
     height: 98px;
