@@ -348,7 +348,7 @@ export default {
 .appointment {
   width: 100%;
   background-color: #f9f9f9;
-  padding-bottom: 50px;
+  padding-bottom: 80px;
   box-sizing: border-box;
   .scenicInfo {
     width: 100%;

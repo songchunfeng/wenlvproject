@@ -536,7 +536,7 @@ export default {
 }
 .btn {
   margin-top: 16px;
-  margin-bottom: 50px;
+  margin-bottom: 80px;
   font-size: 16px;
 }
 .btn >>> .van-button--normal {
