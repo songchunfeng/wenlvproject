@@ -127,8 +127,8 @@
           <van-field
             v-model="telephone"
             name="联系邮箱"
-            label="联系邮箱"
-            class="bottonLine"
+            label="联系邮箱 "
+            class="emailCell"
             placeholder="请输入公司邮箱"
             :rules="[{ required: true, message: '请输入公司邮箱' }]"
             @blur="checkemail(telephone)"
@@ -137,6 +137,7 @@
               <img src="../../../assets/images/必选.png" alt class="checkSure" />
             </template>
           </van-field>
+            <div class="email">（用以接受旅行社注册审核邮件）</div>
         </div>
         <div class="btn">
           <van-button round block type="info" native-type="submit">提交</van-button>
@@ -316,6 +317,9 @@ export default {
 .van-cell:not(:last-child)::after {
   border: none;
 }
+.emailCell{
+    /*height: 42px;*/
+}
 .register >>> .van-tab {
   color: #999999;
   font-size: 16px;
@@ -428,4 +432,8 @@ export default {
 .usic >>> .van-field__label {
   width: auto;
 }
+    .email{
+        font-size: 12px;
+        color: #999999;
+    }
 </style>
