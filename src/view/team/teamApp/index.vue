@@ -1,8 +1,8 @@
 <template>
   <div class="appointment">
     <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
-      <van-swipe-item style="height: 163px;" v-for="(image, index) in images" :key="index">
-        <img style="height: 163px;" :src="image" alt />
+      <van-swipe-item v-for="(image, index) in images" :key="index">
+        <img style="width:100%;" :src="image" alt />
       </van-swipe-item>
     </van-swipe>
     <div class="scenicInfo">
@@ -30,14 +30,20 @@
           <div class="checkTimeCon">{{checkTime}}</div>
         </div>
         <div class="travelPeo">
-          <div class="travelPeoLable">导游-旅行团名称</div>
+          <div class="travelPeoLable">导游-旅行团名称:</div>
           <van-field v-model="teamName" placeholder="请输入旅行团名称" />
         </div>
       </div>
       <div class="teamLine"></div>
-      <div class="appTitleBox">
+      <!-- <div class="appTitleBox">
         <span class="appLable">出行人</span>
         <span class="hint">(团队预约请自行下载附件模版，依照如下格式标准填写全部出行人信息（含导游个人信息），并导入信息文件上传团队出行人信息)</span>
+      </div> -->
+      <div class="travelInfoTitleTwo">
+        <div class="titleNameTwo">
+          出行人
+          <span class="numberMaxTwo">(团队预约请自行下载附件模版，依照如下格式标准填写全部出行人信息（含导游个人信息），并导入信息文件上传团队出行人信息)</span>
+        </div>
       </div>
       <div class="teamLine"></div>
       <div class="appTable">
@@ -78,15 +84,25 @@
         </van-uploader>
       </div>
     </div>
-    <div class="takeTicket">
+    <div class="takeBox">
+      <div class="travelInfoTitle">
+        <div class="titleName">
+          取票信息
+          <span class="numberMax">(需预留导游的信息，用于预约成功的信息发送至导游手机，导游务必保管好该条短信，至景区后需出示该短信进行订单查询及确认。)</span>
+        </div>
+        <!-- <div class="numberMax">(同一用户同一预约日期限购1份，每单最多可预约5张门票)</div> -->
+      </div>
+      <takeTicket
+        :checkBySelfs="doSelfCheck"
+        @reportErrorMessage="getErrorMessage"
+        @getFormData="getTicketFormDate"
+      ></takeTicket>
+    </div>
+    <!-- <div class="takeTicket">
       <span class="takeTitle">取票信息</span>
       <span class="hint">(需预留导游的信息，用于预约成功的信息发送至导游手机，导游务必保管好该条短信，至景区后需出示该短信进行订单查询及确认。)</span>
-    </div>
-    <takeTicket
-      :checkBySelfs="doSelfCheck"
-      @reportErrorMessage="getErrorMessage"
-      @getFormData="getTicketFormDate"
-    ></takeTicket>
+    </div>-->
+
     <div class="bottomBox">
       <van-checkbox icon-size="14px" v-model="checked">
         <div class="readAgree" @click="readShow = true">我已认真阅读提示信息及注意事项，知晓并同意平台及景区相关规定。</div>
@@ -196,7 +212,7 @@ export default {
                       spotid: window.sessionStorage.getItem("scenicId"),
                       tour_time_info: that.checkTime,
                       travelUserVo: that.travelUserVo,
-                      teamName:that.teamName
+                      teamName: that.teamName,
                     };
                     that.toSave(params);
                   } else {
@@ -332,7 +348,7 @@ export default {
 .appointment {
   width: 100%;
   background-color: #f9f9f9;
-  padding-bottom: 50px;
+  padding-bottom: 70px;
   box-sizing: border-box;
   .scenicInfo {
     width: 100%;
@@ -369,6 +385,80 @@ export default {
     background: #ffffff;
     padding: 15px 10px 15px 10px;
     box-sizing: border-box;
+  }
+  .travelInfoTitle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    padding: 15px 0px 15px 21px;
+    box-sizing: border-box;
+    border-bottom: 1px solid #eeeeee;
+    .titleName {
+      font-size: 15px;
+      font-family: MicrosoftYaHei-Bold, MicrosoftYaHei;
+      font-weight: bold;
+      color: #333333;
+      line-height: 20px;
+      letter-spacing: 1px;
+      margin-right: 8px;
+      position: relative;
+      &::after {
+        content: "";
+        width: 4px;
+        height: 16px;
+        background: #3983e5;
+        border-radius: 3px;
+        position: absolute;
+        left: -11px;
+        top: 2px;
+      }
+    }
+    .numberMax {
+      font-size: 13px;
+      font-family: MicrosoftYaHei;
+      color: #999999;
+      font-weight: 400;
+      line-height: 18px;
+      letter-spacing: 1px;
+    }
+  }
+  .travelInfoTitleTwo {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    padding: 0px 10px 15px 10px;
+    box-sizing: border-box;
+    border-bottom: 1px solid #eeeeee;
+    .titleNameTwo {
+      font-size: 15px;
+      font-family: MicrosoftYaHei-Bold, MicrosoftYaHei;
+      font-weight: bold;
+      color: #333333;
+      line-height: 20px;
+      letter-spacing: 1px;
+      // margin-right: 8px;
+      position: relative;
+      // &::after {
+      //   content: "";
+      //   width: 4px;
+      //   height: 16px;
+      //   background: #3983e5;
+      //   border-radius: 3px;
+      //   position: absolute;
+      //   left: -11px;
+      //   top: 2px;
+      // }
+    }
+    .numberMaxTwo {
+      font-size: 13px;
+      font-family: MicrosoftYaHei;
+      color: #999999;
+      font-weight: 400;
+      line-height: 18px;
+      letter-spacing: 1px;
+    }
   }
   .travelInfoBox {
     width: 100%;
@@ -480,7 +570,7 @@ export default {
         align-items: center;
         justify-content: flex-start;
         .travelPeoLable {
-          width: 140px;
+          width: 200px;
           font-size: 15px;
           font-family: MicrosoftYaHei;
           color: #333333;
@@ -607,6 +697,7 @@ export default {
         border-bottom: 1px solid #e0e0e0;
       }
     }
+
     .btnBox {
       margin-top: 13px;
       width: 100%;
@@ -727,6 +818,11 @@ export default {
       line-height: 23px;
       letter-spacing: 1px;
     }
+  }
+  .takeBox {
+    width: 100%;
+    margin-top: 10px;
+    background-color: #fff;
   }
 }
 </style>

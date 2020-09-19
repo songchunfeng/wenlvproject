@@ -51,15 +51,21 @@
         />
       </div>
     </div>
-    <div class="takeTicketBox">
-      <span class="takeTitle">取票信息</span>
-      <span class="hint">(需预留1位出行人的信息，用于现场兑换门票.)</span>
+    <div class="takeBox">
+      <div class="travelInfoTitle">
+        <div class="titleName">
+          取票信息
+          <span class="numberMax">(需预留1位出行人的信息，用于现场兑换门票.)</span>
+        </div>
+        <!-- <div class="numberMax">(同一用户同一预约日期限购1份，每单最多可预约5张门票)</div> -->
+      </div>
+      <takeTicket
+        :checkBySelfs="doSelfCheck"
+        @reportErrorMessage="getErrorMessage"
+        @getFormData="getTicketFormDate"
+      ></takeTicket>
     </div>
-    <takeTicket
-      :checkBySelfs="doSelfCheck"
-      @reportErrorMessage="getErrorMessage"
-      @getFormData="getTicketFormDate"
-    ></takeTicket>
+
     <div class="bottomBox">
       <van-checkbox icon-size="14px" v-model="checked">
         <div class="readAgree" @click="readShow = true">我已认真阅读提示信息及注意事项，知晓并同意平台及景区相关规定。</div>
@@ -405,7 +411,7 @@ export default {
 .appointment {
   width: 100%;
   background-color: #f9f9f9;
-  padding-bottom: 50px;
+  padding-bottom: 70px;
   box-sizing: border-box;
   .scenicInfo {
     width: 100%;
@@ -443,6 +449,43 @@ export default {
     padding: 15px 10px 15px 10px;
     box-sizing: border-box;
   }
+  .travelInfoTitle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    padding: 15px 0px 15px 21px;
+    box-sizing: border-box;
+    border-bottom: 1px solid #eeeeee;
+    .titleName {
+      font-size: 15px;
+      font-family: MicrosoftYaHei-Bold, MicrosoftYaHei;
+      font-weight: bold;
+      color: #333333;
+      line-height: 20px;
+      letter-spacing: 1px;
+      margin-right: 8px;
+      position: relative;
+      &::after {
+        content: "";
+        width: 4px;
+        height: 16px;
+        background: #3983e5;
+        border-radius: 3px;
+        position: absolute;
+        left: -11px;
+        top: 2px;
+      }
+    }
+    .numberMax {
+      font-size: 13px;
+      font-family: MicrosoftYaHei;
+      color: #999999;
+      font-weight: 400;
+      line-height: 18px;
+      letter-spacing: 1px;
+    }
+  }
   .travelInfoBox {
     width: 100%;
     background-color: #fff;
@@ -452,42 +495,7 @@ export default {
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    .travelInfoTitle {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      padding: 15px 0px 15px 21px;
-      box-sizing: border-box;
-      border-bottom: 1px solid #eeeeee;
-      .titleName {
-        font-size: 15px;
-        font-family: MicrosoftYaHei-Bold, MicrosoftYaHei;
-        font-weight: bold;
-        color: #333333;
-        line-height: 20px;
-        letter-spacing: 1px;
-        margin-right: 8px;
-        position: relative;
-        &::after {
-          content: "";
-          width: 4px;
-          height: 16px;
-          background: #3983e5;
-          border-radius: 3px;
-          position: absolute;
-          left: -11px;
-          top: 2px;
-        }
-      }
-      .numberMax {
-        font-size: 13px;
-        font-family: MicrosoftYaHei;
-        color: #999999;
-        font-weight: 400;
-        line-height: 18px;
-        letter-spacing: 1px;
-      }
-    }
+
     .travelInfoTime {
       width: 355px;
       height: 175px;
@@ -615,6 +623,11 @@ export default {
       width: 100%;
       margin-top: 10px;
     }
+  }
+  .takeBox {
+    width: 100%;
+    margin-top: 10px;
+    background-color: #fff;
   }
   .takeTicketBox {
     background-color: #fff;
