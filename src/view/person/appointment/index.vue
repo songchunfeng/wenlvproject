@@ -82,7 +82,7 @@
       v-model="readShow"
       :style="{ height: '100%', width: '100%'}"
     >
-      <read @close="closeRead"></read>
+      <read class="read" @close="closeRead"></read>
     </van-popup>
   </div>
 </template>
@@ -648,9 +648,9 @@ export default {
   .takeTicketBox {
     background-color: #fff;
     width: 100%;
-    margin-top: 10px;
+    // margin-top: 10px;
     border-bottom: 1px solid #eeeeee;
-    padding: 10px 10px 10px 21px;
+    // padding: 10px 10px 10px 21px;
     box-sizing: border-box;
     .takeTitle {
       font-size: 15px;
