@@ -31,14 +31,14 @@
             <div class="checkTimeCon" v-if="checkTime != ''">{{checkTiTime(checkTime)}}</div>
         </div>
         <div class="travelPeo">
-          <div class="travelPeoLable">旅行团名称：</div>
+          <div class="travelPeoLable">导游-旅行团名称</div>
           <van-field v-model="teamName" placeholder="请输入旅行团名称" />
         </div>
       </div>
       <div class="teamLine"></div>
       <div class="appTitleBox">
         <span class="appLable">出行人</span>
-        <span class="hint">(团队预约需下载附件模板，依照如下格式，标准填写全部出行人信息（含导游个人信息），并操作导入进行登记。)</span>
+        <span class="hint">(团队预约请自行下载附件模版，依照如下格式标准填写全部出行人信息（含导游个人信息），并导入信息文件上传团队出行人信息)</span>
       </div>
       <div class="teamLine"></div>
       <div class="appTable">

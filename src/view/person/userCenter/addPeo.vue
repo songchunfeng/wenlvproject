@@ -177,7 +177,7 @@ export default {
           console.log("identityType", newVal);
           this.travelUser.identityCard = "";
           if (newVal == "0") {
-            this.identityTypeText = "身份证";
+            this.identityTypeText = "居民身份证";
           }
           if (newVal == "1") {
             this.identityTypeText = "护照";
@@ -216,7 +216,7 @@ export default {
       ticketTypeText: "",
       identityTypeList: [
         {
-          text: "身份证",
+          text: "居民身份证",
           key: "0",
         },
         {
@@ -383,6 +383,7 @@ export default {
   width: 100%;
   box-sizing: border-box;
   padding: 10px;
+  padding-bottom: 0px;
   .titleBox {
     width: 100%;
     display: flex;

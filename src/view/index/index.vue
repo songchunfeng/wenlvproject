@@ -10,7 +10,7 @@
       </div>
       <div class="btnBox">
         <div class="btn" @click="toPersonal">
-          <div class="btnIcon">
+          <div class="btnIconPer">
             <img class="img" src="../../assets/images/个人.png" alt />
           </div>
           <div class="btnText">个人预约</div>
@@ -101,8 +101,18 @@ export default {
         display: flex;
         align-items: center;
         justify-content: center;
-        .btnIcon {
+        .btnIconPer {
           width: 16px;
+          height: 18px;
+          margin-right: 14px;
+          .img {
+            width: 100%;
+            height: 100%;
+            vertical-align: super;
+          }
+        }
+        .btnIcon {
+          width: 18px;
           height: 18px;
           margin-right: 14px;
           .img {
