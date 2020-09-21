@@ -148,7 +148,7 @@ export default {
   width: 100%;
   background-color: #f9f9f9;
   overflow: hidden;
-  padding-bottom: 55px;
+  padding-bottom: 100px;
   box-sizing: border-box;
   .travelList {
     width: 100%;
@@ -162,7 +162,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    // margin-top: 10px;
+    margin-top: 10px;
     padding: 10px;
     box-sizing: border-box;
     background-color: #fff;

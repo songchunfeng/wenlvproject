@@ -433,6 +433,9 @@ export default {
         margin-top: 10px;
         top: 10px;
     }
+    .van-swipe {
+    background-color: #fff;
+  }
   .scenicInfo {
     width: 100%;
     height: 98px;
@@ -509,7 +512,7 @@ export default {
   .travelInfoBox {
     width: 100%;
     background-color: #fff;
-    margin-top: 5px;
+    margin-top: 10px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;

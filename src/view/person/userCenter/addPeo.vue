@@ -51,6 +51,7 @@
           name="identityType"
           label="有效证件"
           input-align="right"
+          right-icon="arrow"
           @click="identityTypeShow = true"
           disabled
           v-model="identityTypeText"
@@ -80,6 +81,7 @@
           name="ticketType"
           label="预约票种"
           input-align="right"
+          right-icon="arrow"
           @click="ticketTypeShow = true"
           disabled
           v-model="ticketTypeText"
@@ -404,9 +406,9 @@ export default {
       justify-content: center;
       align-items: center;
       .delete {
-        width: 13px;
-        height: 14px;
-        margin-right: 6px;
+        width: 15px;
+        height: 15px;
+        margin-right: 15px;
         img {
           width: 100%;
           height: 100%;

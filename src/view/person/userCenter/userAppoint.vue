@@ -347,7 +347,7 @@ export default {
     }
     .userAppoint >>> .van-cell{
         /*height: 30px;*/
-        padding:3px 20px
+        padding:3px 10px
     }
     .userAppoint >>>.van-cell:not(:last-child)::after{
         border:none;
@@ -408,7 +408,7 @@ export default {
          padding-left: 10px;
      }
     .listHead span:first-child {
-        padding-left: 10px;
+        /* padding-left: 10px; */
     }
     .listHead span:last-child {
         float: right;
@@ -427,7 +427,7 @@ export default {
         /*line-height: 39px;*/
         color: #333333;
         font-weight: bold;
-        padding-left: 20px;
+        padding-left: 10px;
         /*padding-bottom: 10px;*/
         /*border-bottom: 1px solid #eeeeee;*/
         background-color: #fff;

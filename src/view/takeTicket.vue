@@ -38,6 +38,7 @@
         name="identityType"
         label="有效证件"
         input-align="right"
+        right-icon="arrow"
         @click="identityTypeShow = true"
         disabled
         v-model="identityTypeText"

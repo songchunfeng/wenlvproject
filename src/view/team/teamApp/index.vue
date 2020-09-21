@@ -370,6 +370,9 @@ export default {
         margin-top: 10px;
         top: 10px;
     }
+    .van-swipe {
+      background-color: #fff;
+    }
   .scenicInfo {
     width: 100%;
     height: 98px;

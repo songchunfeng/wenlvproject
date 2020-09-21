@@ -45,6 +45,7 @@
           name="identityType"
           label="有效证件"
           input-align="right"
+          right-icon="arrow"
           @click="identityTypeShow = true"
           disabled
           v-model="identityTypeText"
@@ -74,6 +75,7 @@
           name="ticketType"
           label="预约票种"
           input-align="right"
+          right-icon="arrow"
           @click="ticketTypeShow = true"
           disabled
           v-model="ticketTypeText"
@@ -144,8 +146,8 @@ export default {
     index: Number,
     checkBySelfs: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   components: {
     "van-form": Form,
@@ -154,7 +156,7 @@ export default {
     "van-picker": Picker,
   },
   watch: {
-    checkBySelfs: function(newVal) {
+    checkBySelfs: function (newVal) {
       if (newVal) {
         this.checkBySelf();
       }
@@ -173,7 +175,7 @@ export default {
           this.travelUser.identityCard = "";
         }
       },
-      deep: true
+      deep: true,
     },
   },
   created() {
@@ -220,7 +222,7 @@ export default {
   },
   methods: {
     // 校验姓名
-    checkName(){
+    checkName() {
       let check = this.$commonUtils.checkName(this.travelUser.surname);
       if (check != "success") {
         Toast(this.$commonUtils.checkName(this.travelUser.surname));
@@ -228,8 +230,8 @@ export default {
       }
     },
     // 校验身份证号
-    checkIdNo(){
-      if (this.travelUser.identityType == '0') {
+    checkIdNo() {
+      if (this.travelUser.identityType == "0") {
         let check = this.$commonUtils.checkIDNo(this.travelUser.identityCard);
         if (check != "success") {
           Toast(this.$commonUtils.checkIDNo(this.travelUser.identityCard));
@@ -238,7 +240,7 @@ export default {
       }
     },
     //  校验手机号
-    checkPhone(){
+    checkPhone() {
       let check = this.$commonUtils.checkPhoneNo(this.travelUser.telphone);
       if (check != "success") {
         Toast(this.$commonUtils.checkPhoneNo(this.travelUser.telphone));
@@ -316,6 +318,9 @@ export default {
   }
   .travelForm {
     width: 100%;
+    .van-cell:not(:last-child)::after {
+      border: none;
+    }
     .van-cell {
       padding-left: 0px;
       padding-right: 0px;
@@ -326,10 +331,6 @@ export default {
     /deep/ .van-field__control:disabled {
       color: #333;
     }
-    .van-cell:not(:last-child)::after {
-      border: none;
-    }
-    
   }
   .bottomBtn {
     width: 100%;
