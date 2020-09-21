@@ -149,7 +149,6 @@ export default {
   name: "addTravel",
   props: {
     index: Number,
-    
   },
   components: {
     "van-form": Form,
@@ -247,7 +246,7 @@ export default {
   methods: {
     // 确定
     confirm() {
-        console.log('con');
+      console.log("con");
       this.$axios({
         url: "/api/user-identity-info/appsaveuserinfo",
         method: "post",
@@ -432,9 +431,13 @@ export default {
       padding-right: 0px;
       font-family: MicrosoftYaHei;
       color: #333333;
+      border-bottom: 1px solid #eeeeee;
     }
     /deep/ .van-field__control:disabled {
       color: #333;
+    }
+    .van-cell:not(:last-child)::after {
+      border: none;
     }
   }
   .bottomBtn {
@@ -445,7 +448,6 @@ export default {
     padding: 12px;
     box-sizing: border-box;
     border-bottom: 1px solid #eeeeee;
-    border-top: 1px solid #eeeeee;
     .line {
       width: 1px;
       height: 12px;

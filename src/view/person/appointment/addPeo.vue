@@ -320,6 +320,7 @@ export default {
       padding-left: 0px;
       padding-right: 0px;
       font-family: MicrosoftYaHei;
+      border-bottom: 1px solid #eeeeee;
       color: #333333;
     }
     /deep/ .van-field__control:disabled {
@@ -328,9 +329,7 @@ export default {
     .van-cell:not(:last-child)::after {
       border: none;
     }
-    .van-cell[data-v-464440d2] {
-      border-bottom: 1px solid #eeeeee;
-    }
+    
   }
   .bottomBtn {
     width: 100%;
