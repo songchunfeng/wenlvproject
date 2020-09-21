@@ -56,7 +56,7 @@
       <div class="travelInfoTitle">
         <div class="titleName">
           取票信息
-          <span class="numberMax">(需预留1位出行人的信息，用于现场兑换门票.)</span>
+          <span class="numberMax">(需预留1位出行人的信息，用于现场兑换门票)</span>
         </div>
         <!-- <div class="numberMax">(同一用户同一预约日期限购1份，每单最多可预约5张门票)</div> -->
       </div>

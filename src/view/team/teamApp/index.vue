@@ -31,8 +31,8 @@
           <div class="checkTimeCon" v-if="checkTime != ''">{{checkTiTime(checkTime)}}</div>
         </div>
         <div class="travelPeo">
-          <div class="travelPeoLable">导游-旅行团名称:</div>
-          <van-field v-model="teamName" placeholder="请输入旅行团名称" />
+          <div class="travelPeoLable">旅行团名称:</div>
+          <van-field v-model="teamName" placeholder="请输入导游-旅行团名称" />
         </div>
       </div>
       <div class="teamLine"></div>
@@ -89,7 +89,7 @@
       <div class="travelInfoTitle">
         <div class="titleName">
           取票信息
-          <span class="numberMax">(需预留导游的信息，用于预约成功的信息发送至导游手机，导游务必保管好该条短信，至景区后需出示该短信进行订单查询及确认。)</span>
+          <span class="numberMax">(需预留导游的信息，用于预约成功的信息发送至导游手机，导游务必保管好该条短信，至景区后需出示该短信进行订单查询及确认)</span>
         </div>
         <!-- <div class="numberMax">(同一用户同一预约日期限购1份，每单最多可预约5张门票)</div> -->
       </div>
@@ -590,7 +590,7 @@ export default {
         align-items: center;
         justify-content: flex-start;
         .travelPeoLable {
-          width: 200px;
+          width: 140px;
           font-size: 15px;
           font-family: MicrosoftYaHei;
           color: #333333;
