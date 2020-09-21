@@ -345,6 +345,10 @@ export default {
         /*min-height: vh;*/
         background: #f9f9f9;
     }
+    .userAppoint >>> .van-cell{
+        /*height: 30px;*/
+        padding:3px 20px
+    }
     .userAppoint >>>.van-cell:not(:last-child)::after{
         border:none;
     }
@@ -391,17 +395,18 @@ export default {
         color: #3983e5;
     }
     .listHead {
-        box-sizing: border-box;
-        height: 39px;
-        width: 100%;
-        font-size: 16px;
-        line-height: 39px;
-        color: #333333;
-        font-weight: bold;
-        /*border-top: 1px solid #eeeeee;*/
-        background-color: #fff;
-        padding-left: 10px;
-    }
+         box-sizing: border-box;
+         height: 39px;
+         padding-top: 10px;
+         width: 100%;
+         font-size: 16px;
+         line-height: 39px;
+         color: #333333;
+         font-weight: bold;
+         /*border-top: 1px solid #eeeeee;*/
+         background-color: #fff;
+         padding-left: 10px;
+     }
     .listHead span:first-child {
         padding-left: 10px;
     }
@@ -414,14 +419,16 @@ export default {
     }
     .listHeadPerson {
         box-sizing: border-box;
+        padding-top: 10px;
         border-top: 1px solid #eeeeee;
         height: 39px;
         width: 100%;
         font-size: 15px;
-        line-height: 39px;
+        /*line-height: 39px;*/
         color: #333333;
         font-weight: bold;
-        padding-left: 15px;
+        padding-left: 20px;
+        /*padding-bottom: 10px;*/
         /*border-bottom: 1px solid #eeeeee;*/
         background-color: #fff;
     }

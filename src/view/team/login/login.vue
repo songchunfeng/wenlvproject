@@ -10,6 +10,7 @@
                                 v-model="username"
                                 placeholder="手机号码"
                                 :rules="[{ required: true, message: '请填写用户名' }]"
+                                @blur="telBlur(username)"
                         />
                         <van-field
                                 v-model="password"
@@ -139,30 +140,45 @@
             onSubmit(){
                 let params ={ "imgCode": this.code , "loginType":0, "type" : 1,"passWord":this.password, "phoneCode": "",
                     "userName": this.username
-                }
+                };
                 this.$axios({
-                    url:'/api/user/login',
-                    method:'post',
-                    data:params,
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                }).then(res=>{
-                    console.log(res)
-                    if(res.code==20000){
-                        this.$commonUtils.setSessionItem('token',res.data.Authorization)
-                        this.$commonUtils.setSessionItem('loginMsg',JSON.stringify(res.data.rows));
-                        if(res.data.rows.userType==1){
-                            this.$router.push('/teamList')
-                        }else if(res.data.rows.userType==0){
-                            this.$router.push('/preList')
-                        }
+                    url:'/api/user/findUser',
+                    method:'get',
+                    params:{telphone:this.username,
+                        type:1}
+                })
+                .then(res=>{
+                    if(res.code!==20001){
+                        Toast.fail('此用户未注册，请先注册')
                     }else{
-                        Toast.fail(res.message)
-                        this.changecodeImg()
+                        this.$axios({
+                            url:'/api/user/login',
+                            method:'post',
+                            data:params,
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        }).then(res=>{
+                            console.log(res)
+                            if(res.code==20000){
+                                this.$commonUtils.setSessionItem('token',res.data.Authorization)
+                                this.$commonUtils.setSessionItem('loginMsg',JSON.stringify(res.data.rows))
+                                if(res.data.rows.userType==1){
+                                    this.$router.push('/teamList')
+                                }else if(res.data.rows.userType==0){
+                                    this.$router.push('/preList')
+                                }
+                            }else{
+                                Toast.fail(res.message)
+                                this.changecodeImg()
+                                this.code=''
+                            }
+                        }).catch(err=>{
+                            Toast(err)
+                        })
                     }
                 }).catch(err=>{
-                    Toast(err)
+                    Toast.fail(err)
                 })
             },
             //短信登录
@@ -171,27 +187,43 @@
                     "userName": this.msgUserName
                 }
                 this.$axios({
-                    url:'/api/user/login',
-                    method:'post',
-                    data:params,
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                }).then(res=>{
-                    if(res.code==20000){
-                        this.$commonUtils.setSessionItem('token',res.data.Authorization)
-                        this.$commonUtils.setSessionItem('loginMsg',JSON.stringify(res.data.rows))
-                        if(res.data.rows.userType==1){
-                            this.$router.push('/teamList')
-                        }else if(res.data.rows.userType==0){
-                            this.$router.push('/preList')
-                        }
+                    url:'/api/user/findUser',
+                    method:'get',
+                    params:{telphone:this.msgUserName,
+                        type:1}
+                })
+                .then(res=>{
+                    if(res.code!==20001){
+                        Toast.fail('此用户未注册，请先注册')
                     }else{
-                        Toast.fail(res.message)
-                        this.changecodeImg()
+                        this.$axios({
+                            url:'/api/user/login',
+                            method:'post',
+                            data:params,
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        }).then(res=>{
+                            console.log(res)
+                            if(res.code==20000){
+                                this.$commonUtils.setSessionItem('token',res.data.Authorization)
+                                this.$commonUtils.setSessionItem('loginMsg',JSON.stringify(res.data.rows))
+                                if(res.data.rows.userType==1){
+                                    this.$router.push('/teamList')
+                                }else if(res.data.rows.userType==0){
+                                    this.$router.push('/preList')
+                                }
+                            }else{
+                                Toast.fail(res.message)
+                                this.changecodeImg()
+                                this.code=''
+                            }
+                        }).catch(err=>{
+                            Toast(err)
+                        })
                     }
                 }).catch(err=>{
-                    Toast(err)
+                    Toast.fail(err)
                 })
             },
             //获取短信验证码

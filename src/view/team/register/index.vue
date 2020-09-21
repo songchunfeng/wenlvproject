@@ -139,7 +139,7 @@
           <div class="toVertify" v-show="show">
             <img src="../../../assets/images/提醒.png" alt />
             <span>
-              未查询到该公司信息，点击此处跳转认证
+              {{content}}，点击此处跳转认证
               <span style="color: #3983E5;" @click="toTourGuide">跳转认证</span>
             </span>
           </div>
@@ -236,6 +236,7 @@ export default {
             inuser: require("../../../assets/images/个人 -未选中(1).png"),
         },
         activeFoot:0,
+        content : '请先进行旅行社认证'
     };
   },
   methods: {
@@ -303,6 +304,7 @@ export default {
               this.show = false;
             } else {
               this.show = true;
+              this.content= '未查询到该公司信息'
             }
           })
           .catch((err) => {
@@ -351,17 +353,6 @@ export default {
       let code = this.$commonUtils.checkPhoneNo(this.telephone);
       if (code != "success") {
         Toast.fail("手机号输入有误，请重新输入");
-      } else {
-        this.$axios
-          .get("/api/user/findUser?telphone=" + this.telephone + "?type=1")
-          .then((res) => {
-            if (res.code !== 20000) {
-              Toast.fail(res.message);
-            }
-          })
-          .catch((err) => {
-            Toast.fail(err);
-          });
       }
     },
     checkpassword(val) {
@@ -399,10 +390,10 @@ export default {
 </script>
 
 <style scoped>
-    .register >>>  .van-nav-bar--fixed {
-        margin-top: 10px;
-        top: 10px;
-    }
+    /*.register >>>  .van-nav-bar--fixed {*/
+        /*margin-top: 10px;*/
+        /*top: 10px;*/
+    /*}*/
 .customLine {
   width: 100%;
   height: 1px;
@@ -438,12 +429,13 @@ export default {
   height: 58px;
   font-size: 15px;
   color: #333333;
+    padding: 10px 0px;
   font-family: MicrosoftYaHei;
   /*font-weight: bold;*/
   line-height: 38px;
 }
 .van-cell {
-  border-bottom: 1px solid#ebedf0;
+  border-bottom: 1px solid #ebedf0;
 }
 .customField {
     border-bottom: none;
@@ -493,7 +485,6 @@ export default {
   box-sizing: border-box;
 }
 .upload {
-  padding-left: 26px;
   width: 78px;
   height: 78px;
 }
@@ -522,6 +513,8 @@ export default {
 .cell {
   height: 78px;
   background-color: #fff;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ebedf0;
 }
 
 .cell >>> .van-field__label {
@@ -531,7 +524,7 @@ export default {
   width: 12px;
   height: 12px;
   vertical-align: center;
-  margin-left: 26px;
+  margin-left: 10px;
   margin-right: 5px;
 }
 .toVertify {

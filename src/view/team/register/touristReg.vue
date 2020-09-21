@@ -332,6 +332,7 @@ export default {
   height: 58px;
   font-size: 15px;
   color: #333333;
+    padding: 10px 0px;
   font-family: MicrosoftYaHei;
   /*font-weight: bold;*/
   line-height: 38px;
@@ -377,7 +378,7 @@ export default {
   box-sizing: border-box;
 }
 .upload {
-  padding-left: 26px;
+  /*padding-left: 26px;*/
   width: 78px;
   height: 78px;
 }
