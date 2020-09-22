@@ -175,7 +175,6 @@ export default {
     "travelUser.identityType": {
       handler(newVal) {
         if (newVal) {
-          console.log("identityType", newVal);
           this.travelUser.identityCard = "";
           if (newVal == "0") {
             this.identityTypeText = "居民身份证";
@@ -190,7 +189,6 @@ export default {
     "travelUser.ticketType": {
       handler(newVal) {
         if (newVal) {
-          console.log("ticketType", newVal);
           if (newVal == "0") {
             this.ticketTypeText = "普通票";
           }
@@ -248,7 +246,6 @@ export default {
   methods: {
     // 确定
     confirm() {
-      console.log("con");
       this.$axios({
         url: "/api/user-identity-info/appsaveuserinfo",
         method: "post",
@@ -265,7 +262,6 @@ export default {
         },
       })
         .then((res) => {
-          console.log(res);
           if (res.code == 20000) {
             this.$emit("getListAfresh");
           } else {
@@ -320,7 +316,6 @@ export default {
           },
         })
           .then((res) => {
-            console.log(res);
             if (res.code == 20000) {
               this.$emit("getListAfresh");
             } else {
@@ -363,7 +358,6 @@ export default {
     },
     // 校验失败
     onFailed(error) {
-      console.log(error);
       let arr = [];
       for (let i = 0; i < error.errors.length; i++) {
         arr.push(error.errors[i].message);

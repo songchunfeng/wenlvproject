@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { Checkbox, CheckboxGroup } from "vant";
+import { Checkbox, CheckboxGroup, Toast } from "vant";
 export default {
   name: "commonPeo",
   props: {
@@ -35,15 +35,19 @@ export default {
       this.$emit("close");
     },
     checkComPeo() {
-        let arr = []
+      if (this.check.length > 5) {
+        Toast.fail('最多只能选择5人')
+      } else {
+        let arr = [];
         for (let i = 0; i < this.check.length; i++) {
-            for (let j = 0; j < this.comPeoList.length; j++) {
-                if (this.check[i] == this.comPeoList[j].id) {
-                    arr.push(this.comPeoList[j])
-                }
+          for (let j = 0; j < this.comPeoList.length; j++) {
+            if (this.check[i] == this.comPeoList[j].id) {
+              arr.push(this.comPeoList[j]);
             }
+          }
         }
-        this.$emit('checkComPeo',arr)
+        this.$emit("checkComPeo", arr);
+      }
     },
   },
 };

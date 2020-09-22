@@ -34,6 +34,7 @@
         <div class="travelPeo">
           <div class="travelPeoLable">出行人：</div>
           <div class="travelPeoCon">{{comPeoName}}</div>
+          <!-- <div class="travelPeoCon">张三、张三、张三、张三、张三、张三、张三</div> -->
         </div>
         <div class="checkPeoBox">
           <div class="comPeo" @click="checkComPeoShow">添加常用出行人</div>
@@ -114,7 +115,6 @@ export default {
         if (newVal) {
           let arr = [];
           for (let i = 0; i < newVal.length; i++) {
-            console.log(newVal[i].data.surname);
             if (newVal[i].data.surname != undefined) {
               arr.push(newVal[i].data.surname);
             }
@@ -134,7 +134,6 @@ export default {
         if (newVal) {
           let arr = [];
           for (let i = 0; i < newVal.length; i++) {
-            console.log(newVal[i].surname);
             if (newVal[i].surname != undefined) {
               arr.push(newVal[i].surname);
             }
@@ -209,7 +208,6 @@ export default {
                   let travelUserVo = [];
                   travelUserVo.push(...targetAddPeo);
                   travelUserVo.push(...that.comPeo);
-                  console.log(travelUserVo, that.reserveVo);
                   let params = {
                     identity_card: that.reserveVo.identity_card,
                     identity_type: that.reserveVo.identity_type,
@@ -521,7 +519,7 @@ export default {
 
     .travelInfoTime {
       width: 355px;
-      height: 175px;
+      min-height: 175px;
       background: #f8f8f8;
       border-radius: 5px;
       margin-top: 15px;
@@ -584,13 +582,14 @@ export default {
         align-items: center;
         justify-content: flex-start;
         .travelPeoLable {
+          min-width: 70px;
           font-size: 15px;
           font-family: MicrosoftYaHei;
           color: #333333;
           letter-spacing: 1px;
           display: flex;
           align-items: center;
-          justify-content: center;
+          justify-content: flex-start;
         }
         .travelPeoCon {
           font-size: 15px;
@@ -599,7 +598,7 @@ export default {
           letter-spacing: 1px;
           display: flex;
           align-items: center;
-          justify-content: center;
+          justify-content: flex-start;
         }
       }
       .checkPeoBox {

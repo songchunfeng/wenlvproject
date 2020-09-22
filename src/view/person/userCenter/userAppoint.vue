@@ -31,16 +31,16 @@
               <span>{{getTicket(item.ticket)}}</span>
             </div>
             <div class="headContent">
-            <van-cell title="订单编号:" :value="item.id" />
-            <van-cell title="创建时间:" :value="item.gmtCreate" />
-            <van-cell title="预约时间:" :value="item.tourTimeInfo" />
-            <van-cell title="验票时间:" :value="item.tcmAts" />
-            <van-cell title="预约凭证:" :value="item.voucher" />
-            <van-cell title="联系人:" :value="item.linkName" />
-            <van-cell title="联系电话:" :value="item.telphone" />
-            <van-cell title="证件号码:" :value="item.identityCard" />
-            <van-cell title="普通票:" :value="item.ordinaryNum+'张'" />
-            <van-cell title="特殊票:" :value="item.specialNum+'张'" />
+              <van-cell title="订单编号:" :value="item.id" />
+              <van-cell title="创建时间:" :value="item.gmtCreate" />
+              <van-cell title="预约时间:" :value="item.tourTimeInfo" />
+              <van-cell title="验票时间:" :value="item.tcmAts" />
+              <van-cell title="预约凭证:" :value="item.voucher" />
+              <van-cell title="联系人:" :value="item.linkName" />
+              <van-cell title="联系电话:" :value="item.telphone" />
+              <van-cell title="证件号码:" :value="item.identityCard" />
+              <van-cell title="普通票:" :value="item.ordinaryNum+'张'" />
+              <van-cell title="特殊票:" :value="item.specialNum+'张'" />
             </div>
             <div class="person" v-show="showpersonList && i==index">
               <div v-for="(ite,ind) in personList" :key="ind">
@@ -126,7 +126,6 @@ export default {
   },
   methods: {
     text() {
-      console.log(1);
       location.reload();
     },
     changeIcon() {
@@ -190,7 +189,6 @@ export default {
         params: { voucher: item.voucher },
       })
         .then((res) => {
-          console.log(res);
           if (res.code == 20000) {
             this.personList = res.data.rows;
             this.i = index;
@@ -301,7 +299,6 @@ export default {
         },
       })
         .then((res) => {
-          // console.log(res)
           if (res.code == 20000) {
             Toast.success("改签成功");
             location.reload();
@@ -341,191 +338,191 @@ export default {
 </script>
 
 <style scoped>
-    .userAppoint {
-        /*min-height: vh;*/
-        background: #f9f9f9;
-    }
-    .userAppoint >>> .van-cell{
-        /*height: 30px;*/
-        padding:3px 10px
-    }
-    .userAppoint >>>.van-cell:not(:last-child)::after{
-        border:none;
-    }
-    .chooseStatus {
-        position: relative;
-        height: 36px;
-        font-size: 13px;
-        font-family: MicrosoftYaHei;
-        color: #999999;
-        text-align: right;
-        padding-right: 10px;
-        line-height: 36px;
-    }
-    .date {
-        height: auto;
-        padding-bottom: 10px;
-    }
-    .dateChose {
-        margin-top: 10px;
-        width: 100%;
-        height: 140px;
-        background: #ffffff;
-        padding: 15px 10px 0px 10px;
-        box-sizing: border-box;
-        border-top: 1px solid #eeeeee;
-    }
-    .i_img {
-        width: 15px;
-        height: 8px;
-        display: inline-block;
-        background-image: url("../../../assets/images/showUp.png");
-        background-size: 100% 100%;
-        background-position: 0px;
-    }
-    .i_imgActive {
-        width: 15px;
-        height: 8px;
-        display: inline-block;
-        background-image: url("../../../assets/images/展开-灰.png");
-        background-size: 100% 100%;
-        background-position: 0px;
-    }
-    .fsActive {
-        color: #3983e5;
-    }
-    .listHead {
-         box-sizing: border-box;
-         height: 39px;
-         padding-top: 10px;
-         width: 100%;
-         font-size: 16px;
-         line-height: 39px;
-         color: #333333;
-         font-weight: bold;
-         /*border-top: 1px solid #eeeeee;*/
-         background-color: #fff;
-         padding-left: 10px;
-     }
-    .listHead span:first-child {
-        /* padding-left: 10px; */
-    }
-    .listHead span:last-child {
-        float: right;
-        margin-right: 10px;
-        color: #3983e5;
-        font-size: 14px;
-        font-weight: 400;
-    }
-    .listHeadPerson {
-        box-sizing: border-box;
-        padding-top: 10px;
-        border-top: 1px solid #eeeeee;
-        height: 39px;
-        width: 100%;
-        font-size: 15px;
-        /*line-height: 39px;*/
-        color: #333333;
-        font-weight: bold;
-        padding-left: 10px;
-        /*padding-bottom: 10px;*/
-        /*border-bottom: 1px solid #eeeeee;*/
-        background-color: #fff;
-    }
-    .statusList {
-        z-index: 100;
-        background-color: #000000;
-        position: absolute;
-        right: 0;
-    }
-    .statusList .status {
-        width: 101px;
-        height: 39px;
-        background: rgba(153, 153, 153, 0.9);
-        text-align: center;
-        color: #fff;
-        padding-left: 9px;
-        padding-right: 9px;
-    }
-    .main {
-        /*padding: 0px 10px;*/
-        box-sizing: border-box;
-        margin-bottom: 60px;
-    }
-    .content {
-        width: 100%;
-    }
-    .content >>> .van-cell {
-        color: #999999;
-    }
-    .content >>> .van-cell__title,
-    .van-cell__value {
-        flex: inherit;
-        font-size: 15px;
-        margin-right: 10px;
-    }
-    .content-footer {
-        height: 44px;
-        padding-left: 10px;
-        padding-right: 10px;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        border-top: 1px solid #eeeeee;
-    }
-    .lookAll {
-        color: #3983e5;
-        font-size: 14px;
-        width: 40%;
-        padding-left: 5px;
-    }
-    .lookAll img {
-        margin-left: 5px;
-        width: 15px;
-        height: 8px;
-    }
-    .btn {
-        width: 60%;
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-end;
-    }
-    .exit {
-        width: 60px;
-        height: 30px;
-        background: #3983e5;
-        border-radius: 24px;
-        line-height: 30px;
-        font-size: 15px;
-        font-family: MicrosoftYaHei;
-        color: #ffffff;
-        text-align: center;
-        margin-right: 10px;
-    }
-    .quitreserve {
-        width: 60px;
-        height: 30px;
-        background: #eeeeee;
-        border-radius: 24px;
-        font-size: 15px;
-        font-family: MicrosoftYaHei;
-        color: #999999;
-        text-align: center;
-        line-height: 30px;
-    }
+.userAppoint {
+  /*min-height: vh;*/
+  background: #f9f9f9;
+}
+.userAppoint >>> .van-cell {
+  /*height: 30px;*/
+  padding: 3px 10px;
+}
+.userAppoint >>> .van-cell:not(:last-child)::after {
+  border: none;
+}
+.chooseStatus {
+  position: relative;
+  height: 36px;
+  font-size: 13px;
+  font-family: MicrosoftYaHei;
+  color: #999999;
+  text-align: right;
+  padding-right: 10px;
+  line-height: 36px;
+}
+.date {
+  height: auto;
+  padding-bottom: 10px;
+}
+.dateChose {
+  margin-top: 10px;
+  width: 100%;
+  height: 140px;
+  background: #ffffff;
+  padding: 15px 10px 0px 10px;
+  box-sizing: border-box;
+  border-top: 1px solid #eeeeee;
+}
+.i_img {
+  width: 15px;
+  height: 8px;
+  display: inline-block;
+  background-image: url("../../../assets/images/showUp.png");
+  background-size: 100% 100%;
+  background-position: 0px;
+}
+.i_imgActive {
+  width: 15px;
+  height: 8px;
+  display: inline-block;
+  background-image: url("../../../assets/images/展开-灰.png");
+  background-size: 100% 100%;
+  background-position: 0px;
+}
+.fsActive {
+  color: #3983e5;
+}
+.listHead {
+  box-sizing: border-box;
+  height: 39px;
+  padding-top: 10px;
+  width: 100%;
+  font-size: 16px;
+  line-height: 39px;
+  color: #333333;
+  font-weight: bold;
+  /*border-top: 1px solid #eeeeee;*/
+  background-color: #fff;
+  padding-left: 10px;
+}
+.listHead span:first-child {
+  /* padding-left: 10px; */
+}
+.listHead span:last-child {
+  float: right;
+  margin-right: 10px;
+  color: #3983e5;
+  font-size: 14px;
+  font-weight: 400;
+}
+.listHeadPerson {
+  box-sizing: border-box;
+  padding-top: 10px;
+  border-top: 1px solid #eeeeee;
+  height: 39px;
+  width: 100%;
+  font-size: 15px;
+  /*line-height: 39px;*/
+  color: #333333;
+  font-weight: bold;
+  padding-left: 10px;
+  /*padding-bottom: 10px;*/
+  /*border-bottom: 1px solid #eeeeee;*/
+  background-color: #fff;
+}
+.statusList {
+  z-index: 100;
+  background-color: #000000;
+  position: absolute;
+  right: 0;
+}
+.statusList .status {
+  width: 101px;
+  height: 39px;
+  background: rgba(153, 153, 153, 0.9);
+  text-align: center;
+  color: #fff;
+  padding-left: 9px;
+  padding-right: 9px;
+}
+.main {
+  /*padding: 0px 10px;*/
+  box-sizing: border-box;
+  margin-bottom: 60px;
+}
+.content {
+  width: 100%;
+}
+.content >>> .van-cell {
+  color: #999999;
+}
+.content >>> .van-cell__title,
+.van-cell__value {
+  flex: inherit;
+  font-size: 15px;
+  margin-right: 10px;
+}
+.content-footer {
+  height: 44px;
+  padding-left: 10px;
+  padding-right: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-top: 1px solid #eeeeee;
+}
+.lookAll {
+  color: #3983e5;
+  font-size: 14px;
+  width: 40%;
+  padding-left: 5px;
+}
+.lookAll img {
+  margin-left: 5px;
+  width: 15px;
+  height: 8px;
+}
+.btn {
+  width: 60%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+.exit {
+  width: 60px;
+  height: 30px;
+  background: #3983e5;
+  border-radius: 24px;
+  line-height: 30px;
+  font-size: 15px;
+  font-family: MicrosoftYaHei;
+  color: #ffffff;
+  text-align: center;
+  margin-right: 10px;
+}
+.quitreserve {
+  width: 60px;
+  height: 30px;
+  background: #eeeeee;
+  border-radius: 24px;
+  font-size: 15px;
+  font-family: MicrosoftYaHei;
+  color: #999999;
+  text-align: center;
+  line-height: 30px;
+}
 
-    .dateBtn {
-        margin-bottom: 10px;
-        padding-right: 10px;
-        display: flex;
-        align-items: flex-end;
-        justify-content: flex-end;
-    }
-    .msgnull {
-        width: 100%;
-        line-height: 50vh;
-        color: #999999;
-        text-align: center;
-        font-size: 16px;
-    }
+.dateBtn {
+  margin-bottom: 10px;
+  padding-right: 10px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+.msgnull {
+  width: 100%;
+  line-height: 50vh;
+  color: #999999;
+  text-align: center;
+  font-size: 16px;
+}
 </style>

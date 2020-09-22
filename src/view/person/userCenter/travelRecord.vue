@@ -56,7 +56,6 @@ export default {
         },
       })
         .then((res) => {
-          console.log(res);
           if (res.code == 20000) {
             if (res.data.rows.length != 0) {
               let arr = res.data.rows;
@@ -68,9 +67,7 @@ export default {
                 let obj = {};
                 this.addPeo.push(obj);
               }
-              console.log("huoqu");
               this.$nextTick(() => {
-                console.log(arr);
                 for (let i = 0; i < arr.length; i++) {
                   this.$refs.add[i].travelUser.id = arr[i].id;
                   this.$refs.add[i].travelUser.surname = arr[i].surname;
@@ -94,7 +91,6 @@ export default {
                   }
                 }
               });
-              console.log(3);
             }
           } else {
             Toast.fail({
@@ -112,15 +108,15 @@ export default {
     // 新增
     addTravel() {
       this.doSelfCheck = false;
-      //   let obj = {
-      //     key: new Date().getTime(),
-      //     data: {},
-      //   };
-      let obj = {};
-      this.addPeo.push(obj);
-      this.$nextTick(() => {
-        this.$refs.add[this.addPeo.length - 1].editShow = true;
-      });
+      if (this.addPeo.length < 10) {
+        let obj = {};
+        this.addPeo.push(obj);
+        this.$nextTick(() => {
+          this.$refs.add[this.addPeo.length - 1].editShow = true;
+        });
+      } else {
+        Toast.fail("最多只能10人");
+      }
     },
     // 获取出行人信息
     getUserFormDate(obj) {

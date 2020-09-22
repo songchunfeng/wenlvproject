@@ -1,6 +1,6 @@
 <template>
   <div>
-      <router-view />
+    <router-view />
     <van-tabbar v-model="active" route>
       <van-tabbar-item to="/preList">
         <span>首页</span>
@@ -26,12 +26,12 @@ export default {
     "van-tabbar": Tabbar,
     "van-tabbar-item": TabbarItem,
   },
-    watch:{
-      tabPath(old,now){
-          console.log(old);
-          console.log(now);
-      }
-    },
+  watch: {
+    // tabPath(old, now) {
+    //   console.log(old);
+    //   console.log(now);
+    // },
+  },
   data() {
     return {
       active: 0,
@@ -41,17 +41,17 @@ export default {
         user: require("../../assets/images/首页已选择 (2).png"),
         inuser: require("../../assets/images/个人 -未选中(1).png"),
       },
-        tabPath:''
+      tabPath: "",
     };
   },
-    mounted() {
-            let user = JSON.parse(sessionStorage.getItem('loginMsg'))
-            if(window.sessionStorage.getItem('token') && user.userType ==0 ){
-                  this.tabPath='/perUserCenter'
-            }else{
-                this.tabPath='/perUser'
-            }
+  mounted() {
+    let user = JSON.parse(sessionStorage.getItem("loginMsg"));
+    if (window.sessionStorage.getItem("token") && user.userType == 0) {
+      this.tabPath = "/perUserCenter";
+    } else {
+      this.tabPath = "/perUser";
     }
+  },
 };
 </script>
 

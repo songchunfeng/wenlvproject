@@ -138,7 +138,6 @@ export default {
   },
   methods: {
     text() {
-      console.log(1);
       location.reload();
     },
     changeIcon() {
@@ -184,13 +183,13 @@ export default {
         return "特殊票";
       }
     },
-      //换身份证号
-      getId(val){
-        let str =val;
-        let font=str.substr(0,3);
-        let after =str.substr(-4);
-       return font+'XXXX'+after
-      },
+    //换身份证号
+    getId(val) {
+      let str = val;
+      let font = str.substr(0, 3);
+      let after = str.substr(-4);
+      return font + "XXXX" + after;
+    },
     //收起
     pack(index) {
       // this.=true;
@@ -209,7 +208,6 @@ export default {
         params: { voucher: item.voucher },
       })
         .then((res) => {
-          console.log(res);
           if (res.code == 20000) {
             this.personList = res.data.rows;
             this.i = index;
@@ -364,12 +362,12 @@ export default {
   min-height: 100%;
   background: #f9f9f9;
 }
-.userAppoint >>> .van-cell{
-    /*height: 30px;*/
-    padding:3px 10px
+.userAppoint >>> .van-cell {
+  /*height: 30px;*/
+  padding: 3px 10px;
 }
-.userAppoint >>>.van-cell:not(:last-child)::after{
-    border:none;
+.userAppoint >>> .van-cell:not(:last-child)::after {
+  border: none;
 }
 .chooseStatus {
   position: relative;
@@ -401,17 +399,17 @@ export default {
   color: #3983e5;
 }
 .listHead {
-    box-sizing: border-box;
-    height: 39px;
-    padding-top: 10px;
-    width: 100%;
-    font-size: 16px;
-    line-height: 39px;
-    color: #333333;
-    font-weight: bold;
-    /*border-top: 1px solid #eeeeee;*/
-    background-color: #fff;
-    padding-left: 10px;
+  box-sizing: border-box;
+  height: 39px;
+  padding-top: 10px;
+  width: 100%;
+  font-size: 16px;
+  line-height: 39px;
+  color: #333333;
+  font-weight: bold;
+  /*border-top: 1px solid #eeeeee;*/
+  background-color: #fff;
+  padding-left: 10px;
 }
 .listHead span:first-child {
   /* padding-left: 10px; */
@@ -424,19 +422,19 @@ export default {
   font-weight: 400;
 }
 .listHeadPerson {
-    box-sizing: border-box;
-    padding-top: 10px;
-    border-top: 1px solid #eeeeee;
-    height: 39px;
-    width: 100%;
-    font-size: 15px;
-    /*line-height: 39px;*/
-    color: #333333;
-    font-weight: bold;
-    padding-left: 10px;
-    /*padding-bottom: 10px;*/
-    /*border-bottom: 1px solid #eeeeee;*/
-    background-color: #fff;
+  box-sizing: border-box;
+  padding-top: 10px;
+  border-top: 1px solid #eeeeee;
+  height: 39px;
+  width: 100%;
+  font-size: 15px;
+  /*line-height: 39px;*/
+  color: #333333;
+  font-weight: bold;
+  padding-left: 10px;
+  /*padding-bottom: 10px;*/
+  /*border-bottom: 1px solid #eeeeee;*/
+  background-color: #fff;
 }
 .statusList {
   z-index: 100;
@@ -475,7 +473,7 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: center;
-    border-top: 1px solid #eeeeee;
+  border-top: 1px solid #eeeeee;
 }
 .lookAll {
   color: #3983e5;
@@ -527,7 +525,7 @@ export default {
   background: #ffffff;
   padding: 15px 10px 0px 10px;
   box-sizing: border-box;
-    border-top: 1px solid #eeeeee;
+  border-top: 1px solid #eeeeee;
 }
 .dateBtn {
   margin-bottom: 10px;
@@ -541,7 +539,7 @@ export default {
   padding-left: 10px;
   padding-right: 10px;
   box-sizing: border-box;
-    margin-bottom: 15px;
+  margin-bottom: 15px;
 }
 .titleRow {
   height: 40px;

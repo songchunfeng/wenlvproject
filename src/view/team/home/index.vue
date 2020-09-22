@@ -85,16 +85,15 @@ export default {
     },
     getList() {
       this.$axios({
-        url: '/api/spot/applist',
+        url: "/api/spot/applist",
         method: "get",
         params: {
-          limit:this.limit,
-          page:this.page,
+          limit: this.limit,
+          page: this.page,
           spotname: "",
         },
       })
         .then((res) => {
-          console.log(res);
           this.loading = false;
           const { rows } = res.data;
           this.list.push(...rows);
@@ -107,8 +106,6 @@ export default {
         .catch((err) => {
           console.log(err);
         });
-
-      
     },
     toScenicInfo(item) {
       window.sessionStorage.setItem("scenicId", item.id);
@@ -124,13 +121,12 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-    /deep/ .van-nav-bar--fixed {
-        margin-top: 10px;
-        top: 10px;
-    }
+  /deep/ .van-nav-bar--fixed {
+    margin-top: 10px;
+    top: 10px;
+  }
   .headBanner {
     width: 100%;
-    
   }
   .noticeBox {
     box-sizing: border-box;

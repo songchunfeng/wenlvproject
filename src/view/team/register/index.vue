@@ -168,20 +168,20 @@
     >
       <read @close="closeRead"></read>
     </van-popup>
-      <van-tabbar v-model="activeFoot" route>
-          <van-tabbar-item to="/preList">
-              <span>首页</span>
-              <template #icon="props">
-                  <img :src="props.active ? icon.active : icon.inactive" />
-              </template>
-          </van-tabbar-item>
-          <van-tabbar-item icon="search" to="/perUser">
-              <span>用户中心</span>
-              <template #icon="props">
-                  <img :src="props.active ? icon.user : icon.inuser" />
-              </template>
-          </van-tabbar-item>
-      </van-tabbar>
+    <van-tabbar v-model="activeFoot" route>
+      <van-tabbar-item to="/preList">
+        <span>首页</span>
+        <template #icon="props">
+          <img :src="props.active ? icon.active : icon.inactive" />
+        </template>
+      </van-tabbar-item>
+      <van-tabbar-item icon="search" to="/perUser">
+        <span>用户中心</span>
+        <template #icon="props">
+          <img :src="props.active ? icon.user : icon.inuser" />
+        </template>
+      </van-tabbar-item>
+    </van-tabbar>
   </div>
 </template>
 
@@ -197,7 +197,7 @@ import {
   Popup,
   Icon,
   Tabbar,
-    TabbarItem
+  TabbarItem,
 } from "vant";
 import read from "../../person/register/registerText";
 export default {
@@ -211,8 +211,8 @@ export default {
     "van-button": Button,
     "van-uploader": Uploader,
     "van-popup": Popup,
-      "van-tabbar": Tabbar,
-      "van-tabbar-item": TabbarItem,
+    "van-tabbar": Tabbar,
+    "van-tabbar-item": TabbarItem,
     read,
   },
   data() {
@@ -229,14 +229,14 @@ export default {
       show: true,
       list: [],
       readShow: false,
-        icon: {
-            active: require("../../../assets/images/首页已选择.png"),
-            inactive: require("../../../assets/images/个人 -未选中.png"),
-            user: require("../../../assets/images/首页已选择 (2).png"),
-            inuser: require("../../../assets/images/个人 -未选中(1).png"),
-        },
-        activeFoot:0,
-        content : '请先进行旅行社认证'
+      icon: {
+        active: require("../../../assets/images/首页已选择.png"),
+        inactive: require("../../../assets/images/个人 -未选中.png"),
+        user: require("../../../assets/images/首页已选择 (2).png"),
+        inuser: require("../../../assets/images/个人 -未选中(1).png"),
+      },
+      activeFoot: 0,
+      content: "请先进行旅行社认证",
     };
   },
   methods: {
@@ -257,7 +257,7 @@ export default {
           tourGuideCode: this.tourGuideCode,
           tourGuideUrl: this.tourGuideUrl,
           usci: this.usci,
-          type:1,
+          type: 1,
         };
         this.$axios({
           url: "/api/teamInfo/teamUserRegister",
@@ -265,7 +265,6 @@ export default {
           data: params,
         })
           .then((res) => {
-            // console.log(res)
             if (res.code == 20000) {
               Toast.success(res.message);
             } else {
@@ -299,12 +298,11 @@ export default {
           params: params,
         })
           .then((res) => {
-            console.log(res);
             if (res.code == 20000) {
               this.show = false;
             } else {
               this.show = true;
-              this.content= '未查询到该公司信息'
+              this.content = "未查询到该公司信息";
             }
           })
           .catch((err) => {
@@ -314,13 +312,11 @@ export default {
     },
     afterRead(file) {
       // 此时可以自行将文件上传至服务器
-      console.log(file);
       var formData = new FormData(); //构造一个 FormData，把后台需要发送的参数添加
       formData.append("file", file.file); //接口需要传的参数
       this.$axios
         .post('/api/picture/getpictureid?msg=""', formData)
         .then((res) => {
-          // console.log(res)
           this.tourGuideUrl = res.data.rows[0];
         })
         .catch((err) => {
@@ -328,7 +324,6 @@ export default {
         });
     },
     onOversize() {
-      // console.log(file);
       Toast.fail("文件大小不能超过 3M");
     },
     fileDelete() {
@@ -390,10 +385,10 @@ export default {
 </script>
 
 <style scoped>
-    /*.register >>>  .van-nav-bar--fixed {*/
-        /*margin-top: 10px;*/
-        /*top: 10px;*/
-    /*}*/
+/*.register >>>  .van-nav-bar--fixed {*/
+/*margin-top: 10px;*/
+/*top: 10px;*/
+/*}*/
 .customLine {
   width: 100%;
   height: 1px;
@@ -429,7 +424,7 @@ export default {
   height: 58px;
   font-size: 15px;
   color: #333333;
-    padding: 10px 0px;
+  padding: 10px 0px;
   font-family: MicrosoftYaHei;
   /*font-weight: bold;*/
   line-height: 38px;
@@ -438,7 +433,7 @@ export default {
   border-bottom: 1px solid #ebedf0;
 }
 .customField {
-    border-bottom: none;
+  border-bottom: none;
 }
 .tour .van-cell:nth-child(7) {
   border-bottom: none;
@@ -513,8 +508,8 @@ export default {
 .cell {
   height: 78px;
   background-color: #fff;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #ebedf0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ebedf0;
 }
 
 .cell >>> .van-field__label {
