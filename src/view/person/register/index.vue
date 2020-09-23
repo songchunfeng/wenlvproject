@@ -220,10 +220,10 @@ export default {
 </script>
 
 <style scoped>
-.register >>> .van-nav-bar--fixed {
+/* .register >>> .van-nav-bar--fixed {
   margin-top: 10px;
   top: 10px;
-}
+} */
 .register {
   min-height: 100vh;
   background-color: #ffffff;

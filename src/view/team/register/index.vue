@@ -166,7 +166,7 @@
       v-model="readShow"
       :style="{ height: '100%', width: '100%'}"
     >
-      <read @close="closeRead"></read>
+      <read style="position:relative" @close="closeRead"></read>
     </van-popup>
     <van-tabbar v-model="activeFoot" route>
       <van-tabbar-item to="/teamList">

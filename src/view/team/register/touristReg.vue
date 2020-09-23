@@ -1,5 +1,5 @@
 <template>
-  <div class="register">
+  <div class="registerText">
     <van-nav-bar title="旅行社注册" fixed left-arrow @click-left="onClickLeft"></van-nav-bar>
     <div class="form">
       <van-form @submit="onSubmit" :show-error-message="false">
@@ -341,22 +341,26 @@ export default {
 .bottonLine {
   border-bottom: 1px solid #ebedf0;
 }
+.registerText >>> .van-nav-bar--fixed {
+  /* margin-top: 10px; */
+  top: 10px;
+}
 .van-cell:not(:last-child)::after {
   border: none;
 }
-.register >>> .van-tab {
+.registerText >>> .van-tab {
   color: #999999;
   font-size: 16px;
 }
-.register {
+.registerText {
   min-height: 100vh;
   background-color: #fff;
   padding: 0px 10px;
 }
-.register >>> .van-nav-bar .van-icon {
+.registerText >>> .van-nav-bar .van-icon {
   color: #999999;
 }
-.register >>> .van-cell {
+.registerText >>> .van-cell {
   height: 58px;
   font-size: 15px;
   color: #333333;
@@ -368,16 +372,16 @@ export default {
 .form {
   margin-top: 40px;
 }
-.register >>> .van-nav-bar__title {
+.registerText >>> .van-nav-bar__title {
   font-size: 17px;
   font-weight: bold;
   color: #333333;
 }
-.register >>> .van-field__control {
+.registerText >>> .van-field__control {
   text-align: right;
   font-weight: 400;
 }
-/*.register >>> .van-field__left-icon{*/
+/*.registerText >>> .van-field__left-icon{*/
 /*margin-right: 15px;*/
 /*}*/
 .checkSure {
@@ -451,7 +455,7 @@ export default {
 .btn >>> .van-button--normal {
   font-size: 16px;
 }
-.register .cell >>> .van-cell {
+.registerText .cell >>> .van-cell {
   /* height: 76px; */
 }
 .usic >>> .van-field__label {
