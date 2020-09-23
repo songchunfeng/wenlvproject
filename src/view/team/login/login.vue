@@ -78,13 +78,13 @@
       </van-tab>
     </van-tabs>
     <van-tabbar v-model="activeFoot" route>
-      <van-tabbar-item to="/preList">
+      <van-tabbar-item to="/teamList">
         <span>首页</span>
         <template #icon="props">
           <img :src="props.active ? icon.active : icon.inactive" />
         </template>
       </van-tabbar-item>
-      <van-tabbar-item icon="search" to="/perUser">
+      <van-tabbar-item icon="search" to="/teamUser">
         <span>用户中心</span>
         <template #icon="props">
           <img :src="props.active ? icon.user : icon.inuser" />

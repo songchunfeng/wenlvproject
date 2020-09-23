@@ -126,12 +126,12 @@
         <div class="cell">
           <van-field
             v-model="telephone"
-            name="联系邮箱"
-            label="联系邮箱"
+            name="联系电话"
+            label="联系电话"
             class="bottonLine"
-            placeholder="请输入公司邮箱"
-            :rules="[{ required: true, message: '请输入公司邮箱' }]"
-            @blur="checkemail(telephone)"
+            placeholder="请输入联系电话"
+            :rules="[{ required: true,pattern:patternPhone, message: '请输入联系电话' }]"
+            @blur="checkPhone"
           >
             <template #left-icon>
               <img src="../../../assets/images/必选.png" alt class="checkSure" />
@@ -143,25 +143,35 @@
         </div>
       </van-form>
     </div>
-      <van-tabbar v-model="activeFoot" route>
-          <van-tabbar-item to="/preList">
-              <span>首页</span>
-              <template #icon="props">
-                  <img :src="props.active ? icon.active : icon.inactive" />
-              </template>
-          </van-tabbar-item>
-          <van-tabbar-item icon="search" to="/perUser">
-              <span>用户中心</span>
-              <template #icon="props">
-                  <img :src="props.active ? icon.user : icon.inuser" />
-              </template>
-          </van-tabbar-item>
-      </van-tabbar>
+    <van-tabbar v-model="activeFoot" route>
+      <van-tabbar-item to="/preList">
+        <span>首页</span>
+        <template #icon="props">
+          <img :src="props.active ? icon.active : icon.inactive" />
+        </template>
+      </van-tabbar-item>
+      <van-tabbar-item icon="search" to="/perUser">
+        <span>用户中心</span>
+        <template #icon="props">
+          <img :src="props.active ? icon.user : icon.inuser" />
+        </template>
+      </van-tabbar-item>
+    </van-tabbar>
   </div>
 </template>
 
 <script>
-import { NavBar, Form, Field, Button, Toast, Uploader ,Tabbar, TabbarItem} from "vant";
+import {
+  NavBar,
+  Form,
+  Field,
+  Button,
+  Toast,
+  Uploader,
+  Tabbar,
+  TabbarItem,
+  Dialog,
+} from "vant";
 export default {
   name: "index.vue",
   components: {
@@ -170,11 +180,13 @@ export default {
     "van-field": Field,
     "van-button": Button,
     "van-uploader": Uploader,
-      "van-tabbar": Tabbar,
-      "van-tabbar-item": TabbarItem,
+    "van-tabbar": Tabbar,
+    "van-tabbar-item": TabbarItem,
+    [Dialog.Component.name]: Dialog.Component,
   },
   data() {
     return {
+      patternPhone: "", // 手机校验
       companyName: "", //企业名称
       businessLicenseUrl: "", //工商执照
       itineraryTemplateUrl: "", //行程单模板
@@ -184,14 +196,18 @@ export default {
       list: [],
       list1: [],
       list2: [],
-        icon: {
-            active: require("../../../assets/images/首页已选择.png"),
-            inactive: require("../../../assets/images/个人 -未选中.png"),
-            user: require("../../../assets/images/首页已选择 (2).png"),
-            inuser: require("../../../assets/images/个人 -未选中(1).png"),
-        },
-        activeFoot:0,
+      icon: {
+        active: require("../../../assets/images/首页已选择.png"),
+        inactive: require("../../../assets/images/个人 -未选中.png"),
+        user: require("../../../assets/images/首页已选择 (2).png"),
+        inuser: require("../../../assets/images/个人 -未选中(1).png"),
+      },
+      activeFoot: 0,
     };
+  },
+  created() {
+    this.patternPhone = this.$constants.REG.tel; // 手机号校验
+   
   },
   methods: {
     onSubmit() {
@@ -200,6 +216,12 @@ export default {
         this.itineraryTemplateUrl != "" &&
         this.tourPermissionUrl != ""
       ) {
+        Toast({
+          message: "信息提交中",
+          loadingType: "spinner",
+          duration: 0, // 持续展示 toast
+          forbidClick: true, // 禁止点击背景
+        });
         let params = {
           businessLicenseUrl: this.businessLicenseUrl,
           companyName: this.companyName,
@@ -214,16 +236,22 @@ export default {
           data: params,
         })
           .then((res) => {
+            Toast.clear();
             // console.log(res)
             if (res.code == 20000) {
-              Toast.success("注册成功");
-              this.$router.push("/teamRegister");
+              Dialog.alert({
+                message: "资料已提交审核。\n审核通过后，将以短信形式告知。",
+              }).then(() => {
+                this.$router.push("/teamRegister");
+              });
             } else {
+              Toast.clear();
               Toast.fail(res.message);
             }
           })
           .catch((err) => {
-            Toast.fail(err);
+            Toast.clear();
+            console.log(err);
           });
       }
     },
@@ -298,10 +326,10 @@ export default {
         this.usci = "";
       }
     },
-    checkemail(val) {
-      let reg = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
-      if (!reg.test(val)) {
-        Toast.fail("请检查邮箱");
+    checkPhone(val) {
+      let check = this.$commonUtils.checkPhoneNo(this.telephone);
+      if (check != "success") {
+        Toast(this.$commonUtils.checkPhoneNo(this.telephone));
         this.telephone = "";
       }
     },
@@ -332,7 +360,7 @@ export default {
   height: 58px;
   font-size: 15px;
   color: #333333;
-    padding: 10px 0px;
+  padding: 10px 0px;
   font-family: MicrosoftYaHei;
   /*font-weight: bold;*/
   line-height: 38px;
@@ -424,7 +452,7 @@ export default {
   font-size: 16px;
 }
 .register .cell >>> .van-cell {
-  height: 76px;
+  /* height: 76px; */
 }
 .usic >>> .van-field__label {
   width: auto;

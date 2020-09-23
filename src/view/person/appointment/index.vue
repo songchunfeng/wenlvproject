@@ -254,16 +254,14 @@ export default {
         .then((res) => {
           if (res.code == "20000") {
             Toast.clear();
-            Dialog.confirm({
+            Dialog.alert({
               title: "提交成功",
               message: "请前往“用户中心-我的预约”查看“预约详情”",
             })
               .then(() => {
                 this.$router.push("/preList");
               })
-              .catch(() => {
-                // on cancel
-              });
+              
           } else {
             Toast.clear();
             Toast.fail({

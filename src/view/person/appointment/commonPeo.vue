@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { Checkbox, CheckboxGroup, Toast } from "vant";
+import { Checkbox, CheckboxGroup, Toast, Dialog } from "vant";
 export default {
   name: "commonPeo",
   props: {
@@ -24,6 +24,7 @@ export default {
   components: {
     "van-checkbox": Checkbox,
     "van-checkbox-group": CheckboxGroup,
+    [Dialog.Component.name]: Dialog.Component,
   },
   data() {
     return {
@@ -36,7 +37,7 @@ export default {
     },
     checkComPeo() {
       if (this.check.length > 5) {
-        Toast.fail('最多只能选择5人')
+        Dialog({ message: "最多填写5个出行人" });
       } else {
         let arr = [];
         for (let i = 0; i < this.check.length; i++) {

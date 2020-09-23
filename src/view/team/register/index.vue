@@ -169,13 +169,13 @@
       <read @close="closeRead"></read>
     </van-popup>
     <van-tabbar v-model="activeFoot" route>
-      <van-tabbar-item to="/preList">
+      <van-tabbar-item to="/teamList">
         <span>首页</span>
         <template #icon="props">
           <img :src="props.active ? icon.active : icon.inactive" />
         </template>
       </van-tabbar-item>
-      <van-tabbar-item icon="search" to="/perUser">
+      <van-tabbar-item icon="search" to="/teamUser">
         <span>用户中心</span>
         <template #icon="props">
           <img :src="props.active ? icon.user : icon.inuser" />
@@ -198,6 +198,7 @@ import {
   Icon,
   Tabbar,
   TabbarItem,
+  Dialog
 } from "vant";
 import read from "../../person/register/registerText";
 export default {
@@ -213,6 +214,7 @@ export default {
     "van-popup": Popup,
     "van-tabbar": Tabbar,
     "van-tabbar-item": TabbarItem,
+    [Dialog.Component.name]: Dialog.Component,
     read,
   },
   data() {
@@ -266,7 +268,11 @@ export default {
         })
           .then((res) => {
             if (res.code == 20000) {
-              Toast.success(res.message);
+              Dialog.alert({
+                message: "团队注册资料已提交审核。\n审核通过后，将以短信形式告知。",
+              }).then(() => {
+                this.$router.push("/teamList");
+              });
             } else {
               Toast.fail(res.message);
             }

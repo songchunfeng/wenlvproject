@@ -17,6 +17,9 @@ import constants from './util/constants';
 
 Vue.prototype.$commonUtils = commonUtils
 Vue.prototype.$constants = constants;
+router.afterEach((to, from, next) => {
+    window.scrollTo(0, 0)
+})
 
 new Vue({
     router,
