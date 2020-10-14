@@ -189,19 +189,28 @@ export default {
     },
     // 上传文件
     afterRead(file) {
+      Toast({
+          message: "信息提交中",
+          loadingType: "spinner",
+          duration: 0, // 持续展示 toast
+          forbidClick: true, // 禁止点击背景
+        });
       var formData = new FormData(); //构造一个 FormData，把后台需要发送的参数添加
       formData.append("file", file.file); //接口需要传的参数
       this.$axios
         .post("/api/travelers/import", formData)
         .then((res) => {
           if (res.code == 20000) {
+            Toast.clear();
             Toast.success("上传成功");
             this.travelUserVo = res.data.rows.peopleList;
           } else {
-            Toast.fail("上传失败");
+            Toast.clear();
+            Dialog({ message: res.message });
           }
         })
         .catch((err) => {
+          Toast.clear();
           console.log(err);
         });
     },
@@ -253,7 +262,7 @@ export default {
     },
     toSave(params) {
       Toast({
-        message: "信息提交中。。。",
+        message: "信息提交中",
         loadingType: "spinner",
         duration: 0, // 持续展示 toast
         forbidClick: true, // 禁止点击背景

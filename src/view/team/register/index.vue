@@ -1,10 +1,15 @@
 <template>
   <div class="register">
-    <van-nav-bar title="团队用户注册" fixed left-arrow @click-left="onClickLeft"></van-nav-bar>
+    <van-nav-bar
+      title="团队用户注册"
+      fixed
+      left-arrow
+      @click-left="onClickLeft"
+    ></van-nav-bar>
     <div class="form">
       <van-form @submit="onSubmit" :show-error-message="false">
         <van-field
-          v-model=" reallyName"
+          v-model="reallyName"
           name="真实姓名"
           label="真实姓名"
           placeholder="请填写真实姓名"
@@ -84,7 +89,11 @@
               <span class="picSpecifi">（图片规格：3M以下，图片清晰）</span>
             </template>
             <template #left-icon>
-              <img src="../../../assets/images/必选.png" alt class="checkSure" />
+              <img
+                src="../../../assets/images/必选.png"
+                alt
+                class="checkSure"
+              />
             </template>
           </van-field>
           <div class="uploadMain">
@@ -95,13 +104,17 @@
                 @delete="fileDelete"
                 :preview-image="true"
                 v-model="list"
-                :max-size="3* 1024 * 1024"
+                :max-size="3 * 1024 * 1024"
                 @oversize="onOversize"
                 :before-read="beforeRead"
                 accept="image/*"
               >
                 <template #default>
-                  <img src="../../../assets/images/plus.png" alt class="uploadImg" />
+                  <img
+                    src="../../../assets/images/plus.png"
+                    alt
+                    class="uploadImg"
+                  />
                   <div class="uploadfs">上传图片</div>
                 </template>
               </van-uploader>
@@ -133,14 +146,18 @@
             :rules="[{ required: true, message: '请填写公司社会统一信用代码' }]"
           >
             <template #left-icon>
-              <img src="../../../assets/images/必选.png" alt class="checkSure" />
+              <img
+                src="../../../assets/images/必选.png"
+                alt
+                class="checkSure"
+              />
             </template>
           </van-field>
           <div class="toVertify" v-show="show">
             <img src="../../../assets/images/提醒.png" alt />
             <span>
-              {{content}}，点击此处跳转认证
-              <span style="color: #3983E5;" @click="toTourGuide">跳转认证</span>
+              {{ content }}，点击此处跳转认证
+              <span style="color: #3983e5" @click="toTourGuide">跳转认证</span>
             </span>
           </div>
           <div class="toVertify" v-show="!show">
@@ -151,11 +168,15 @@
         <div class="sign">
           <van-checkbox v-model="checked" icon-size="14px">
             我已阅读并同意
-            <span style="color:#3983E5" @click="readShow=true">《大美青海景区门票预约平台注册协议》</span>
+            <span style="color: #3983e5" @click="readShow = true"
+              >《大美青海景区门票预约平台注册协议》</span
+            >
           </van-checkbox>
         </div>
         <div class="btn">
-          <van-button round block type="info" native-type="submit">注册</van-button>
+          <van-button round block type="info" native-type="submit"
+            >注册</van-button
+          >
         </div>
       </van-form>
     </div>
@@ -164,9 +185,9 @@
       :overlay="false"
       position="right"
       v-model="readShow"
-      :style="{ height: '100%', width: '100%'}"
+      :style="{ height: '100%', width: '100%' }"
     >
-      <read style="position:relative" @close="closeRead"></read>
+      <read style="position: relative" @close="closeRead"></read>
     </van-popup>
     <van-tabbar v-model="activeFoot" route>
       <van-tabbar-item to="/teamList">
@@ -198,7 +219,7 @@ import {
   Icon,
   Tabbar,
   TabbarItem,
-  Dialog
+  Dialog,
 } from "vant";
 import read from "../../person/register/registerText";
 export default {
@@ -243,6 +264,12 @@ export default {
   },
   methods: {
     onSubmit() {
+      Toast({
+        message: "信息提交中",
+        loadingType: "spinner",
+        duration: 0, // 持续展示 toast
+        forbidClick: true, // 禁止点击背景
+      });
       if (
         this.tourGuideUrl != "" &&
         this.checked == true &&
@@ -268,16 +295,20 @@ export default {
         })
           .then((res) => {
             if (res.code == 20000) {
+              Toast.clear();
               Dialog.alert({
-                message: "团队注册资料已提交审核。\n审核通过后，将以短信形式告知。",
+                message:
+                  "团队注册资料已提交审核。\n审核通过后，将以短信形式告知。",
               }).then(() => {
                 this.$router.push("/teamList");
               });
             } else {
-              Toast.fail(res.message);
+              Toast.clear();
+              Dialog({ message: res.message });
             }
           })
           .catch((err) => {
+            Toast.clear();
             Toast.fail(err);
           });
       } else if (this.passWord !== this.surepassword) {

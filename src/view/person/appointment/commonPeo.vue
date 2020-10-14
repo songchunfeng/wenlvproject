@@ -20,6 +20,7 @@ export default {
   name: "commonPeo",
   props: {
     comPeoList: Array,
+    addPeo:Array
   },
   components: {
     "van-checkbox": Checkbox,
@@ -36,8 +37,8 @@ export default {
       this.$emit("close");
     },
     checkComPeo() {
-      if (this.check.length > 5) {
-        Dialog({ message: "最多填写5个出行人" });
+      if (this.check.length + this.addPeo.length > 5) {
+        Dialog({ message: "最多填写5位出行人" });
       } else {
         let arr = [];
         for (let i = 0; i < this.check.length; i++) {

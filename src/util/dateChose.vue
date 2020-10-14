@@ -168,7 +168,7 @@ export default {
       align-items: center;
       justify-content: space-around;
       .date {
-        font-size: 8px;
+        font-size: 10px;
         font-family: MicrosoftYaHei;
         color: #ffffff;
         line-height: 11px;
@@ -192,7 +192,7 @@ export default {
       align-items: center;
       justify-content: space-around;
       .date {
-        font-size: 8px;
+        font-size: 10px;
         font-family: MicrosoftYaHei;
         color: #666666;
         line-height: 11px;

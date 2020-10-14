@@ -2,13 +2,17 @@
   <div class="appointment">
     <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
       <van-swipe-item v-for="(image, index) in images" :key="index">
-        <img style="width:100%;" :src="image" alt />
+        <img style="width: 100%" :src="image" alt />
       </van-swipe-item>
     </van-swipe>
     <div class="scenicInfo">
-      <div class="scenicName">{{scenic.spotName}}</div>
-      <div class="openTime">开放时间：{{scenic.businessHour}} (最晚入园时间：{{scenic.latestTime}})</div>
-      <div class="scenicAddress">景区地址：{{scenic.spotAddress}}</div>
+      <div class="scenicName">{{ scenic.spotName }}</div>
+      <div class="openTime">
+        开放时间：{{ scenic.businessHour }} (最晚入园时间：{{
+          scenic.latestTime
+        }})
+      </div>
+      <div class="scenicAddress">景区地址：{{ scenic.spotAddress }}</div>
     </div>
     <div class="dateChose">
       <dateChose :dateTime="dateTime" @checkDay="checkDay"></dateChose>
@@ -17,23 +21,27 @@
       <div class="travelInfoTitle">
         <div class="titleName">
           出行信息
-          <span class="numberMax">(同一用户同一预约日期限购1份，每单最多可预约5张门票)</span>
+          <span class="numberMax"
+            >(同一用户同一预约日期限购1份，每单最多可预约5张门票)</span
+          >
         </div>
         <!-- <div class="numberMax">(同一用户同一预约日期限购1份，每单最多可预约5张门票)</div> -->
       </div>
       <div class="travelInfoTime">
         <div class="appTime">
           <div class="appTimeLable">预约时间：</div>
-          <div class="appTimeCon">{{checkTime}}</div>
+          <div class="appTimeCon">{{ checkTime }}</div>
         </div>
         <div class="checkTime">
           <div class="checkTimeLable">验票时间：</div>
-          <div class="checkTimeCon" v-if="checkTime==''"></div>
-          <div class="checkTimeCon" v-if="checkTime != ''">{{checkTiTime(checkTime)}}</div>
+          <div class="checkTimeCon" v-if="checkTime == ''"></div>
+          <div class="checkTimeCon" v-if="checkTime != ''">
+            {{ checkTiTime(checkTime) }}
+          </div>
         </div>
         <div class="travelPeo">
           <div class="travelPeoLable">出行人：</div>
-          <div class="travelPeoCon">{{comPeoName}}</div>
+          <div class="travelPeoCon">{{ comPeoName }}</div>
           <!-- <div class="travelPeoCon">张三、张三、张三、张三、张三、张三、张三</div> -->
         </div>
         <div class="checkPeoBox">
@@ -43,8 +51,13 @@
         </div>
       </div>
 
-      <div class="travelPeoList" v-for="(item,index) in addPeo" :key="item.key">
+      <div
+        class="travelPeoList"
+        v-for="(item, index) in addPeo"
+        :key="item.key"
+      >
         <addPeo
+          ref="addChild"
           :index="index"
           :checkBySelfs="doSelfCheck"
           @reportErrorMessage="getErrorMessage"
@@ -57,7 +70,9 @@
       <div class="travelInfoTitle">
         <div class="titleName">
           取票信息
-          <span class="numberMax">(需预留1位出行人的信息，用于现场兑换门票)</span>
+          <span class="numberMax"
+            >(需预留1位出行人的信息，用于现场兑换门票)</span
+          >
         </div>
         <!-- <div class="numberMax">(同一用户同一预约日期限购1份，每单最多可预约5张门票)</div> -->
       </div>
@@ -70,18 +85,29 @@
 
     <div class="bottomBox">
       <van-checkbox icon-size="14px" v-model="checked">
-        <div class="readAgree" @click="readShow = true">我已认真阅读提示信息及注意事项，知晓并同意平台及景区相关规定。</div>
+        <div class="readAgree" @click="readShow = true">
+          我已认真阅读提示信息及注意事项，知晓并同意平台及景区相关规定。
+        </div>
       </van-checkbox>
       <div class="confirm" @click="submit">预约</div>
     </div>
-    <van-popup position="bottom" v-model="comPopShow" :style="{width: '100%'}">
-      <commonPeo :comPeoList="comPeoList" @close="closeCommonPeo" @checkComPeo="checkComPeo"></commonPeo>
+    <van-popup
+      position="bottom"
+      v-model="comPopShow"
+      :style="{ width: '100%' }"
+    >
+      <commonPeo
+        :addPeo="addPeo"
+        :comPeoList="comPeoList"
+        @close="closeCommonPeo"
+        @checkComPeo="checkComPeo"
+      ></commonPeo>
     </van-popup>
     <van-popup
       :safe-area-inset-bottom="true"
       :overlay="false"
       v-model="readShow"
-      :style="{ height: '100%', width: '100%'}"
+      :style="{ height: '100%', width: '100%' }"
     >
       <read class="read" @close="closeRead"></read>
     </van-popup>
@@ -196,33 +222,63 @@ export default {
         if (this.checked) {
           if (this.checkTime) {
             if (this.comPeo.length + this.addPeo.length > 0) {
-              this.doSelfCheck = true;
-              let that = this;
-              setTimeout(function () {
-                if (that.isChangedAll) {
-                  let currentAddPeo = that.addPeo; // 被保人信息，含有key字段
-                  let targetAddPeo = []; // 去除key字段的新增的人
-                  currentAddPeo.map((item) => {
-                    targetAddPeo.push(item.data);
-                  });
-                  let travelUserVo = [];
-                  travelUserVo.push(...targetAddPeo);
-                  travelUserVo.push(...that.comPeo);
-                  let params = {
-                    identity_card: that.reserveVo.identity_card,
-                    identity_type: that.reserveVo.identity_type,
-                    name: that.reserveVo.name,
-                    telphone: that.reserveVo.telphone,
-                    spotid: window.sessionStorage.getItem("scenicId"),
-                    tour_time_info: that.checkTime,
-                    travelUserVo: travelUserVo,
-                    tcmAts: that.tcmAts,
-                  };
-                  that.toSave(params);
-                } else {
-                  Toast.fail("请完善预约信息");
+              let checkConfirm = false;
+              if (this.$refs.addChild) {
+                for (let i = 0; i < this.$refs.addChild.length; i++) {
+                  if (this.$refs.addChild[i].editShow) {
+                    checkConfirm = true;
+                  }
                 }
-              }, 100);
+              }
+
+              if (checkConfirm) {
+                Dialog({ message: "请确认出行人信息" });
+              } else {
+                this.doSelfCheck = true;
+                let that = this;
+                setTimeout(function () {
+                  if (that.isChangedAll) {
+                    let currentAddPeo = that.addPeo; // 被保人信息，含有key字段
+                    let targetAddPeo = []; // 去除key字段的新增的人
+                    currentAddPeo.map((item) => {
+                      targetAddPeo.push(item.data);
+                    });
+                    let travelUserVo = [];
+                    travelUserVo.push(...targetAddPeo);
+                    travelUserVo.push(...that.comPeo);
+                    let check = false;
+                    for (var i = 0; i < travelUserVo.length - 1; i++) {
+                      for (var j = i + 1; j < travelUserVo.length; j++) {
+                        if (
+                          travelUserVo[i].identityCard ===
+                          travelUserVo[j].identityCard
+                        ) {
+                          check = true;
+                        }
+                      }
+                    }
+                    console.log(check);
+                    if (check) {
+                      Dialog({ message: "请勿重复填写出行人信息" });
+                    } else {
+                      let params = {
+                        identity_card: that.reserveVo.identity_card,
+                        identity_type: that.reserveVo.identity_type,
+                        name: that.reserveVo.name,
+                        telphone: that.reserveVo.telphone,
+                        spotid: window.sessionStorage.getItem("scenicId"),
+                        tour_time_info: that.checkTime,
+                        travelUserVo: travelUserVo,
+                        tcmAts: that.tcmAts,
+                      };
+                      console.log(params);
+                      that.toSave(params);
+                    }
+                  } else {
+                    Toast.fail("请完善预约信息");
+                  }
+                }, 100);
+              }
             } else {
               Toast.fail("请添加出行人");
             }
@@ -252,24 +308,22 @@ export default {
         },
       })
         .then((res) => {
+          console.log("123", res);
           if (res.code == "20000") {
             Toast.clear();
             Dialog.alert({
               title: "提交成功",
               message: "请前往“用户中心-我的预约”查看“预约详情”",
-            })
-              .then(() => {
-                this.$router.push("/preList");
-              })
-              
+            }).then(() => {
+              this.$router.push("/preList");
+            });
           } else {
             Toast.clear();
-            Toast.fail({
-              message: res.message,
-            });
+            Dialog({ message: res.message });
           }
         })
         .catch((err) => {
+          Toast.clear();
           console.log(err);
         });
     },
@@ -279,6 +333,7 @@ export default {
     // 获取轮播图
     getImg() {
       let id = window.sessionStorage.getItem("scenicId");
+
       this.$axios({
         url: "/api/spot/getapppicture",
         method: "get",
@@ -325,14 +380,10 @@ export default {
     // 打开常用出行人
     checkComPeoShow() {
       if (window.sessionStorage.getItem("token")) {
-        if (this.addPeo.length + this.comPeo.length == 5) {
-          Dialog({ message: "最多填写5个出行人" });
+        if (this.comPeoList.length === 0) {
+          Dialog({ message: "您还未添加常用出行人" });
         } else {
-          if (this.comPeoList.length === 0) {
-            Dialog({ message: "您还未添加常用出行人" });
-          } else {
-            this.comPopShow = true;
-          }
+          this.comPopShow = true;
         }
       } else {
         Dialog({ message: "您还未登录请先登录" });
@@ -425,11 +476,11 @@ export default {
   background-color: #f9f9f9;
   padding-bottom: 80px;
   box-sizing: border-box;
-    /deep/ .van-nav-bar--fixed {
-        margin-top: 10px;
-        top: 10px;
-    }
-    .van-swipe {
+  /deep/ .van-nav-bar--fixed {
+    margin-top: 10px;
+    top: 10px;
+  }
+  .van-swipe {
     background-color: #fff;
   }
   .scenicInfo {

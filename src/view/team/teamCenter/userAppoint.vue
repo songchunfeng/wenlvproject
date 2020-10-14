@@ -43,11 +43,11 @@
               <!--<div >-->
               <div class="appTable">
                 <van-row class="titleRow" type="flex" justify="space-around">
-                  <van-col class="titleCol" span="2">姓名</van-col>
-                  <van-col style="width: 107%;" class="titleCol" span="7">联系电话</van-col>
-                  <van-col class="titleCol" span="5">有效证件</van-col>
-                  <van-col class="titleCol" span="5">证件号码</van-col>
-                  <van-col class="titleCol" span="5">预约票种</van-col>
+                  <van-col style="width:200px"  class="titleCol" >姓名</van-col>
+                  <van-col style="width:400px"  class="titleCol" >联系电话</van-col>
+                  <van-col style="width:300px"  class="titleCol" >有效证件</van-col>
+                  <van-col style="width:400px"  class="titleCol" >证件号码</van-col>
+                  <van-col  class="titleCol" >预约票种</van-col>
                 </van-row>
                 <van-row
                   class="row"
@@ -56,11 +56,11 @@
                   v-for="(ite,ind) in personList"
                   :key="ind"
                 >
-                  <van-col class="col" span="4">{{ite.surname}}</van-col>
-                  <van-col style="width: 107%;" class="col" span="5">{{ite.telphone}}</van-col>
-                  <van-col class="col" span="5">{{ite.identityType==0? '居民身份证' : '护照'}}</van-col>
-                  <van-col class="col" span="5">{{getId(ite.identityCard)}}</van-col>
-                  <van-col class="col" span="5">{{getTicketType(ite.ticketType)}}</van-col>
+                  <van-col style="width:200px"  class="col" >{{ite.surname}}</van-col>
+                  <van-col style="width:400px" class="col" >{{ite.telphone}}</van-col>
+                  <van-col style="width:300px" class="col" >{{ite.identityType==0? '居民身份证' : '护照'}}</van-col>
+                  <van-col style="width:400px" class="col" >{{getId(ite.identityCard)}}</van-col>
+                  <van-col class="col" >{{getTicketType(ite.ticketType)}}</van-col>
                 </van-row>
               </div>
               <!--</div>-->

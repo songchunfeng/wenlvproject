@@ -1,7 +1,7 @@
 <template>
   <div class="addPeo">
     <div class="titleBox">
-      <div class="title">出行人{{index + 1}}</div>
+      <div class="title">出行人{{ index + 1 }}</div>
       <div class="edit" v-show="!editShow" @click="editShow = true">
         <img src="../../../assets/images/编 辑.png" alt />
       </div>
@@ -21,10 +21,16 @@
           @blur="checkName"
           input-align="right"
           placeholder="请输入姓名"
-          :rules="[{ required: true,pattern:patternName, message: '请填写姓名' }]"
+          :rules="[
+            { required: true, pattern: patternName, message: '请填写姓名' },
+          ]"
         >
           <template #left-icon>
-            <img src="../../../assets/images/必选.png" alt style="width:8px;height:8px" />
+            <img
+              src="../../../assets/images/必选.png"
+              alt
+              style="width: 8px; height: 8px"
+            />
           </template>
         </van-field>
         <van-field
@@ -34,10 +40,20 @@
           v-model="travelUser.telphone"
           @blur="checkPhone"
           placeholder="请输入联系电话"
-          :rules="[{ required: true,pattern:patternPhone, message: '请输入联系电话' }]"
+          :rules="[
+            {
+              required: true,
+              pattern: patternPhone,
+              message: '请输入联系电话',
+            },
+          ]"
         >
           <template #left-icon>
-            <img src="../../../assets/images/必选.png" alt style="width:8px;height:8px" />
+            <img
+              src="../../../assets/images/必选.png"
+              alt
+              style="width: 8px; height: 8px"
+            />
           </template>
         </van-field>
 
@@ -47,13 +63,17 @@
           input-align="right"
           right-icon="arrow"
           @click="identityTypeShow = true"
-          disabled
+          readonly
           v-model="identityTypeText"
           placeholder="请选择有效证件"
           :rules="[{ required: true, message: '请选择有效证件' }]"
         >
           <template #left-icon>
-            <img src="../../../assets/images/必选.png" alt style="width:8px;height:8px" />
+            <img
+              src="../../../assets/images/必选.png"
+              alt
+              style="width: 8px; height: 8px"
+            />
           </template>
         </van-field>
         <van-field
@@ -67,7 +87,11 @@
           :rules="[{ required: true, message: '请输入证件号码' }]"
         >
           <template #left-icon>
-            <img src="../../../assets/images/必选.png" alt style="width:8px;height:8px" />
+            <img
+              src="../../../assets/images/必选.png"
+              alt
+              style="width: 8px; height: 8px"
+            />
           </template>
         </van-field>
 
@@ -77,42 +101,46 @@
           input-align="right"
           right-icon="arrow"
           @click="ticketTypeShow = true"
-          disabled
+          readonly
           v-model="ticketTypeText"
           placeholder="请选择预约票种"
           :rules="[{ required: true, message: '请选择预约票种' }]"
         >
           <template #left-icon>
-            <img src="../../../assets/images/必选.png" alt style="width:8px;height:8px" />
+            <img
+              src="../../../assets/images/必选.png"
+              alt
+              style="width: 8px; height: 8px"
+            />
           </template>
         </van-field>
       </van-form>
       <div class="bottomBtn">
         <div class="cannel" @click="deleteItem">取消</div>
         <div class="line"></div>
-        <div class="confim" @click="editShow = false">确定</div>
+        <div class="confim" @click="submitDate">确定</div>
       </div>
     </div>
     <div v-show="!editShow">
       <div class="travelCell">
         <div class="travelCellLable">姓名</div>
-        <div class="travelCellValue">{{travelUser.surname}}</div>
+        <div class="travelCellValue">{{ travelUser.surname }}</div>
       </div>
       <div class="travelCell">
         <div class="travelCellLable">联系电话</div>
-        <div class="travelCellValue">{{travelUser.telphone}}</div>
+        <div class="travelCellValue">{{ travelUser.telphone }}</div>
       </div>
       <div class="travelCell">
         <div class="travelCellLable">有效证件</div>
-        <div class="travelCellValue">{{identityTypeText}}</div>
+        <div class="travelCellValue">{{ identityTypeText }}</div>
       </div>
       <div class="travelCell">
         <div class="travelCellLable">证件号码</div>
-        <div class="travelCellValue">{{travelUser.identityCard}}</div>
+        <div class="travelCellValue">{{ travelUser.identityCard }}</div>
       </div>
       <div class="travelCell">
         <div class="travelCellLable">预约票种</div>
-        <div class="travelCellValue">{{ticketTypeText}}</div>
+        <div class="travelCellValue">{{ ticketTypeText }}</div>
       </div>
     </div>
 
@@ -154,6 +182,7 @@ export default {
     "van-field": Field,
     "van-popup": Popup,
     "van-picker": Picker,
+    [Dialog.Component.name]: Dialog.Component,
   },
   watch: {
     checkBySelfs: function (newVal) {
@@ -221,6 +250,51 @@ export default {
     };
   },
   methods: {
+    submitDate() {
+      if (this.travelUser.surname == "") {
+        Toast("请输入姓名");
+      } else if (this.travelUser.telphone == "") {
+        Toast("请输入联系电话");
+      } else if (this.travelUser.identityType == "") {
+        Toast("请选择有效证件");
+      } else if (this.travelUser.identityCard == "") {
+        Toast("请输入证件号码");
+      } else if (this.travelUser.ticketType == "") {
+        Toast("请选择预约票种");
+      } else {
+        Toast({
+          message: "信息提交中",
+          loadingType: "spinner",
+          duration: 0, // 持续展示 toast
+          forbidClick: true, // 禁止点击背景
+        });
+        this.$axios({
+          url: "/api/user-reserve/yanzheng",
+          method: "get",
+          headers: {
+            Authorization: window.sessionStorage.getItem("token"),
+          },
+          params: {
+            identity_card: this.travelUser.identityCard,
+            surname: this.travelUser.surname,
+            identity_type: this.travelUser.identityType,
+          },
+        })
+          .then((res) => {
+            if (res.code == 20000) {
+              Toast.clear();
+              this.editShow = false;
+            } else {
+              Toast.clear();
+              Dialog({ message: res.message });
+            }
+          })
+          .catch((err) => {
+            Toast.clear();
+            console.log(err);
+          });
+      }
+    },
     // 校验姓名
     checkName() {
       let check = this.$commonUtils.checkName(this.travelUser.surname);

@@ -40,7 +40,7 @@
         input-align="right"
         right-icon="arrow"
         @click="identityTypeShow = true"
-        disabled
+        readonly
         v-model="identityTypeText"
         placeholder="请选择有效证件"
         :rules="[{ required: true, message: '请选择有效证件' }]"
@@ -210,9 +210,9 @@ export default {
       color: #333333;
       border-bottom: 1px solid #eeeeee;
     }
-    /deep/ .van-field__control:disabled {
-      color: #333;
-    }
+    // /deep/ .van-field__control:disabled {
+    //   color: #333333!important;
+    // }
     .van-cell:not(:last-child)::after {
       border: none;
     }

@@ -53,7 +53,7 @@
           input-align="right"
           right-icon="arrow"
           @click="identityTypeShow = true"
-          disabled
+          readonly
           v-model="identityTypeText"
           placeholder="请选择有效证件"
           :rules="[{ required: true, message: '请选择有效证件' }]"
@@ -83,7 +83,7 @@
           input-align="right"
           right-icon="arrow"
           @click="ticketTypeShow = true"
-          disabled
+          readonly
           v-model="ticketTypeText"
           placeholder="请选择预约票种"
           :rules="[{ required: true, message: '请选择预约票种' }]"
@@ -246,6 +246,12 @@ export default {
   methods: {
     // 确定
     confirm() {
+      Toast({
+        message: "信息提交中",
+        loadingType: "spinner",
+        duration: 0, // 持续展示 toast
+        forbidClick: true, // 禁止点击背景
+      });
       this.$axios({
         url: "/api/user-identity-info/appsaveuserinfo",
         method: "post",
@@ -263,11 +269,12 @@ export default {
       })
         .then((res) => {
           if (res.code == 20000) {
+            Toast.clear();
+            Toast.success('提交成功')
             this.$emit("getListAfresh");
           } else {
-            Toast.fail({
-              message: res.message,
-            });
+            Toast.clear();
+            Dialog({ message: res.message });
           }
         })
         .catch((err) => {
@@ -428,9 +435,6 @@ export default {
       font-family: MicrosoftYaHei;
       color: #333333;
       border-bottom: 1px solid #eeeeee;
-    }
-    /deep/ .van-field__control:disabled {
-      color: #333;
     }
     .van-cell:not(:last-child)::after {
       border: none;
